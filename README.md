@@ -100,7 +100,7 @@ React con TypeScript permitirá desarrollar una interfaz basada en componentes r
 - **Comunicación:** API REST
 - **Autenticación y autorización:** JWT
 
-Java con Spring Boot resulta adecuado para una aplicación con lógica de negocio y datos estructurados como la propuesta. Spring Data JPA será utilizado para gestionar la persistencia y la comunicación entre frontend y backend se realizará mediante una API REST.
+Java con Spring Boot resulta adecuado para una aplicación con lógica de negocio y datos estructurados como la propuesta. Spring Data JPA será utilizado para gestionar la capa de persistencia. La comunicación entre el frontend y el backend se realizará mediante una API REST.
 
 ### Base de datos
 
@@ -108,18 +108,14 @@ Java con Spring Boot resulta adecuado para una aplicación con lógica de negoci
 - **Modelo:** Relacional
 
 El dominio presenta información estructurada y relaciones bien definidas entre alumnos, responsables, categorías, cuotas, pagos, eventos y demás entidades.
-
 El modelo relacional permitirá mantener la integridad y consistencia de los datos, especialmente en operaciones vinculadas con pagos y estados administrativos.
-
 Se seleccionó MySQL debido a que el equipo posee experiencia previa con este motor y proporciona las funcionalidades necesarias para las características del proyecto.
 
 ### Plataforma de despliegue
 
-Se prevé utilizar una **plataforma cloud bajo el modelo PaaS (Platform as a Service)**.
-
-Esta alternativa permitirá reducir la complejidad asociada a la administración manual de infraestructura y concentrar los esfuerzos del equipo en el desarrollo, integración y pruebas.
-
-El proveedor específico se definirá durante la etapa de implementación considerando compatibilidad con el stack, costos y recursos disponibles.
+Se prevé realizar el despliegue de al menos uno de los componentes principales de la aplicación en un **servicio cloud**, de acuerdo con los requisitos establecidos para el Trabajo Final.
+El servicio específico se definirá durante la etapa de implementación, considerando su compatibilidad con el stack tecnológico seleccionado, facilidad de despliegue, costos y recursos disponibles.
+Se priorizarán alternativas que reduzcan la complejidad asociada a la administración manual de infraestructura y permitan al equipo concentrar sus esfuerzos en el desarrollo, integración y pruebas de la aplicación.
 
 ## Plan de trabajo
 
