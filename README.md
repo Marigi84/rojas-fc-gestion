@@ -232,6 +232,13 @@ rojas-fc-gestion/
 - `database/`: scripts, esquemas y recursos relacionados con MySQL.
 - `docs/`: documentación, diagramas, informes y entregas del proyecto.
 
+## Documentación de las entregas
+
+- [`docs/1ra Entrega - Propuesta de Proyecto.pdf`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.pdf) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
+- [`docs/2da Entrega - Diseño y Modulos.pdf`](docs/2da%20Entrega%20-%20Diseño%20y%20Modulos.pdf) — Esquema de base de datos y listado de módulos.
+- [`docs/03-Reglas-de-Negocio.md`](docs/03-Reglas-de-Negocio.md) — Reglas de negocio consolidadas que sustentan el diseño de la 2ª Entrega.
+- [`database/schema.sql`](database/schema.sql) — Script DDL completo del esquema relacional (MySQL).
+
 ## Estado del proyecto
 
-🟡 **En desarrollo — Primera etapa: propuesta y planificación.**
+🟡 **En desarrollo — Segunda etapa: diseño y módulos, en revisión previa a la aprobación del tutor.**
