@@ -236,7 +236,7 @@ rojas-fc-gestion/
 
 - [`docs/1ra Entrega - Propuesta de Proyecto.pdf`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.pdf) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
 - [`docs/2da Entrega - Diseño y Modulos.pdf`](docs/2da%20Entrega%20-%20Diseño%20y%20Modulos.pdf) — Esquema de base de datos y listado de módulos.
-- [`docs/2da Entrega - Lógica de Negocio.pdf`](docs/2da%20Entrega%20-%20Logica%20de%20Negocio.pdf) — Lógica de negocio y reglas que sustentan el diseño de la 2ª Entrega
+- [`docs/2da Entrega - Lógica de Negocio.md`](docs/2da%20Entrega%20-%20Reglas%20de%20Negocio.md) — Lógica de negocio y reglas que sustentan el diseño de la 2ª Entrega
 - [`database/schema.sql`](database/schema.sql) — Script DDL completo del esquema relacional (MySQL).
 
 ## Estado del proyecto
