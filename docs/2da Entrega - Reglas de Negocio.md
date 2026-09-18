@@ -73,7 +73,7 @@ El presente documento establece las políticas, restricciones y directrices oper
 
 - **RN-36 — Aranceles especiales no mensuales:** La participación en torneos, viajes deportivos o la adquisición de indumentaria institucional constituyen aranceles extraordinarios independientes de la cuota mensual.
 - **RN-37 — Fraccionamiento de pagos extraordinarios:** A diferencia de la cuota mensual ordinaria, los aranceles extraordinarios admiten esquemas de pago fraccionado o anticipos (señas) hasta la cancelación definitiva del saldo.
-- **RN-38 — Cobros extraordinarios sin recargo:** Los conceptos por indumentaria y eventos no se encuentran sujetos al recargo automático por mora del 10 %.
+- **RN-38 — Cobros extraordinarios sin recargo:** Los conceptos por indumentaria y eventos no se encuentran sujetos al recargo por mora del 10 %.
 
 ---
 
