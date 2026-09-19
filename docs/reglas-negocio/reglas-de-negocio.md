@@ -162,11 +162,11 @@ Todo pago confirmado deberá generar un recibo.
 ### RN-37 – Identificación del recibo
 Cada recibo deberá contar con un número identificatorio propio.
 
-### RN-38 – Saldo pendiente en cobros extraordinarios
-Cuando un pago parcial corresponda a un cobro extraordinario por evento o indumentaria, el recibo deberá informar el saldo pendiente luego de aplicar dicho pago.
+### RN-38 – Comprobante de pago parcial
+La emisión de un recibo por pago parcial respalda únicamente el importe efectivamente percibido y no extingue la obligación económica pendiente.
 
-### RN-39 – Conservación de recibos anulados
-Cuando se anule un pago que posea un recibo emitido, dicho recibo deberá conservarse identificado como anulado.
+### RN-39 – Inalterabilidad de comprobantes
+Los recibos emitidos no podrán destruirse ni eliminarse del registro histórico; ante la anulación de una cobranza, el comprobante asociado pierde validez fiscal/administrativa pero manteniendo su trazabilidad.
 
 ---
 
@@ -181,8 +181,8 @@ Los cobros correspondientes a eventos o indumentaria podrán recibir uno o más 
 ### RN-42 – Conservación del saldo
 Cuando un cobro extraordinario no haya sido abonado en su totalidad, deberá conservarse el saldo pendiente.
 
-### RN-43 – Datos de indumentaria
-Cuando el cobro extraordinario corresponda a indumentaria, deberá identificarse al menos el tipo de prenda y el talle solicitado.
+### RN-43 – Especificación de pedidos de indumentaria
+La gestión y cobro de indumentaria institucional requiere la definición previa del tipo de prenda y talle correspondiente para validar el pedido.
 
 ### RN-44 – Interés en cobros extraordinarios
 Los cobros extraordinarios correspondientes a eventos o indumentaria no estarán sujetos al interés por mora definido para las cuotas mensuales.
