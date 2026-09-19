@@ -51,7 +51,9 @@ Para el proceso de inscripción se incorporará un formulario propio de preinscr
 
 La categoría correspondiente al alumno se determinará de acuerdo con su año de nacimiento.
 
-Las cuotas se generarán automáticamente para los alumnos activos. El sistema permitirá configurar su importe, uno o más vencimientos y los intereses correspondientes, conservando las condiciones históricas de las cuotas ya generadas cuando posteriormente se modifique la configuración.
+Las cuotas se generarán automáticamente para los alumnos activos. El sistema permitirá configurar su importe, una única fecha de vencimiento por período y los intereses correspondientes, conservando las condiciones históricas de las cuotas ya generadas cuando posteriormente se modifique la configuración.
+
+*Nota de actualización: esta propuesta preveía originalmente la posibilidad de "uno o más vencimientos" por período. Tras la revisión de la 2ª Entrega, el equipo consensuó dejar una única fecha de vencimiento por período, por simplificar el esquema y facilitar el cálculo del interés por mora (ver discusión y acuerdo en los [Issues #5](https://github.com/Marigi84/rojas-fc-gestion/issues/5) y [#6](https://github.com/Marigi84/rojas-fc-gestion/issues/6), y la regla [RN-19](docs/reglas-negocio/reglas-de-negocio.md) / [RF-23](docs/requisitos/requisitos-funcionales.md)). El texto de esta sección se actualizó para reflejar esa decisión.*
 
 Al registrarse y confirmarse un pago, el sistema actualizará la situación administrativa correspondiente y permitirá generar un recibo digital que podrá almacenarse, consultarse, imprimirse o compartirse.
 
