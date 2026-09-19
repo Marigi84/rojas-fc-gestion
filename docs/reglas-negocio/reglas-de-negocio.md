@@ -8,7 +8,7 @@ Las reglas fueron definidas a partir de la Primera Entrega aprobada y del análi
 
 Cada regla expresa una condición propia del dominio de la escuela y se mantiene separada de los requisitos funcionales, requisitos no funcionales y decisiones técnicas de implementación.
 
-Las reglas identificadas con 🟡 requieren revisión y consenso explícito del equipo debido a que refinan o modifican aspectos planteados en la Primera Entrega.
+La versión actual incorpora las decisiones consensuadas por el equipo durante la revisión de los Issues correspondientes.
 
 ---
 
@@ -84,10 +84,8 @@ Las cuotas mensuales deberán generarse utilizando el valor general vigente para
 ### RN-18 – Importe particular por alumno
 Un alumno podrá tener un importe de cuota diferente del valor general cuando exista una condición particular definida por la administración.
 
-### RN-19 – Vencimiento de la cuota 🟡
+### RN-19 – Vencimiento de la cuota
 Cada período tendrá una única fecha de vencimiento definida por la administración.
-
-> **Decisión pendiente de consenso:** esta regla simplifica lo expresado en la Primera Entrega, donde se contemplaba la posibilidad de uno o más vencimientos.
 
 ### RN-20 – Aplicación del interés por mora
 Toda cuota que permanezca impaga después de su fecha de vencimiento deberá incorporar el interés por mora vigente.
@@ -131,99 +129,83 @@ La matrícula constituye un cobro vinculado al ingreso del alumno a la escuela.
 
 ## 8. Pagos de cuotas
 
-### RN-30 – Pago parcial de cuotas 🟡
-Una cuota mensual podrá recibir uno o más pagos parciales hasta completar el importe total adeudado.
-
-> **Decisión pendiente de consenso:** esta regla modifica lo expresado inicialmente en la Primera Entrega, donde las cuotas debían abonarse en su totalidad.
-
-### RN-31 – Imputación del pago 🟡
-Cuando un alumno posea más de una cuota pendiente, la administración podrá determinar a qué cuota o cuotas se aplicará el importe recibido.
-
-### RN-32 – Saldo pendiente 🟡
-Cuando el importe recibido no cubra completamente una cuota, la diferencia permanecerá como saldo pendiente.
-
-### RN-33 – Cancelación de la cuota 🟡
-Una cuota se considerará totalmente abonada cuando la suma de los pagos aplicados alcance el importe total adeudado correspondiente a esa cuota.
+### RN-30 – Pago total de la cuota mensual
+Cada cuota mensual deberá abonarse en su totalidad en una sola operación.
 
 ---
 
 ## 9. Pagos
 
-### RN-34 – Medios de pago admitidos
+### RN-31 – Medios de pago admitidos
 Los pagos podrán registrarse en efectivo o mediante transferencia.
 
-### RN-35 – Medio de pago opcional
+### RN-32 – Medio de pago opcional
 El registro del medio de pago podrá omitirse cuando la administración no disponga de esa información.
 
-### RN-36 – Anulación de pagos
+### RN-33 – Anulación de pagos
 Un pago registrado incorrectamente deberá anularse en lugar de eliminarse.
 
-### RN-37 – Motivo de anulación
+### RN-34 – Motivo de anulación
 Toda anulación de pago deberá registrar un motivo.
 
-### RN-38 – Conservación del historial de pagos
+### RN-35 – Conservación del historial de pagos
 Los pagos anulados deberán conservarse como parte del historial administrativo.
 
 ---
 
 ## 10. Recibos
 
-### RN-39 – Emisión de recibo
+### RN-36 – Emisión de recibo
 Todo pago confirmado deberá generar un recibo.
 
-### RN-40 – Identificación del recibo
+### RN-37 – Identificación del recibo
 Cada recibo deberá contar con un número identificatorio propio.
 
-### RN-41 – Saldo pendiente en pagos parciales 🟡
-Cuando un pago no cubra el total adeudado de una obligación, el recibo deberá informar el saldo pendiente luego de aplicar dicho pago.
+### RN-38 – Saldo pendiente en cobros extraordinarios
+Cuando un pago parcial corresponda a un cobro extraordinario por evento o indumentaria, el recibo deberá informar el saldo pendiente luego de aplicar dicho pago.
 
-### RN-42 – Conservación de recibos anulados
+### RN-39 – Conservación de recibos anulados
 Cuando se anule un pago que posea un recibo emitido, dicho recibo deberá conservarse identificado como anulado.
 
 ---
 
 ## 11. Cobros extraordinarios
 
-### RN-43 – Asociación del cobro extraordinario
+### RN-40 – Asociación del cobro extraordinario
 Todo cobro extraordinario deberá estar asociado a un alumno y a un concepto determinado.
 
-### RN-44 – Pagos parciales en cobros extraordinarios
+### RN-41 – Pagos parciales en cobros extraordinarios
 Los cobros correspondientes a eventos o indumentaria podrán recibir uno o más pagos parciales.
 
-### RN-45 – Conservación del saldo
+### RN-42 – Conservación del saldo
 Cuando un cobro extraordinario no haya sido abonado en su totalidad, deberá conservarse el saldo pendiente.
 
-### RN-46 – Datos de indumentaria
+### RN-43 – Datos de indumentaria
 Cuando el cobro extraordinario corresponda a indumentaria, deberá identificarse al menos el tipo de prenda y el talle solicitado.
 
-### RN-47 – Interés en cobros extraordinarios
+### RN-44 – Interés en cobros extraordinarios
 Los cobros extraordinarios correspondientes a eventos o indumentaria no estarán sujetos al interés por mora definido para las cuotas mensuales.
 
 ---
 
 ## 12. Preinscripción y obligaciones económicas
 
-### RN-48 – Inicio de obligaciones económicas
+### RN-45 – Inicio de obligaciones económicas
 Una preinscripción no generará cuotas ni otras obligaciones económicas hasta que el alumno haya sido dado de alta de manera definitiva.
 
 ---
 
-## Decisiones pendientes de consenso del equipo
+## Decisiones consensuadas durante la revisión
 
-Antes de considerar este documento definitivo, deberán revisarse especialmente las siguientes decisiones:
-
-1. **RN-19 – Vencimiento de cuotas:** utilizar una única fecha de vencimiento por período.
-2. **RN-30 – Pagos parciales de cuotas:** permitir pagos parciales de cuotas mensuales.
-3. **RN-31 – Imputación de pagos:** permitir que la administración determine cómo distribuir un pago entre cuotas pendientes.
-4. **RN-32 y RN-33 – Saldo y cancelación:** conservar el saldo pendiente hasta completar el importe total de la cuota.
-5. **RN-41 – Recibos parciales:** informar en el recibo el saldo pendiente luego de aplicar un pago parcial.
+1. Cada período tendrá una única fecha de vencimiento.
+2. Las cuotas mensuales deberán abonarse en su totalidad; no se habilitarán pagos parciales de cuotas.
+3. Los pagos parciales quedarán limitados a eventos e indumentaria.
+4. Los recibos correspondientes a pagos parciales de cobros extraordinarios deberán informar el saldo pendiente.
 
 ---
 
 ## Estado del documento
 
-**Estado:** En revisión por el equipo.
+**Estado:** Actualizado tras la revisión del equipo. Pendiente de verificación final por los integrantes.
 
-Las reglas identificadas con 🟡 deberán contar con consenso de Marina, Silvia y Alex antes de considerar consolidada la versión definitiva.
-
-Una vez aprobadas las reglas de negocio, este documento podrá utilizarse junto con los requisitos funcionales y no funcionales como base para la definición de módulos y el posterior modelado de entidades y relaciones.
+Una vez verificada esta versión, podrá utilizarse junto con los requisitos funcionales y no funcionales como base para la definición de módulos y el posterior modelado de entidades y relaciones.
