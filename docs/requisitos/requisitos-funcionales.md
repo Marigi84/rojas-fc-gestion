@@ -6,7 +6,7 @@ Este documento reúne los requisitos funcionales consolidados del Sistema de Ges
 
 La definición se realizó tomando como base la Primera Entrega aprobada del Trabajo Final Integrador y el análisis posterior de las necesidades reales de la escuela.
 
-Los requisitos identificados con 🟡 representan decisiones que requieren revisión y consenso explícito del equipo por modificar o refinar aspectos planteados en la Primera Entrega.
+La versión actual incorpora las decisiones consensuadas por el equipo durante la revisión de los Issues correspondientes.
 
 ---
 
@@ -14,6 +14,8 @@ Los requisitos identificados con 🟡 representan decisiones que requieren revis
 
 ### RF-01 – Registrar alumno
 El sistema deberá permitir al Administrador/Coordinador registrar directamente un alumno ingresando nombre, apellido, DNI, fecha de nacimiento, domicilio, barrio, localidad y colegio, sin requerir una preinscripción previa.
+
+Si el DNI ya corresponde a un alumno registrado, el sistema no deberá crear un nuevo alumno. Si el registro existente se encuentra inactivo, deberá utilizarse para su eventual reactivación.
 
 ### RF-02 – Consultar alumno
 El sistema deberá permitir al Administrador/Coordinador consultar los datos registrados y el historial de un alumno.
@@ -100,6 +102,8 @@ El formulario deberá contemplar:
 
 El formulario podrá incluir un segundo responsable de manera opcional, con los mismos datos.
 
+Si el DNI ingresado corresponde a un alumno ya registrado, la preinscripción no deberá generar un nuevo registro de alumno. Si el alumno se encuentra inactivo, su registro existente deberá poder utilizarse para una eventual reactivación.
+
 ### RF-18 – Consultar preinscripciones
 El sistema deberá permitir al Administrador/Coordinador consultar los formularios de preinscripción recibidos y la información contenida en ellos.
 
@@ -119,10 +123,8 @@ El sistema deberá permitir al Administrador/Coordinador establecer y modificar 
 ### RF-22 – Generar cuotas mensuales
 El sistema deberá generar automáticamente las cuotas mensuales correspondientes a los alumnos activos.
 
-### RF-23 – Establecer vencimiento 🟡
-El sistema deberá permitir al Administrador/Coordinador establecer una fecha de vencimiento para las cuotas de cada período.
-
-> **Decisión pendiente de consenso:** utilizar un único vencimiento por período en lugar de los posibles múltiples vencimientos contemplados inicialmente en la Primera Entrega.
+### RF-23 – Establecer vencimiento
+El sistema deberá permitir al Administrador/Coordinador establecer una única fecha de vencimiento para las cuotas de cada período.
 
 ### RF-24 – Establecer importe particular para un alumno
 El sistema deberá permitir al Administrador/Coordinador establecer un importe de cuota diferente del valor general para un alumno determinado.
@@ -155,10 +157,8 @@ El sistema deberá permitir al Administrador/Coordinador registrar el cobro corr
 ### RF-32 – Registrar pago
 El sistema deberá permitir al Administrador/Coordinador registrar un importe recibido de un alumno indicando la fecha y, opcionalmente, el medio de pago utilizado, contemplando efectivo y transferencia.
 
-### RF-33 – Imputar pagos a cuotas pendientes 🟡
-El sistema deberá permitir al Administrador/Coordinador determinar a qué cuota o cuotas pendientes se aplicará el importe recibido y cuánto se aplicará a cada una.
-
-> **Decisión pendiente de consenso:** este requisito permite pagos parciales de cuotas mensuales y modifica lo expresado inicialmente en la Primera Entrega, donde las cuotas debían abonarse en su totalidad.
+### RF-33 – Registrar pago de cuota pendiente
+El sistema deberá permitir al Administrador/Coordinador asociar el pago de una cuota mensual pendiente al período correspondiente, requiriendo el abono total del importe adeudado de esa cuota.
 
 ### RF-34 – Consultar historial de pagos
 El sistema deberá permitir al Administrador/Coordinador consultar los pagos registrados para un alumno, incluyendo fecha, importe, obligaciones a las que fueron aplicados y medio de pago cuando haya sido informado.
@@ -178,10 +178,9 @@ El sistema deberá generar automáticamente un recibo por cada pago confirmado, 
 - fecha;
 - concepto;
 - importe abonado;
-- medio de pago, cuando haya sido informado;
-- saldo pendiente de la obligación luego de aplicar el pago.
+- medio de pago, cuando haya sido informado.
 
-Cuando el pago no cubra el total pendiente de la obligación, el recibo deberá reflejar claramente el saldo restante.
+Cuando el pago corresponda a un cobro extraordinario abonado parcialmente, el recibo deberá informar además el saldo pendiente luego de aplicar dicho pago.
 
 ### RF-37 – Consultar recibos
 El sistema deberá permitir al Administrador/Coordinador consultar los recibos emitidos y su vinculación con los pagos correspondientes.
@@ -296,19 +295,18 @@ El sistema deberá generar el recibo correspondiente una vez que el pago registr
 
 ---
 
-## Decisiones pendientes de consenso del equipo
+## Decisiones consensuadas durante la revisión
 
-Antes de considerar esta versión como definitiva, deberán revisarse específicamente los siguientes puntos:
-
-1. **RF-23 – Vencimiento de cuotas:** utilizar un único vencimiento por período.
-2. **RF-33 – Pagos parciales de cuotas:** permitir que un pago se aplique total o parcialmente a una o más cuotas pendientes.
-3. Confirmar que los recibos correspondientes a pagos parciales informen el saldo pendiente luego de cada pago.
-4. Confirmar que el funcionamiento sin conexión se limite a la consulta de información básica previamente disponible y al registro provisional de pagos.
+1. Se utilizará una única fecha de vencimiento por período.
+2. Las cuotas mensuales deberán abonarse en su totalidad; no se habilitarán pagos parciales de cuotas.
+3. Los pagos parciales quedarán limitados a cobros extraordinarios correspondientes a eventos e indumentaria.
+4. Los recibos de pagos parciales de cobros extraordinarios deberán informar el saldo pendiente.
+5. La existencia previa de un DNI no deberá generar un alumno duplicado; si corresponde a un alumno inactivo, se reutilizará su registro para una eventual reactivación.
 
 ---
 
 ## Estado del documento
 
-**Estado:** En revisión por el equipo.
+**Estado:** Actualizado tras la revisión del equipo. Pendiente de verificación final por los integrantes.
 
-Esta versión no deberá utilizarse todavía como base definitiva para el diseño de módulos, entidades o base de datos hasta completar la revisión y alcanzar consenso entre los integrantes del proyecto.
+Una vez verificada esta versión, podrá utilizarse junto con los requisitos no funcionales y las reglas de negocio como base para las siguientes etapas del proyecto.
