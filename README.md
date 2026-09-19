@@ -235,8 +235,11 @@ rojas-fc-gestion/
 ## Documentación de las entregas
 
 - [`docs/1ra Entrega - Propuesta de Proyecto.md`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.md) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
-- [`docs/2da Entrega - Diseño y Modulos.md`](docs/2da%20Entrega%20-%20Diseño%20y%20Modulos.md) — Esquema de base de datos (diagrama entidad-relación) y listado de módulos.
-- [`docs/2da Entrega - Reglas de Negocio.md`](docs/2da%20Entrega%20-%20Reglas%20de%20Negocio.md) — Reglas de negocio que sustentan el diseño de la 2ª Entrega.
+- [`docs/requisitos/requisitos-funcionales.md`](docs/requisitos/requisitos-funcionales.md) — Requisitos funcionales consolidados.
+- [`docs/requisitos/requisitos-no-funcionales.md`](docs/requisitos/requisitos-no-funcionales.md) — Requisitos no funcionales consolidados.
+- [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
+- [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
+- [`docs/2da Entrega - Diseño y Modulos.md`](docs/2da%20Entrega%20-%20Diseño%20y%20Modulos.md) — Esquema de base de datos (diagrama entidad-relación).
 - [`database/schema.sql`](database/schema.sql) — Script DDL completo del esquema relacional (MySQL).
 
 ## Estado del proyecto
