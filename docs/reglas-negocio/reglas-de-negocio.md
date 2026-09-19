@@ -14,14 +14,15 @@ La versión actual incorpora las decisiones consensuadas por el equipo durante l
 
 ## 1. Alumnos
 
-### RN-01 – Identificación del alumno
-Todo alumno deberá contar con un número de DNI para realizar su inscripción.
+### RN-01 – Identificación y vinculación inicial del alumno:
+
+«Todo alumno deberá contar con un número de DNI y tener asociado al menos un responsable para formalizar su inscripción en la institución.
 
 ### RN-02 – Unicidad del alumno
 Un mismo alumno no podrá registrarse más de una vez.
 
 ### RN-03 – Reincorporación de alumno
-Cuando un alumno previamente dado de baja regrese a la escuela, deberá reactivarse su registro existente en lugar de generarse uno nuevo.
+El reingreso de un alumno inactivo reactiva su legajo histórico, conservando sus antecedentes y trayectoria institucional.
 
 ### RN-04 – Conservación del historial
 La baja de un alumno no deberá eliminar la información ni el historial generado durante su permanencia en la escuela.
@@ -37,10 +38,10 @@ Cada alumno podrá tener asociados como máximo dos responsables.
 Los responsables asociados a un alumno tendrán la misma jerarquía.
 
 ### RN-07 – Responsable de varios alumnos
-Un mismo responsable podrá estar asociado a más de un alumno.
+Un mismo adulto puede figurar como responsable de más de un alumno.
 
 ### RN-08 – Unicidad del responsable
-Cuando una persona ya registrada como responsable deba asociarse a otro alumno, deberá reutilizarse su registro existente en lugar de crear uno nuevo.
+Un adulto responsable ya registrado reutiliza su legajo institucional al vincularse con un nuevo alumno, evitando registros duplicados.
 
 ### RN-09 – Vínculo del responsable
 Todo responsable asociado a un alumno deberá identificarse mediante su vínculo con este, contemplando madre, padre o tutor.
@@ -50,7 +51,7 @@ Todo responsable asociado a un alumno deberá identificarse mediante su vínculo
 ## 3. Categorías
 
 ### RN-10 – Determinación de categoría
-La categoría de un alumno estará determinada por su año de nacimiento.
+La categoría asignada al alumno está determinada por su año de nacimiento, de acuerdo con los rangos definidos por la administración.
 
 ---
 
@@ -76,7 +77,7 @@ Los datos recibidos mediante una preinscripción deberán ser revisados antes de
 Las cuotas mensuales deberán generarse para los alumnos que se encuentren activos al momento de la generación correspondiente.
 
 ### RN-16 – Momento de generación
-Las cuotas mensuales deberán generarse el día 1 de cada mes.
+El período arancelario mensual comprende desde el primer día hasta el último día de cada mes calendario.
 
 ### RN-17 – Valor general vigente
 Las cuotas mensuales deberán generarse utilizando el valor general vigente para el período correspondiente.
