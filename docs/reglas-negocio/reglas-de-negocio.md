@@ -77,7 +77,7 @@ Los datos recibidos mediante una preinscripción deberán ser revisados antes de
 Las cuotas mensuales deberán generarse para los alumnos que se encuentren activos al momento de la generación correspondiente.
 
 ### RN-16 – Momento de generación
-Las cuotas se computan el día 1 de cada mes.
+Las cuotas se generan el día 1 de cada mes.
 
 ### RN-17 – Valor general vigente
 Las cuotas mensuales deberán generarse utilizando el valor general vigente para el período correspondiente.
