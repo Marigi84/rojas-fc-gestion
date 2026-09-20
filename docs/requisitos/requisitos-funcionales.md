@@ -307,6 +307,6 @@ El sistema deberá generar el recibo correspondiente una vez que el pago registr
 
 ## Estado del documento
 
-**Estado:** Actualizado tras la revisión del equipo. Pendiente de verificación final por los integrantes.
+**Estado:** Verificado por el equipo.
 
-Una vez verificada esta versión, podrá utilizarse junto con los requisitos no funcionales y las reglas de negocio como base para las siguientes etapas del proyecto.
+Esta versión puede utilizarse junto con los requisitos no funcionales y las reglas de negocio como base para las siguientes etapas del proyecto.
