@@ -16,7 +16,7 @@ La versión actual incorpora las decisiones consensuadas por el equipo durante l
 
 ### RN-01 – Identificación y vinculación inicial del alumno:
 
-«Todo alumno deberá contar con un número de DNI y tener asociado al menos un responsable para formalizar su inscripción en la institución.
+Todo alumno deberá contar con un número de DNI y tener asociado al menos un responsable para formalizar su inscripción en la institución.
 
 ### RN-02 – Unicidad del alumno
 Un mismo alumno no podrá registrarse más de una vez.
