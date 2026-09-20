@@ -103,6 +103,6 @@ Se consideran una mejora futura recomendable para la etapa de operación real de
 
 ## Estado del documento
 
-**Estado:** En revisión por el equipo.
+**Estado:** Verificado por el equipo.
 
-Esta versión deberá ser revisada por Marina, Silvia y Alex antes de considerarse definitiva y utilizarse como base para las siguientes etapas del proyecto.
+Esta versión puede utilizarse como base para las siguientes etapas del proyecto.
