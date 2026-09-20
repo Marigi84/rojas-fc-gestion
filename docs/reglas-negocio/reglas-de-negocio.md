@@ -51,7 +51,7 @@ Todo responsable asociado a un alumno deberá identificarse mediante su vínculo
 ## 3. Categorías
 
 ### RN-10 – Determinación de categoría
-La categoría asignada al alumno está determinada por su año de nacimiento, de acuerdo con los rangos definidos por la administración.
+La categoría asignada al alumno está determinada por su año de nacimiento.
 
 ---
 
@@ -77,7 +77,7 @@ Los datos recibidos mediante una preinscripción deberán ser revisados antes de
 Las cuotas mensuales deberán generarse para los alumnos que se encuentren activos al momento de la generación correspondiente.
 
 ### RN-16 – Momento de generación
-El período arancelario mensual comprende desde el primer día hasta el último día de cada mes calendario.
+Las cuotas se computan el día 1 de cada mes.
 
 ### RN-17 – Valor general vigente
 Las cuotas mensuales deberán generarse utilizando el valor general vigente para el período correspondiente.
