@@ -207,6 +207,6 @@ Una preinscripción no generará cuotas ni otras obligaciones económicas hasta 
 
 ## Estado del documento
 
-**Estado:** Actualizado tras la revisión del equipo. Pendiente de verificación final por los integrantes.
+**Estado:** Verificado por el equipo.
 
-Una vez verificada esta versión, podrá utilizarse junto con los requisitos funcionales y no funcionales como base para la definición de módulos y el posterior modelado de entidades y relaciones.
+Esta versión puede utilizarse junto con los requisitos funcionales y no funcionales como base para la definición de módulos y el posterior modelado de entidades y relaciones.
