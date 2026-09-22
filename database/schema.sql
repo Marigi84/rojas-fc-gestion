@@ -121,19 +121,19 @@ CREATE TABLE usuario (
 -- texto libre: ningún RN pide normalizarlos en catálogos propios.
 -- ------------------------------------------------------------
 CREATE TABLE alumno (
-  id                 INT AUTO_INCREMENT PRIMARY KEY,
-  nombre             VARCHAR(100) NOT NULL,
-  apellido           VARCHAR(100) NOT NULL,
-  dni                VARCHAR(20)  NOT NULL UNIQUE,
-  fecha_nacimiento   DATE         NOT NULL,
+  id                 INT           AUTO_INCREMENT PRIMARY KEY,
+  nombre             VARCHAR(100)  NOT NULL,
+  apellido           VARCHAR(100)  NOT NULL,
+  dni                VARCHAR(20)   NOT NULL UNIQUE,
+  fecha_nacimiento   DATE          NOT NULL,
   domicilio          VARCHAR(255),
   barrio             VARCHAR(100),
   localidad          VARCHAR(100),
-  colegio             VARCHAR(150),
-  categoria_id       INT          NOT NULL,
-  activo             BOOLEAN      NOT NULL DEFAULT TRUE,   -- baja lógica (RN-04)
-  fecha_alta         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- alta/reactivacion mas reciente
-  fecha_baja         DATETIME     NULL,                                -- baja mas reciente
+  colegio            VARCHAR(150),
+  categoria_id       INT           NOT NULL,
+  activo             BOOLEAN       NOT NULL DEFAULT TRUE,   -- baja lógica (RN-04)
+  fecha_alta         DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- alta/reactivacion mas reciente
+  fecha_baja         DATETIME      NULL,                                -- baja mas reciente
   CONSTRAINT fk_alumno_categoria FOREIGN KEY (categoria_id) REFERENCES categoria(id)
 );
 
@@ -205,30 +205,30 @@ DELIMITER ;
 -- segundo responsable es opcional (RN-12); su vínculo también.
 -- ------------------------------------------------------------
 CREATE TABLE preinscripcion (
-  id                          INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_alumno               VARCHAR(100) NOT NULL,
-  apellido_alumno              VARCHAR(100) NOT NULL,
-  dni_alumno                  VARCHAR(20)  NOT NULL,
-  fecha_nacimiento_alumno     DATE         NOT NULL,
-  domicilio_alumno            VARCHAR(255),
-  barrio_alumno                VARCHAR(100),
-  localidad_alumno            VARCHAR(100),
-  colegio_alumno               VARCHAR(150),
-  nombre_responsable          VARCHAR(100) NOT NULL,
-  apellido_responsable        VARCHAR(100) NOT NULL,
-  dni_responsable              VARCHAR(20)  NOT NULL,
-  telefono_responsable        VARCHAR(30)  NOT NULL,
-  vinculo_responsable          ENUM('MADRE', 'PADRE', 'TUTOR') NOT NULL,
-  nombre_responsable_2         VARCHAR(100) NULL,
-  apellido_responsable_2       VARCHAR(100) NULL,
-  dni_responsable_2            VARCHAR(20)  NULL,
-  telefono_responsable_2       VARCHAR(30)  NULL,
-  vinculo_responsable_2        ENUM('MADRE', 'PADRE', 'TUTOR') NULL,
-  estado                       ENUM('PENDIENTE', 'APROBADA', 'RECHAZADA') NOT NULL DEFAULT 'PENDIENTE',
-  fecha_solicitud              DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  usuario_revisor_id           INT          NULL,
-  fecha_revision               DATETIME     NULL,
-  alumno_id                    INT          NULL,  -- se completa al aprobarse
+  id                        INT           AUTO_INCREMENT PRIMARY KEY,
+  nombre_alumno             VARCHAR(100)  NOT NULL,
+  apellido_alumno           VARCHAR(100)  NOT NULL,
+  dni_alumno                VARCHAR(20)   NOT NULL,
+  fecha_nacimiento_alumno   DATE          NOT NULL,
+  domicilio_alumno          VARCHAR(255),
+  barrio_alumno             VARCHAR(100),
+  localidad_alumno          VARCHAR(100),
+  colegio_alumno            VARCHAR(150),
+  nombre_responsable        VARCHAR(100)  NOT NULL,
+  apellido_responsable      VARCHAR(100)  NOT NULL,
+  dni_responsable           VARCHAR(20)   NOT NULL,
+  telefono_responsable      VARCHAR(30)   NOT NULL,
+  vinculo_responsable       ENUM('MADRE', 'PADRE', 'TUTOR') NOT NULL,
+  nombre_responsable_2      VARCHAR(100)  NULL,
+  apellido_responsable_2    VARCHAR(100)  NULL,
+  dni_responsable_2         VARCHAR(20)   NULL,
+  telefono_responsable_2    VARCHAR(30)   NULL,
+  vinculo_responsable_2     ENUM('MADRE', 'PADRE', 'TUTOR') NULL,
+  estado                    ENUM('PENDIENTE', 'APROBADA', 'RECHAZADA') NOT NULL DEFAULT 'PENDIENTE',
+  fecha_solicitud           DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  usuario_revisor_id        INT           NULL,
+  fecha_revision            DATETIME      NULL,
+  alumno_id                 INT           NULL,  -- se completa al aprobarse
   CONSTRAINT fk_pre_usuario FOREIGN KEY (usuario_revisor_id) REFERENCES usuario(id),
   CONSTRAINT fk_pre_alumno  FOREIGN KEY (alumno_id)          REFERENCES alumno(id),
   CONSTRAINT uq_pre_alumno  UNIQUE (alumno_id)
@@ -340,13 +340,13 @@ CREATE TABLE pago (
   cobro_extraordinario_id INT           NULL,
   monto                   DECIMAL(10,2) NOT NULL,
   medio_pago              ENUM('EFECTIVO', 'TRANSFERENCIA') NULL,
-  fecha_pago               DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  usuario_id               INT           NOT NULL,
-  anulado                  BOOLEAN       NOT NULL DEFAULT FALSE,
-  motivo_anulacion         VARCHAR(255)  NULL,
-  fecha_anulacion           DATETIME      NULL,
-  usuario_anulador_id      INT           NULL,
-  cuota_id_activo INT AS (CASE WHEN anulado = FALSE THEN cuota_id ELSE NULL END) STORED,
+  fecha_pago              DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  usuario_id              INT           NOT NULL,
+  anulado                 BOOLEAN       NOT NULL DEFAULT FALSE,
+  motivo_anulacion        VARCHAR(255)  NULL,
+  fecha_anulacion         DATETIME      NULL,
+  usuario_anulador_id     INT           NULL,
+  cuota_id_activo         INT AS (CASE WHEN anulado = FALSE THEN cuota_id ELSE NULL END) STORED,
   CONSTRAINT fk_pago_cuota      FOREIGN KEY (cuota_id)                REFERENCES cuota(id),
   CONSTRAINT fk_pago_coex       FOREIGN KEY (cobro_extraordinario_id) REFERENCES cobro_extraordinario(id),
   CONSTRAINT fk_pago_usuario    FOREIGN KEY (usuario_id)              REFERENCES usuario(id),
@@ -369,13 +369,13 @@ CREATE TABLE pago (
 -- el resto de los casos.
 -- ------------------------------------------------------------
 CREATE TABLE recibo (
-  id                          INT          AUTO_INCREMENT PRIMARY KEY,
-  pago_id                     INT          NOT NULL UNIQUE,
-  numero                      VARCHAR(30)  NOT NULL UNIQUE,
-  fecha_emision                DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  saldo_pendiente_informado    DECIMAL(10,2) NULL,
-  archivo_url                  VARCHAR(255),
-  anulado                      BOOLEAN      NOT NULL DEFAULT FALSE,  -- RN-39
+  id                         INT           AUTO_INCREMENT PRIMARY KEY,
+  pago_id                    INT           NOT NULL UNIQUE,
+  numero                     VARCHAR(30)   NOT NULL UNIQUE,
+  fecha_emision              DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  saldo_pendiente_informado  DECIMAL(10,2) NULL,
+  archivo_url                VARCHAR(255),
+  anulado                    BOOLEAN       NOT NULL DEFAULT FALSE,  -- RN-39
   CONSTRAINT fk_recibo_pago FOREIGN KEY (pago_id) REFERENCES pago(id)
 );
 
@@ -387,22 +387,22 @@ CREATE TABLE recibo (
 -- porque cada pago sincronizado proviene de una única constancia.
 -- ------------------------------------------------------------
 CREATE TABLE constancia_offline (
-  id                        INT           AUTO_INCREMENT PRIMARY KEY,
-  alumno_id                 INT           NOT NULL,
-  cuota_id                  INT           NULL,
-  cobro_extraordinario_id   INT           NULL,
-  importe                   DECIMAL(10,2) NOT NULL,
-  medio_pago                 ENUM('EFECTIVO', 'TRANSFERENCIA') NULL,
-  fecha_hora_registro        DATETIME      NOT NULL,
-  estado                     ENUM('PENDIENTE_SINCRONIZACION', 'SINCRONIZADA', 'CONFLICTO') NOT NULL DEFAULT 'PENDIENTE_SINCRONIZACION',
-  pago_id                    INT           NULL,
-  observacion_conflicto       TEXT          NULL,
-  usuario_id                 INT           NOT NULL,
+  id                       INT           AUTO_INCREMENT PRIMARY KEY,
+  alumno_id                INT           NOT NULL,
+  cuota_id                 INT           NULL,
+  cobro_extraordinario_id  INT           NULL,
+  importe                  DECIMAL(10,2) NOT NULL,
+  medio_pago               ENUM('EFECTIVO', 'TRANSFERENCIA') NULL,
+  fecha_hora_registro      DATETIME      NOT NULL,
+  estado                   ENUM('PENDIENTE_SINCRONIZACION', 'SINCRONIZADA', 'CONFLICTO') NOT NULL DEFAULT 'PENDIENTE_SINCRONIZACION',
+  pago_id                  INT           NULL,
+  observacion_conflicto    TEXT          NULL,
+  usuario_id               INT           NOT NULL,
   CONSTRAINT fk_co_alumno   FOREIGN KEY (alumno_id)               REFERENCES alumno(id),
   CONSTRAINT fk_co_cuota    FOREIGN KEY (cuota_id)                REFERENCES cuota(id),
   CONSTRAINT fk_co_coex     FOREIGN KEY (cobro_extraordinario_id) REFERENCES cobro_extraordinario(id),
   CONSTRAINT fk_co_pago     FOREIGN KEY (pago_id)                 REFERENCES pago(id),
-  CONSTRAINT fk_co_usuario  FOREIGN KEY (usuario_id)               REFERENCES usuario(id),
+  CONSTRAINT fk_co_usuario  FOREIGN KEY (usuario_id)              REFERENCES usuario(id),
   CONSTRAINT uq_co_pago     UNIQUE (pago_id),
   CONSTRAINT chk_co_un_concepto CHECK (
     (cuota_id IS NOT NULL) + (cobro_extraordinario_id IS NOT NULL) = 1
