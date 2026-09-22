@@ -18,6 +18,7 @@ erDiagram
   ALUMNO ||--o{ ALUMNO_RESPONSABLE : tiene
   ALUMNO o|--o| PREINSCRIPCION : origina
   USUARIO o|--o{ PREINSCRIPCION : revisa
+  ALUMNO ||--o{ ALUMNO_MOVIMIENTO : registra
   ALUMNO ||--o{ CUOTA : genera
   ALUMNO ||--o{ COBRO_EXTRAORDINARIO : registra
   CUOTA o|--o{ PAGO : recibe
@@ -66,6 +67,12 @@ erDiagram
     int alumno_id FK
     int responsable_id FK
     string vinculo
+  }
+  ALUMNO_MOVIMIENTO {
+    int id PK
+    int alumno_id FK
+    string tipo
+    date fecha
   }
   PREINSCRIPCION {
     int id PK
@@ -132,6 +139,7 @@ erDiagram
 - **`cobro_extraordinario` unifica evento, indumentaria y matrícula:** una sola tabla con `tipo` (`EVENTO`/`INDUMENTARIA`/`MATRICULA`) en vez de tablas separadas. Ningún RF pide un catálogo reutilizable de eventos — solo registrar y consultar el cobro asociado a un alumno con su concepto — y la matrícula (RN-29) tiene exactamente la misma forma (cobro puntual, importe, saldo), así que se modela ahí en vez de en su propia tabla.
 - **Máximo 2 responsables por alumno (RN-05):** `alumno_responsable` tiene un trigger en `INSERT` y otro en `UPDATE` que rechazan el tercer responsable (el de `UPDATE` cubre el caso de reasignar una fila existente a otro alumno). `vinculo` (madre/padre/tutor) es obligatorio por RN-09; no hay jerarquía entre responsables (RN-06), por eso no hay un flag de "principal".
 - **Cuotas sin pago parcial (RN-30):** `cuota` no tiene `saldo_pendiente`, a diferencia de `cobro_extraordinario`, que sí admite pagos parciales (RN-41) y por eso lo tiene.
+- **Una sola cuota, un solo pago válido:** `pago.cuota_id_activo` (columna generada, `NULL` cuando `anulado = TRUE`) tiene `UNIQUE`, así que no puede haber dos pagos no anulados para la misma cuota — sí pueden convivir varios pagos anulados históricos para esa cuota, como ya contempla el modelo Cuota–Pago.
 - **Cuota pagada, protegida (RN-25):** un trigger rechaza modificar el `importe` de una cuota cuyo estado ya es `PAGADA`.
 - **`medio_pago` opcional (RN-32):** no es obligatorio — se puede omitir cuando la administración no dispone de ese dato.
 - **Anulación exige motivo (RN-34):** `pago.motivo_anulacion` es obligatorio cuando `anulado = TRUE`, validado con `CHECK`.
@@ -139,5 +147,14 @@ erDiagram
 - **Categorías sin solapamiento:** dos triggers (`BEFORE INSERT`/`BEFORE UPDATE` sobre `categoria`) rechazan un rango de año que se superponga con el de otra categoría existente — un `CHECK` no puede comparar contra otras filas de la misma tabla.
 - **Pagos con concepto único:** `pago` y `constancia_offline` referencian exactamente un concepto (`cuota` o `cobro_extraordinario`) mediante `CHECK`.
 - **Baja lógica de alumnos:** `alumno.activo` + `fecha_baja`, en vez de eliminar filas, así se conserva el historial de cuotas y pagos.
+- **Historial de altas y bajas (RF-51):** `alumno.fecha_alta`/`fecha_baja` solo guardan el movimiento más reciente. `alumno_movimiento` registra cada transición por separado, para poder responder correctamente si un alumno se dio de baja y reingresó más de una vez (RN-03). La reactivación se registra como un evento `ALTA` más sobre el mismo `alumno_id`, no como un tipo aparte. Queda a cargo de la aplicación insertar la fila correspondiente junto con el cambio de `alumno.activo`, en la misma operación — no hay trigger automático, para evitar registrar movimientos por actualizaciones que no son altas/bajas reales.
 - **Sin módulo de auditoría, con tabla de auditoría:** `auditoria` existe para dar soporte a RNF-12 (trazabilidad), aunque no hay un módulo funcional propio con pantalla.
 - **Requisito de motor:** MySQL 8.0.16 o superior — los `CHECK` no se validan en versiones anteriores. Los triggers usan el meta-comando `DELIMITER`, propio del cliente `mysql`: si el script se ejecuta vía JDBC en modo batch hay que crearlos aparte.
+
+### Diferencia con la versión anterior de este DER
+
+Único cambio respecto a la versión previa: se agrega `alumno_movimiento` (14 tablas en vez de 13). El resto del modelo —incluida la decisión de mantener `usuario` y `responsable` como tablas separadas en vez de unificarlas, y `constancia_offline` como tabla propia— se revisó contra la propuesta conceptual de entidades (`docs/entidades-relaciones-cardinalidad/entidades-relaciones-cardinalidad.md`, issue #11) y se mantiene sin cambios; el detalle de esa revisión está en los comentarios del issue #11, no repetido acá.
+
+### No duplicidad de alumnos y responsables
+
+`alumno.dni` y `responsable.dni` son `UNIQUE` — la base rechaza un segundo registro con el mismo DNI en cualquiera de las dos tablas, sin importar por qué camino se intente crear (alta directa o preinscripción aprobada).

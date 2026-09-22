@@ -116,12 +116,30 @@ CREATE TABLE alumno (
   domicilio          VARCHAR(255),
   barrio             VARCHAR(100),
   localidad          VARCHAR(100),
-  colegio            VARCHAR(150),
+  colegio             VARCHAR(150),
   categoria_id       INT          NOT NULL,
   activo             BOOLEAN      NOT NULL DEFAULT TRUE,   -- baja lógica (RN-04)
-  fecha_alta         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  fecha_baja         DATETIME     NULL,
+  fecha_alta         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- alta/reactivacion mas reciente
+  fecha_baja         DATETIME     NULL,                                -- baja mas reciente
   CONSTRAINT fk_alumno_categoria FOREIGN KEY (categoria_id) REFERENCES categoria(id)
+);
+
+-- ------------------------------------------------------------
+-- Historial de altas y bajas (RF-51: consultar altas y bajas por
+-- período). fecha_alta/fecha_baja en `alumno` solo guardan el
+-- movimiento mas reciente; un alumno que se dio de baja y
+-- reingreso mas de una vez (RN-03) pierde esa informacion si solo
+-- se consulta `alumno`. Esta tabla registra cada transicion por
+-- separado para poder reconstruir el historial completo. La
+-- reactivacion (RN-03) se registra como un evento mas de tipo
+-- ALTA sobre el mismo alumno_id, no como un tipo aparte.
+-- ------------------------------------------------------------
+CREATE TABLE alumno_movimiento (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  alumno_id   INT      NOT NULL,
+  tipo        ENUM('ALTA', 'BAJA') NOT NULL,
+  fecha       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_am_alumno FOREIGN KEY (alumno_id) REFERENCES alumno(id)
 );
 
 -- ------------------------------------------------------------
@@ -296,7 +314,12 @@ CREATE TABLE cobro_extraordinario (
 -- pago parcial de cuotas, así que cuota_id nunca convive con un
 -- saldo). medio_pago es opcional (RN-32: "podrá omitirse cuando la
 -- administración no disponga de esa información"). motivo_anulacion
--- es obligatorio al anular (RN-34).
+-- es obligatorio al anular (RN-34). cuota_id_activo es una columna
+-- generada que solo replica cuota_id cuando anulado=FALSE: al ser
+-- la única columna con UNIQUE, impide dos pagos válidos (no
+-- anulados) para la misma cuota, sin bloquear que existan varios
+-- pagos anulados históricos para esa misma cuota (mismo patrón que
+-- dni_alumno_pendiente en preinscripcion).
 -- ------------------------------------------------------------
 CREATE TABLE pago (
   id                      INT           AUTO_INCREMENT PRIMARY KEY,
@@ -310,6 +333,7 @@ CREATE TABLE pago (
   motivo_anulacion         VARCHAR(255)  NULL,
   fecha_anulacion           DATETIME      NULL,
   usuario_anulador_id      INT           NULL,
+  cuota_id_activo INT AS (CASE WHEN anulado = FALSE THEN cuota_id ELSE NULL END) STORED,
   CONSTRAINT fk_pago_cuota      FOREIGN KEY (cuota_id)                REFERENCES cuota(id),
   CONSTRAINT fk_pago_coex       FOREIGN KEY (cobro_extraordinario_id) REFERENCES cobro_extraordinario(id),
   CONSTRAINT fk_pago_usuario    FOREIGN KEY (usuario_id)              REFERENCES usuario(id),
@@ -320,7 +344,8 @@ CREATE TABLE pago (
   CONSTRAINT chk_pago_monto_positivo CHECK (monto > 0),
   CONSTRAINT chk_pago_anulacion_con_motivo CHECK (
     anulado = FALSE OR motivo_anulacion IS NOT NULL
-  )
+  ),
+  CONSTRAINT uq_pago_cuota_activo UNIQUE (cuota_id_activo)
 );
 
 -- ------------------------------------------------------------
@@ -399,3 +424,4 @@ CREATE INDEX idx_alumno_activo           ON alumno(activo);
 CREATE INDEX idx_cuota_estado            ON cuota(estado);
 CREATE INDEX idx_cuota_fecha_vencimiento ON cuota(fecha_vencimiento);
 CREATE INDEX idx_pago_fecha_pago         ON pago(fecha_pago);
+CREATE INDEX idx_am_fecha                ON alumno_movimiento(fecha);
