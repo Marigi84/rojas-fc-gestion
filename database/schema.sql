@@ -23,19 +23,19 @@ CREATE DATABASE IF NOT EXISTS rojas_fc_gestion
 USE rojas_fc_gestion;
 
 -- ------------------------------------------------------------
--- Usuarios internos (Administrador/Coordinador). RF-58/RF-59
--- tratan a ambos como un único tipo de actor, sin permisos
--- diferenciados entre sí, así que `rol` queda como dato
--- descriptivo, no como base de una autorización distinta.
+-- Responsables (RF-06 a RF-10). Entidad de dominio pura: los
+-- datos de acceso al portal (RF-11, RF-15) viven en `usuario`,
+-- no acá -- ver esa tabla más abajo y la relación Responsable-
+-- Usuario (0..1) en el diagrama. barrio, localidad, colegio y
+-- email NO se incluyen porque ningún RF los pide para responsable.
 -- ------------------------------------------------------------
-CREATE TABLE usuario (
-  id              INT AUTO_INCREMENT PRIMARY KEY,
-  nombre          VARCHAR(100)  NOT NULL,
-  email           VARCHAR(150)  NOT NULL UNIQUE,
-  password_hash   VARCHAR(255)  NOT NULL,
-  rol             ENUM('ADMINISTRADOR', 'COORDINADOR') NOT NULL DEFAULT 'COORDINADOR',
-  activo          BOOLEAN       NOT NULL DEFAULT TRUE,
-  fecha_creacion  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE responsable (
+  id                      INT AUTO_INCREMENT PRIMARY KEY,
+  nombre                  VARCHAR(100) NOT NULL,
+  apellido                VARCHAR(100) NOT NULL,
+  dni                     VARCHAR(20)  NOT NULL UNIQUE,
+  telefono                VARCHAR(30)  NOT NULL,
+  fecha_creacion          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ------------------------------------------------------------
@@ -86,20 +86,33 @@ END$$
 DELIMITER ;
 
 -- ------------------------------------------------------------
--- Responsables (RF-06 a RF-10). Tienen login propio para el
--- portal (RF-11, RF-15): el DNI funciona como nombre de usuario
--- (ya es UNIQUE) y la contraseña se guarda hasheada. barrio,
--- localidad, colegio, email y un flag de habilitación de portal
--- NO se incluyen porque ningún RF los pide para responsable.
+-- Usuario unificado (RF-58/RF-59, RNF-01): una sola identidad de
+-- acceso para los tres perfiles (ADMINISTRADOR, COORDINADOR,
+-- RESPONSABLE), en vez de credenciales separadas en `usuario` y
+-- `responsable`. Administrador/Coordinador se identifican por
+-- email (RF-58); Responsable se identifica con el DNI de su fila
+-- en `responsable` (RF-11) -- por eso no se duplica el DNI acá,
+-- se llega a él vía responsable_id. responsable_id es NULL y
+-- UNIQUE: un responsable puede no tener todavía cuenta de acceso
+-- (existe en el sistema sin haberse autenticado nunca), y cuando
+-- la tiene, es una sola. El CHECK obliga a que cada fila tenga
+-- exactamente los datos que corresponden a su rol.
 -- ------------------------------------------------------------
-CREATE TABLE responsable (
-  id                      INT AUTO_INCREMENT PRIMARY KEY,
-  nombre                  VARCHAR(100) NOT NULL,
-  apellido                VARCHAR(100) NOT NULL,
-  dni                     VARCHAR(20)  NOT NULL UNIQUE,
-  telefono                VARCHAR(30)  NOT NULL,
-  password_hash           VARCHAR(255) NULL,
-  fecha_creacion          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE usuario (
+  id              INT AUTO_INCREMENT PRIMARY KEY,
+  rol             ENUM('ADMINISTRADOR', 'COORDINADOR', 'RESPONSABLE') NOT NULL,
+  nombre          VARCHAR(100)  NULL,
+  email           VARCHAR(150)  NULL UNIQUE,
+  password_hash   VARCHAR(255)  NOT NULL,
+  activo          BOOLEAN       NOT NULL DEFAULT TRUE,
+  fecha_creacion  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  responsable_id  INT           NULL UNIQUE,
+  CONSTRAINT fk_usuario_responsable FOREIGN KEY (responsable_id) REFERENCES responsable(id),
+  CONSTRAINT chk_usuario_datos_segun_rol CHECK (
+    (rol = 'RESPONSABLE' AND responsable_id IS NOT NULL AND email IS NULL AND nombre IS NULL)
+    OR
+    (rol IN ('ADMINISTRADOR', 'COORDINADOR') AND responsable_id IS NULL AND email IS NOT NULL AND nombre IS NOT NULL)
+  )
 );
 
 -- ------------------------------------------------------------

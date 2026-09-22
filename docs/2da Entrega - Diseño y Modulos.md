@@ -16,6 +16,7 @@ erDiagram
   CATEGORIA ||--o{ ALUMNO : agrupa
   RESPONSABLE ||--o{ ALUMNO_RESPONSABLE : tiene
   ALUMNO ||--o{ ALUMNO_RESPONSABLE : tiene
+  RESPONSABLE o|--o| USUARIO : accede
   ALUMNO o|--o| PREINSCRIPCION : origina
   USUARIO o|--o{ PREINSCRIPCION : revisa
   ALUMNO ||--o{ ALUMNO_MOVIMIENTO : registra
@@ -33,12 +34,6 @@ erDiagram
   PAGO o|--o| CONSTANCIA_OFFLINE : sincroniza
   USUARIO ||--o{ AUDITORIA : realiza
 
-  USUARIO {
-    int id PK
-    string nombre
-    string email
-    string rol
-  }
   CATEGORIA {
     int id PK
     string nombre
@@ -50,6 +45,13 @@ erDiagram
     string nombre
     string dni
     string telefono
+  }
+  USUARIO {
+    int id PK
+    string rol
+    string nombre
+    string email
+    int responsable_id FK
   }
   ALUMNO {
     int id PK
@@ -135,6 +137,7 @@ erDiagram
 
 ### Decisiones de diseño relevantes
 
+- **`usuario` unificado (Administrador, Coordinador y Responsable):** una sola tabla de acceso para los tres perfiles, en vez de credenciales separadas en `usuario` y `responsable`. Administrador/Coordinador se identifican por `email`; Responsable se identifica con el DNI de su fila en `responsable` (vía `responsable_id`, sin duplicarlo). `responsable_id` es `NULL` y `UNIQUE`: un responsable puede existir sin tener todavía cuenta de acceso, y cuando la tiene, es una sola. Un `CHECK` obliga a que cada fila tenga los datos que corresponden a su rol (nombre y email solo para el personal interno, `responsable_id` solo para el rol Responsable).
 - **Sin catálogos de procedencia:** `barrio`, `localidad` y `colegio` son texto libre en `alumno` y en `preinscripcion`, porque ningún requisito o regla de negocio pide normalizarlos en tablas propias.
 - **`cobro_extraordinario` unifica evento, indumentaria y matrícula:** una sola tabla con `tipo` (`EVENTO`/`INDUMENTARIA`/`MATRICULA`) en vez de tablas separadas. Ningún RF pide un catálogo reutilizable de eventos — solo registrar y consultar el cobro asociado a un alumno con su concepto — y la matrícula (RN-29) tiene exactamente la misma forma (cobro puntual, importe, saldo), así que se modela ahí en vez de en su propia tabla.
 - **Máximo 2 responsables por alumno (RN-05):** `alumno_responsable` tiene un trigger en `INSERT` y otro en `UPDATE` que rechazan el tercer responsable (el de `UPDATE` cubre el caso de reasignar una fila existente a otro alumno). `vinculo` (madre/padre/tutor) es obligatorio por RN-09; no hay jerarquía entre responsables (RN-06), por eso no hay un flag de "principal".
@@ -153,7 +156,12 @@ erDiagram
 
 ### Diferencia con la versión anterior de este DER
 
-Único cambio respecto a la versión previa: se agrega `alumno_movimiento` (14 tablas en vez de 13). El resto del modelo —incluida la decisión de mantener `usuario` y `responsable` como tablas separadas en vez de unificarlas, y `constancia_offline` como tabla propia— se revisó contra la propuesta conceptual de entidades (`docs/entidades-relaciones-cardinalidad/entidades-relaciones-cardinalidad.md`, issue #11) y se mantiene sin cambios; el detalle de esa revisión está en los comentarios del issue #11, no repetido acá.
+Dos cambios respecto a la versión previa (sigue en 14 tablas, no cambia la cantidad):
+
+1. Se agrega `alumno_movimiento` (historial de altas/bajas, RF-51).
+2. `usuario` y `responsable` pasan a estar vinculados (`usuario.responsable_id`) en vez de tener cada una su propio mecanismo de login: se adopta la propuesta conceptual de Marina y Silvia (issues #10/#11) de unificar el acceso de los tres perfiles bajo una sola tabla `usuario`, en lugar de la decisión anterior de mantenerlos separados.
+
+El resto del modelo —incluido `constancia_offline` como tabla propia— se revisó contra la propuesta conceptual de entidades (`docs/entidades-relaciones-cardinalidad/entidades-relaciones-cardinalidad.md`) y se mantiene sin cambios; el detalle de esa revisión está en los comentarios del issue #11.
 
 ### No duplicidad de alumnos y responsables
 
