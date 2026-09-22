@@ -18,7 +18,7 @@ Esta etapa no define tablas, claves, entidades ni atributos — eso corresponde 
 
 ## 2. Alumnos, Responsables y Categorías
 
-**Responsabilidad principal:** ABM de alumnos y de responsables, la asociación entre ambos, y la determinación de categoría según año de nacimiento. Se agrupan los tres porque comparten el mismo actor (Administrador/Coordinador) y porque un alumno no tiene sentido administrativo sin sus responsables asociados ni su categoría asignada.
+**Responsabilidad principal:** ABM de alumnos y de responsables, la asociación entre ambos, y la determinación de categoría según año de nacimiento. Se agrupan los tres porque comparten el mismo actor (Administrador/Coordinador) y porque un alumno no tiene sentido administrativo sin sus responsables asociados ni su categoría asignada. El alta de un alumno —sea directa o por preinscripción validada— exige asociar al menos un responsable (RN-01); no existe alta de alumno sin responsable. Las categorías quedan fijas, definidas por año de nacimiento: esta entrega no incluye un ABM para administrarlas, por no formar parte del alcance comprometido en la Primera Entrega.
 
 **Requisitos funcionales cubiertos:** RF-01, RF-02, RF-03, RF-04, RF-05, RF-06, RF-07, RF-08, RF-09, RF-10, RF-16.
 
@@ -84,7 +84,7 @@ Esta etapa no define tablas, claves, entidades ni atributos — eso corresponde 
 
 ## Cobertura
 
-Los 9 módulos cubren la totalidad de los 64 requisitos funcionales consolidados (RF-01 a RF-64), sin superposición: cada RF aparece en un único módulo.
+Los 9 módulos cubren la totalidad de los 64 requisitos funcionales consolidados (RF-01 a RF-64), cada uno con un módulo principal responsable. Esto no implica que los módulos operen de forma aislada: varios interactúan entre sí (por ejemplo, Pagos y Recibos con Cuotas y con Cobros Extraordinarios, o Búsquedas/Reportes leyendo datos de casi todos los demás), pero cada RF tiene un único módulo dueño de su implementación.
 
 ## Requisitos no funcionales
 
@@ -92,12 +92,6 @@ Los requisitos no funcionales (seguridad, integridad, rendimiento, usabilidad, d
 
 Esto incluye específicamente **RNF-12 (Trazabilidad de operaciones relevantes)**: no se propone un módulo de "Auditoría" separado porque ningún requisito funcional pide una pantalla dedicada para consultarla — es una capacidad transversal (registro interno) que da soporte a los demás módulos, no una funcionalidad propia con la que interactúe un usuario.
 
-## Puntos sin cubrir en la documentación consolidada
-
-1. **Vinculación obligatoria de responsables.** La Primera Entrega establece que todo alumno debe tener al menos un responsable para ser admitido. En la consolidación actual, esa obligatoriedad solo aparece acotada a la preinscripción (RN-11: "toda preinscripción deberá incluir los datos de al menos un responsable"); no hay una regla equivalente para el alta directa de un alumno por parte del Administrador/Coordinador (RF-01), que no menciona datos de responsable. Falta confirmar si el alta directa sin responsable es intencional o si es un punto pendiente de consolidar.
-
-2. **Alta de categorías.** RF-16 establece que el sistema determina la categoría del alumno a partir del año de nacimiento, pero ningún requisito funcional cubre quién define esas categorías (los rangos de año) en primer lugar.
-
 ---
 
-**Estado:** Propuesta para revisión de Silvia y Marina.
+**Estado:** Propuesta consolidada, con los ajustes acordados en el Issue #7 (responsable obligatorio en alta directa, categorías fijas sin ABM, y aclaración sobre interacción entre módulos).
