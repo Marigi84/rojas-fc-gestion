@@ -428,13 +428,29 @@ CREATE TABLE auditoria (
 );
 
 -- ------------------------------------------------------------
--- Índices adicionales para las columnas que va a filtrar el
--- módulo de Búsquedas, Reportes y Dashboard (RF-45 a RF-57). Las
--- columnas de PK/FK/UNIQUE ya quedan indexadas automáticamente
--- por esas restricciones; estos índices son aparte.
+-- Índices adicionales (issue #15). Las columnas de PK/FK/UNIQUE ya
+-- quedan indexadas automáticamente por esas restricciones -- por
+-- ejemplo cuota.alumno_id (FK) y uq_cuota_alumno_periodo ya cubren
+-- "cuotas de un alumno por período" (RF-28) sin necesitar nada
+-- nuevo acá, y lo mismo el historial de pagos de un alumno (RF-34):
+-- se llega por join a través de cuota/cobro_extraordinario, ambos
+-- ya indexados por sus FK, sin que pago necesite una columna ni un
+-- índice propio hacia alumno.
+--
+-- idx_cuota_estado es compuesto (no solo `estado`) a propósito:
+-- así cubre por completo la consulta de morosidad (RN-26: alumnos
+-- con alguna cuota VENCIDA) sin tener que ir a buscar la fila
+-- completa de cuota, solo leer del índice.
+--
+-- No se indexan barrio/localidad/colegio (RF-46) ni tipo en
+-- cobro_extraordinario: son filtros sobre una tabla de pocas filas
+-- (la escuela tiene ~140 alumnos activos, no miles), donde un
+-- índice más agrega costo de escritura sin mejora real de lectura.
 -- ------------------------------------------------------------
 CREATE INDEX idx_alumno_activo           ON alumno(activo);
-CREATE INDEX idx_cuota_estado            ON cuota(estado);
+CREATE INDEX idx_alumno_apellido_nombre  ON alumno(apellido, nombre);        -- RF-45: buscar por nombre/apellido
+CREATE INDEX idx_cuota_estado            ON cuota(estado, alumno_id);        -- RF-30/RN-26: morosidad, indice cubriente
 CREATE INDEX idx_cuota_fecha_vencimiento ON cuota(fecha_vencimiento);
 CREATE INDEX idx_pago_fecha_pago         ON pago(fecha_pago);
 CREATE INDEX idx_am_fecha                ON alumno_movimiento(fecha);
+CREATE INDEX idx_preinscripcion_estado   ON preinscripcion(estado);          -- RF-18/RF-55: preinscripciones pendientes
