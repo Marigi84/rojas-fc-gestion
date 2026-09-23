@@ -4,8 +4,8 @@ Contrastando el antecedente de `schema.sql` con los requisitos funcionales, no f
 #### 1. Entidades del Dominio
 
 * **Alumno:** Representa al menor que asiste a la escuela de fútbol, sobre el cual se asienta su información personal, legajo, historial administrativo y sus obligaciones arancelarias.
+La categoría del alumno no se modela como una entidad independiente, ya que en Rojas FC coincide directamente con su año de nacimiento. Por lo tanto, se considera un dato derivado de la fecha de nacimiento del alumno y podrá utilizarse para búsquedas, filtros y agrupaciones sin requerir una tabla propia.
 * **Responsable:** Adulto a cargo del alumno (madre, padre o tutor) y titular de acceso al portal de consultas.
-* **Categoría:** Agrupación deportiva determinada por año de nacimiento.
 * **Preinscripción:** Solicitud formal previa al alta definitiva o reactivación del alumno en la institución.
 * **Configuración Arancelaria:** Parámetros institucionales definidos por la administración (importe general de cuota, día de vencimiento y porcentaje de interés por mora). Sirve de base para generar las cuotas mensuales, preservando las condiciones históricas de cada cuota una vez generada.
 * **Cuota Mensual:** Obligación arancelaria mensual generada para un alumno activo, con su importe, fecha de vencimiento y recargo si lo hubiera.
@@ -16,8 +16,6 @@ Contrastando el antecedente de `schema.sql` con los requisitos funcionales, no f
 
 #### 2. Relaciones y Cardinalidades Propuestas
 
-* **Alumno y Categoría (De Muchos a Uno):**  
-  Muchos alumnos pertenecen a una misma categoría. Todo alumno debe tener asignada obligatoriamente una única categoría según su año de nacimiento.
 * **Alumno y Responsable (De Muchos a Muchos):**  
   Un alumno puede tener entre uno y dos responsables obligatoriamente. Un responsable puede estar a cargo de uno o más alumnos. La relación lleva como dato propio el *vínculo* (madre, padre o tutor).
 * **Preinscripción y Alumno (De Cero o Uno a Uno):**
