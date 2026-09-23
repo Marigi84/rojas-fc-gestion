@@ -31,6 +31,7 @@ erDiagram
   RESPONSABLE {
     int id PK
     string nombre
+    string apellido
     string dni
     string telefono
   }
@@ -44,6 +45,7 @@ erDiagram
   ALUMNO {
     int id PK
     string nombre
+    string apellido
     string dni
     date fecha_nacimiento
     string domicilio
@@ -101,6 +103,7 @@ erDiagram
     decimal monto
     string medio_pago
     int usuario_id FK
+    int usuario_anulador_id FK
     boolean anulado
   }
   RECIBO {
