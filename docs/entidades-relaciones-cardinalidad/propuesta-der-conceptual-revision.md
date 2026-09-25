@@ -191,45 +191,11 @@ Representa el comprobante asociado a un Pago confirmado.
 
 ## 3. DER conceptual propuesto
 
-```mermaid
-erDiagram
+![DER conceptual Rojas FC](./img/der-conceptual.svg)
 
-    PERSONA ||--o| ALUMNO : "1 a 0..1"
-    PERSONA ||--o| RESPONSABLE : "1 a 0..1"
-    PERSONA ||--o| USUARIO : "1 a 0..1"
+El código fuente editable del diagrama se conserva en [`der-conceptual.mmd`](./der-conceptual.mmd).
 
-    ALUMNO }|--|{ RESPONSABLE : "1..2 a 1..N"
-
-    ALUMNO ||--|{ MOVIMIENTO_ALUMNO : "1 a 1..N"
-
-    ALUMNO ||--o{ CONDICION_PARTICULAR_CUOTA : "1 a 0..N"
-
-    ALUMNO ||--o{ OBLIGACION_PAGO : "1 a 0..N"
-
-    OBLIGACION_PAGO ||--o| CUOTA : "puede ser"
-    OBLIGACION_PAGO ||--o| MATRICULA : "puede ser"
-    OBLIGACION_PAGO ||--o| COBRO_EXTRAORDINARIO : "puede ser"
-
-    CONFIGURACION_CUOTA ||--o{ CUOTA : "1 a 0..N"
-
-    EVENTO o|--o{ COBRO_EXTRAORDINARIO : "0..1 a 0..N"
-    PEDIDO_INDUMENTARIA o|--|| COBRO_EXTRAORDINARIO : "0..1 a 1"
-
-    PAGO ||--|{ APLICACION_PAGO : "1 a 1..N"
-
-    OBLIGACION_PAGO ||--o{ APLICACION_PAGO : "1 a 0..N"
-
-    PAGO ||--o| RECIBO : "1 a 0..1"
-
-    PREINSCRIPCION {
-        string fecha
-        string observaciones
-        string datos_alumno
-        string datos_responsables
-    }
-```
-
-> Los tipos `string` incluidos en Preinscripción se utilizan únicamente para que Mermaid pueda representar una entidad aislada. No constituyen una decisión del modelo físico.
+> La Preinscripción se representa como entidad aislada. Los tipos `string` visibles en esa entidad se utilizan únicamente como recurso para que Mermaid pueda dibujarla sin relaciones; no constituyen una decisión del modelo físico.
 
 ---
 
