@@ -21,7 +21,7 @@ erDiagram
     EVENTO o|--o{ COBRO_EXTRAORDINARIO : "0..1 a 0..N"
     PEDIDO_INDUMENTARIA o|--|| COBRO_EXTRAORDINARIO : "0..1 a 1"
 
-    PAGO ||--|{ APLICACION_PAGO : "1 a 1..N"
+    ALUMNO ||--o{ PAGO : "1 a 0..N"\n\n    PAGO ||--|{ APLICACION_PAGO : "1 a 1..N"
 
     OBLIGACION_PAGO ||--o{ APLICACION_PAGO : "1 a 0..N"
 
