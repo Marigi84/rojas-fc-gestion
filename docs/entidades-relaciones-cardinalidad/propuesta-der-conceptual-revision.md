@@ -119,7 +119,7 @@ Representa las condiciones generales vigentes utilizadas para generar cuotas men
 - Porcentaje de interés
 - Vigente desde
 
-Una nueva configuración afecta únicamente a las cuotas futuras. Cada Cuota conserva la relación con la Configuración que la rigió al momento de su generación.
+Una nueva configuración afecta únicamente a los períodos futuros. Cada Período de Cuota conserva la relación con la Configuración que lo rige.
 
 ### Período de Cuota
 
@@ -261,10 +261,10 @@ Toda Obligación de Pago pertenece exactamente a uno de esos tres subtipos.
 - Un Alumno puede poseer 0..N Obligaciones de Pago.
 - Cada Obligación de Pago pertenece exactamente a 1 Alumno.
 
-### Configuración de Cuota — Cuota: rige
+### Configuración de Cuota — Período de Cuota: rige
 
-- Una Configuración de Cuota puede regir 0..N Cuotas.
-- Cada Cuota es regida por exactamente 1 Configuración de Cuota.
+- Una Configuración de Cuota puede regir 0..N Períodos de Cuota.
+- Cada Período de Cuota es regido por exactamente 1 Configuración de Cuota.
 
 ### Período de Cuota — Cuota: comprende
 
@@ -337,7 +337,7 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 - La categoría del Alumno se deriva de su fecha de nacimiento.
 - El importe de cuota particular es opcional. Cuando no existe, se utiliza el importe general vigente de Configuración de Cuota para las futuras cuotas.
 - Cada Período de Cuota posee una única fecha de vencimiento aplicable a todas sus cuotas.
-- Los cambios de configuración, importe particular o fecha de vencimiento de períodos futuros no modifican cuotas ni períodos ya generados.
+- Los cambios posteriores de configuración no modifican los Períodos de Cuota ya generados ni las Cuotas comprendidas en ellos.
 - Toda Obligación de Pago pertenece exactamente a un Alumno.
 - La especialización de Obligación de Pago es total y exclusiva.
 - La Matrícula corresponde únicamente al primer ingreso del Alumno; una reactivación no genera una nueva.
