@@ -116,11 +116,20 @@ Representa las condiciones generales vigentes utilizadas para generar cuotas men
 
 **Atributos:**
 - Importe general
-- Día de vencimiento
 - Porcentaje de interés
 - Vigente desde
 
 Una nueva configuración afecta únicamente a las cuotas futuras. Cada Cuota conserva la relación con la Configuración que la rigió al momento de su generación.
+
+### Período de Cuota
+
+Representa cada período mensual para el cual se generan cuotas.
+
+**Atributos:**
+- Período
+- Fecha de vencimiento
+
+Cada Período de Cuota posee una única fecha de vencimiento común para las cuotas correspondientes a ese período.
 
 ### Obligación de Pago
 
@@ -140,9 +149,9 @@ La especialización es total y exclusiva.
 
 Especialización de Obligación de Pago. Representa la obligación mensual de un Alumno.
 
-**Atributos:**
-- Período
-- Fecha de vencimiento
+Actualmente no posee atributos propios adicionales a los heredados de Obligación de Pago.
+
+El período y la fecha de vencimiento se obtienen a través de la relación con Período de Cuota.
 
 El interés por mora, el saldo, el estado de la cuota y la condición de morosidad son datos derivados.
 
@@ -257,6 +266,12 @@ Toda Obligación de Pago pertenece exactamente a uno de esos tres subtipos.
 - Una Configuración de Cuota puede regir 0..N Cuotas.
 - Cada Cuota es regida por exactamente 1 Configuración de Cuota.
 
+### Período de Cuota — Cuota: comprende
+
+- Un Período de Cuota puede comprender 0..N Cuotas.
+- Cada Cuota pertenece exactamente a 1 Período de Cuota.
+- Todas las Cuotas de un mismo período comparten la única fecha de vencimiento definida para ese Período de Cuota.
+
 ### Evento — Cobro Extraordinario: origina
 
 - Un Evento puede originar 0..N Cobros Extraordinarios.
@@ -321,7 +336,8 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 - El estado activo/inactivo del Alumno se deriva de su último Movimiento válido.
 - La categoría del Alumno se deriva de su fecha de nacimiento.
 - El importe de cuota particular es opcional. Cuando no existe, se utiliza el importe general vigente de Configuración de Cuota para las futuras cuotas.
-- Los cambios de configuración o de importe particular no modifican cuotas ya generadas.
+- Cada Período de Cuota posee una única fecha de vencimiento aplicable a todas sus cuotas.
+- Los cambios de configuración, importe particular o fecha de vencimiento de períodos futuros no modifican cuotas ni períodos ya generados.
 - Toda Obligación de Pago pertenece exactamente a un Alumno.
 - La especialización de Obligación de Pago es total y exclusiva.
 - La Matrícula corresponde únicamente al primer ingreso del Alumno; una reactivación no genera una nueva.
@@ -360,6 +376,7 @@ Luego de la revisión se excluyen deliberadamente:
 - Relación directa **Alumno — Pago**: el Alumno correspondiente se determina a través de las Obligaciones alcanzadas por el Pago.
 - Rol y estado de cuenta en Usuario.
 - Mes y Año en Matrícula.
+- Período y Fecha de vencimiento como atributos propios de Cuota: ambos se obtienen mediante la relación con Período de Cuota.
 - Interés aplicado como atributo almacenado de Cuota.
 - Concepto y Saldo como atributos propios de Cobro Extraordinario.
 - Categoría como entidad independiente.
