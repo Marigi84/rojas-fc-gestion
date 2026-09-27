@@ -387,7 +387,17 @@ Luego de la revisión se excluyen deliberadamente:
 
 ---
 
-## 8. Decisiones que se resolverán en etapas posteriores
+## 8. DER conceptual
+
+El siguiente diagrama representa gráficamente el modelo conceptual consolidado en este documento.
+
+![DER conceptual Rojas FC](./img/der-conceptual.svg)
+
+El archivo editable del diagrama se conserva en [`der-conceptual.drawio`](./der-conceptual.drawio).
+
+---
+
+## 9. Decisiones que se resolverán en etapas posteriores
 
 Quedan fuera de este documento y se tratarán al trabajar claves, restricciones, modelo relacional y modelo físico:
 
@@ -405,12 +415,11 @@ Quedan fuera de este documento y se tratarán al trabajar claves, restricciones,
 
 ---
 
-## 9. Próximos pasos
+## 10. Próximos pasos
 
-Una vez validado este modelo conceptual:
+Una vez validado este modelo conceptual y su DER por el equipo y el tutor:
 
-1. construir el DER conceptual a partir de estas entidades, atributos, especializaciones, relaciones y cardinalidades;
-2. revisar el DER contra los requisitos funcionales y reglas de negocio;
-3. definir claves y restricciones de integridad;
-4. construir el modelo relacional;
-5. recién después ajustar el modelo físico y el esquema MySQL.
+1. incorporar las correcciones que pudieran surgir de la revisión;
+2. definir claves y restricciones de integridad;
+3. construir el modelo relacional;
+4. recién después ajustar el modelo físico y el esquema MySQL.
