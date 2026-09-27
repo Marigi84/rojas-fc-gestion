@@ -70,8 +70,6 @@ Solo una Persona de subtipo Responsable o Administrador puede poseer una cuenta 
 Representa un formulario recibido y pendiente de revisión antes de crear o reutilizar registros definitivos.
 
 **Atributos:**
-- Fecha
-- Observaciones
 - Datos declarados del alumno *(atributo compuesto)*:
   - Nombre
   - Apellido
@@ -88,11 +86,13 @@ Representa un formulario recibido y pendiente de revisión antes de crear o reut
   - Teléfono
   - Vínculo
 
-La Preinscripción conserva información declarada y todavía no validada, por lo que mientras se encuentra pendiente no se relaciona con Persona, Alumno o Responsable definitivos.
+La Preinscripción contiene información declarada que debe ser revisada antes del alta definitiva.
 
-Una vez procesada, sus datos permiten crear o reutilizar los registros definitivos correspondientes. Si el DNI del alumno ya existe, no se crea un nuevo Alumno; si se encuentra inactivo, se reutiliza el registro existente para una eventual reactivación.
+Mientras se encuentra pendiente, no representa todavía un Alumno o Responsable definitivo.
 
-No se conserva historial de preinscripciones procesadas o descartadas según el alcance actual.
+Si el DNI del alumno ya existe, no se crea un nuevo Alumno; si se encuentra inactivo, se reutiliza el registro existente para una eventual reactivación.
+
+Una Preinscripción no genera cuotas ni otras obligaciones económicas hasta que el Alumno haya sido dado de alta definitivamente.
 
 ### Movimiento de Alumno
 
@@ -349,7 +349,9 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 - El motivo de anulación es obligatorio cuando el Pago está anulado.
 - La anulación de un Pago no elimina su registro histórico ni el Recibo previamente emitido.
 - El medio de pago es opcional y, en el alcance actual, admite Efectivo o Transferencia.
-- La Preinscripción es temporal e independiente de las entidades definitivas mientras se encuentra pendiente.
+- La Preinscripción contiene información declarada que debe ser revisada antes del alta definitiva.
+- Mientras se encuentra pendiente, no representa todavía un Alumno o Responsable definitivo.
+- Una Preinscripción no genera cuotas ni otras obligaciones económicas hasta que el Alumno haya sido dado de alta definitivamente.
 
 ---
 
