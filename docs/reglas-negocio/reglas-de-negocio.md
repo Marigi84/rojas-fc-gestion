@@ -124,74 +124,80 @@ La condición de morosidad no provocará automáticamente la baja del alumno.
 ## 7. Matrícula
 
 ### RN-29 – Cobro de matrícula
-La matrícula constituye un cobro vinculado al ingreso del alumno a la escuela.
+La matrícula constituye una obligación económica vinculada al primer ingreso del alumno a la escuela.
+
+### RN-30 – Generación única de matrícula
+La matrícula corresponde únicamente al primer ingreso del alumno a la escuela. La reactivación de un alumno previamente dado de baja no generará una nueva matrícula.
+
+### RN-31 – Pago total de matrícula
+La matrícula deberá abonarse en su totalidad en una única operación y no admitirá pagos parciales.
 
 ---
 
 ## 8. Pagos de cuotas
 
-### RN-30 – Pago total de la cuota mensual
+### RN-32 – Pago total de la cuota mensual
 Cada cuota mensual deberá abonarse en su totalidad en una sola operación.
 
 ---
 
 ## 9. Pagos
 
-### RN-31 – Medios de pago admitidos
+### RN-33 – Medios de pago admitidos
 Los pagos podrán registrarse en efectivo o mediante transferencia.
 
-### RN-32 – Medio de pago opcional
+### RN-34 – Medio de pago opcional
 El registro del medio de pago podrá omitirse cuando la administración no disponga de esa información.
 
-### RN-33 – Anulación de pagos
+### RN-35 – Anulación de pagos
 Un pago registrado incorrectamente deberá anularse en lugar de eliminarse.
 
-### RN-34 – Motivo de anulación
+### RN-36 – Motivo de anulación
 Toda anulación de pago deberá registrar un motivo.
 
-### RN-35 – Conservación del historial de pagos
+### RN-37 – Conservación del historial de pagos
 Los pagos anulados deberán conservarse como parte del historial administrativo.
 
 ---
 
 ## 10. Recibos
 
-### RN-36 – Emisión de recibo
+### RN-38 – Emisión de recibo
 Todo pago confirmado deberá generar un recibo.
 
-### RN-37 – Identificación del recibo
+### RN-39 – Identificación del recibo
 Cada recibo deberá contar con un número identificatorio propio.
 
-### RN-38 – Comprobante de pago parcial
+### RN-40 – Comprobante de pago parcial
 La emisión de un recibo por pago parcial respalda únicamente el importe efectivamente percibido y no extingue la obligación económica pendiente.
 
-### RN-39 – Inalterabilidad de comprobantes
+### RN-41 – Inalterabilidad de comprobantes
 Los recibos emitidos no podrán destruirse ni eliminarse del registro histórico; ante la anulación de una cobranza, el comprobante asociado pierde validez fiscal/administrativa pero manteniendo su trazabilidad.
 
 ---
 
 ## 11. Cobros extraordinarios
 
-### RN-40 – Asociación del cobro extraordinario
+### RN-42 – Asociación del cobro extraordinario
 Todo cobro extraordinario deberá estar asociado a un alumno y a un concepto determinado.
 
-### RN-41 – Pagos parciales en cobros extraordinarios
+### RN-43 – Pagos parciales en cobros extraordinarios
 Los cobros correspondientes a eventos o indumentaria podrán recibir uno o más pagos parciales.
 
-### RN-42 – Conservación del saldo
+### RN-44 – Conservación del saldo
 Cuando un cobro extraordinario no haya sido abonado en su totalidad, deberá conservarse el saldo pendiente.
 
-### RN-43 – Especificación de pedidos de indumentaria
+### RN-45 – Especificación de pedidos de indumentaria
 La gestión y cobro de indumentaria institucional requiere la definición previa del tipo de prenda y talle correspondiente para validar el pedido.
 
-### RN-44 – Interés en cobros extraordinarios
+### RN-46 – Interés en cobros extraordinarios
 Los cobros extraordinarios correspondientes a eventos o indumentaria no estarán sujetos al interés por mora definido para las cuotas mensuales.
 
 ---
 
 ## 12. Preinscripción y obligaciones económicas
 
-### RN-45 – Inicio de obligaciones económicas
+### RN-47 – Inicio de obligaciones económicas
 Una preinscripción no generará cuotas ni otras obligaciones económicas hasta que el alumno haya sido dado de alta de manera definitiva.
 
 ---
@@ -200,8 +206,10 @@ Una preinscripción no generará cuotas ni otras obligaciones económicas hasta 
 
 1. Cada período tendrá una única fecha de vencimiento.
 2. Las cuotas mensuales deberán abonarse en su totalidad; no se habilitarán pagos parciales de cuotas.
-3. Los pagos parciales quedarán limitados a eventos e indumentaria.
-4. Los recibos correspondientes a pagos parciales de cobros extraordinarios deberán informar el saldo pendiente.
+3. La matrícula corresponde únicamente al primer ingreso del alumno; una reactivación no generará una nueva matrícula.
+4. La matrícula deberá abonarse en su totalidad y no admitirá pagos parciales.
+5. Los pagos parciales quedarán limitados a eventos e indumentaria.
+6. Los recibos correspondientes a pagos parciales de cobros extraordinarios deberán informar el saldo pendiente.
 
 ---
 
