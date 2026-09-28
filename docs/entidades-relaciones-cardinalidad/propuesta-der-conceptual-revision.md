@@ -52,7 +52,9 @@ El vínculo madre/padre/tutor no pertenece al Responsable de manera aislada, sin
 
 Especialización de Persona. Representa el perfil de gestión que en los requisitos se denomina Administrador/Coordinador.
 
-Actualmente no posee atributos propios adicionales a los heredados de Persona.
+No posee atributos propios adicionales. Hereda de Persona los atributos **DNI, Nombre y Apellido**.
+
+Se mantiene como subtipo porque se diferencia funcionalmente de Alumno y Responsable por las acciones de gestión y autorización que puede realizar dentro del sistema.
 
 ### Usuario
 
@@ -149,7 +151,9 @@ La especialización es total y exclusiva.
 
 Especialización de Obligación de Pago. Representa la obligación mensual de un Alumno.
 
-Actualmente no posee atributos propios adicionales a los heredados de Obligación de Pago.
+No posee atributos propios adicionales. Hereda de Obligación de Pago el atributo **Importe**.
+
+Su diferenciación dentro del dominio está dada por sus relaciones y reglas específicas: pertenece a un **Período de Cuota**, se genera mensualmente para alumnos activos, debe abonarse en su totalidad en una sola operación y puede incorporar interés por mora cuando corresponde.
 
 El período y la fecha de vencimiento se obtienen a través de la relación con Período de Cuota.
 
@@ -159,15 +163,17 @@ El interés por mora, el saldo, el estado de la cuota y la condición de morosid
 
 Especialización de Obligación de Pago. Representa la obligación económica correspondiente al primer ingreso del Alumno.
 
-Actualmente no posee atributos propios adicionales a los heredados de Obligación de Pago.
+No posee atributos propios adicionales. Hereda de Obligación de Pago el atributo **Importe**.
 
-La Matrícula corresponde únicamente al primer alta del Alumno. Una reactivación no genera una nueva Matrícula.
+Se distingue por sus reglas de negocio: se genera únicamente por el primer ingreso del Alumno, una reactivación no genera una nueva Matrícula y debe abonarse en su totalidad en una única operación, sin pagos parciales.
 
 ### Cobro Extraordinario
 
 Especialización de Obligación de Pago. Representa una obligación no periódica correspondiente a un Evento o a un Pedido de Indumentaria.
 
-Actualmente no posee atributos propios adicionales a los heredados de Obligación de Pago.
+No posee atributos propios adicionales. Hereda de Obligación de Pago el atributo **Importe**.
+
+Se distingue por sus relaciones y reglas específicas: debe originarse en un **Evento** o en un **Pedido de Indumentaria**, admite pagos parciales y no está sujeto al interés por mora definido para las cuotas mensuales.
 
 ### Evento
 
@@ -233,6 +239,8 @@ Obligación de Pago se especializa de forma **total y exclusiva** en:
 - Cobro Extraordinario
 
 Toda Obligación de Pago pertenece exactamente a uno de esos tres subtipos.
+
+Los subtipos comparten el atributo **Importe** heredado de Obligación de Pago, pero se mantienen diferenciados porque cada uno posee relaciones y reglas de negocio propias.
 
 ---
 
@@ -344,8 +352,10 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 - Cada Cobro Extraordinario corresponde exactamente a un Evento o a un Pedido de Indumentaria, nunca a ambos.
 - Todas las Obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
 - La suma de los Importes aplicados debe coincidir con el Importe total del Pago.
-- Cuota y Matrícula se cancelan en una única operación válida por el total adeudado.
+- La Cuota debe abonarse en una única operación válida por el total adeudado.
+- La Matrícula debe abonarse en una única operación válida por el total adeudado y no admite pagos parciales.
 - Los Cobros Extraordinarios admiten pagos parciales.
+- Los Cobros Extraordinarios no están sujetos al interés por mora definido para las cuotas mensuales.
 - El motivo de anulación es obligatorio cuando el Pago está anulado.
 - La anulación de un Pago no elimina su registro histórico ni el Recibo previamente emitido.
 - El medio de pago es opcional y, en el alcance actual, admite Efectivo o Transferencia.
