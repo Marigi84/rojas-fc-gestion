@@ -403,7 +403,7 @@ El siguiente diagrama representa gráficamente el modelo conceptual consolidado 
 
 ![DER conceptual Rojas FC](./img/der-conceptual.svg)
 
-El archivo editable del diagrama se conserva en [`der-conceptual.drawio`](./der-conceptual.drawio).
+El archivo fuente del diagrama se conserva en [`der-conceptual.puml`](./der-conceptual.puml). La representación visual en SVG se genera a partir de este modelo PlantUML.
 
 ---
 
