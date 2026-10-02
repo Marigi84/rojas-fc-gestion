@@ -89,7 +89,7 @@ Un alumno podrá tener un importe de cuota diferente del valor general cuando ex
 Cada período tendrá una única fecha de vencimiento definida por la administración.
 
 ### RN-20 – Aplicación del interés por mora
-Toda cuota que permanezca impaga después de su fecha de vencimiento deberá incorporar el interés por mora vigente.
+Toda cuota que permanezca impaga después de su fecha de vencimiento deberá incorporar el interés por mora definido en la configuración que rige el período de dicha cuota.
 
 ### RN-21 – Aplicación única del interés
 El interés por mora se aplicará una sola vez sobre la cuota vencida y no se acumulará de forma periódica.
@@ -124,7 +124,7 @@ La condición de morosidad no provocará automáticamente la baja del alumno.
 ## 7. Matrícula
 
 ### RN-29 – Cobro de matrícula
-La matrícula constituye una obligación económica vinculada al primer ingreso del alumno a la escuela.
+La matrícula constituye una obligación económica vinculada al primer ingreso del alumno a la escuela. Habitualmente se abona al momento de la inscripción, aunque puede quedar pendiente de pago.
 
 ### RN-30 – Generación única de matrícula
 La matrícula corresponde únicamente al primer ingreso del alumno a la escuela. La reactivación de un alumno previamente dado de baja no generará una nueva matrícula.

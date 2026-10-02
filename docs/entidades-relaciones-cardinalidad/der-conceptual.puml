@@ -14,33 +14,16 @@ skinparam ArrowColor #444444
 skinparam NoteBackgroundColor #FFFDEB
 skinparam NoteBorderColor #888888
 
-entity "Preinscripción" as Preinscripcion {
-  == Datos declarados del alumno ==
-  Nombre
-  Apellido
-  DNI
-  Fecha de nacimiento
-  Domicilio
-  Barrio
-  Localidad
-  Colegio
-  --
-  == Datos declarados del responsable (1..2) ==
-  Nombre
-  Apellido
-  DNI
-  Teléfono
-  Vínculo
-}
+legend top right
+  <u>Subrayado</u>: identificador
+  {parcial}: identificador parcial de entidad débil
+  [opcional]: puede no tener valor
+end legend
 
-note bottom of Preinscripcion
-  Pendiente de revisión.
-  No representa registros definitivos
-  ni genera obligaciones económicas.
-end note
+' ===================== Personas =====================
 
 entity "Persona" as Persona {
-  DNI
+  <u>DNI</u>
   Nombre
   Apellido
 }
@@ -56,62 +39,80 @@ entity "Alumno" as Alumno {
 
 entity "Responsable" as Responsable {
   Teléfono
-}
-
-entity "Administrador" as Administrador {
-}
-
-entity "Usuario" as Usuario {
-  Contraseña
-}
-
-entity "Movimiento de Alumno" as MovimientoAlumno {
-  Tipo
-  Fecha
-  Observación
+  Contraseña [opcional]
 }
 
 Persona <|-- Alumno
 Persona <|-- Responsable
-Persona <|-- Administrador
-
-Persona "1" -- "0..1" Usuario : posee cuenta
-Alumno "1..N" -- "1..2" Responsable : tiene como responsable\n[Vínculo]
-Alumno "1" -- "1..N" MovimientoAlumno : registra
 
 note top of Persona
   Especialización TOTAL y EXCLUSIVA:
-  Alumno | Responsable | Administrador.
-  Los subtipos heredan DNI, Nombre y Apellido.
+  Alumno | Responsable.
 end note
 
-note right of Usuario
-  Solo Responsable y Administrador
-  pueden poseer Usuario.
+Responsable "1..2" -- "1..N" Alumno : tiene como responsable\n[Vínculo]
+
+' ===================== Preinscripción y movimientos =====================
+
+entity "Preinscripción" as Preinscripcion {
+  <u>Número de preinscripción</u>
+  Fecha
+  Estado
+  Fecha de resolución [opcional]
+  == Datos declarados del alumno ==
+  Nombre
+  Apellido
+  DNI
+  Fecha de nacimiento
+  Domicilio
+  Barrio
+  Localidad
+  Colegio
+  == Datos declarados del responsable (1..2) ==
+  Nombre
+  Apellido
+  DNI
+  Teléfono
+  Vínculo
+}
+
+Preinscripcion "0..1" -- "0..1" Alumno : origina
+
+note bottom of Preinscripcion
+  Estado: Pendiente | Aprobada | Rechazada.
+  Solo una preinscripción Aprobada origina un Alumno.
 end note
+
+entity "Movimiento de Alumno\n(entidad débil)" as MovimientoAlumno {
+  Fecha y hora {parcial}
+  Tipo
+  Observación
+}
+
+Alumno "1" -- "1..N" MovimientoAlumno : registra
+
+' ===================== Obligaciones =====================
 
 entity "Obligación de Pago" as ObligacionPago {
+  <u>Número de obligación</u>
   Importe
 }
 
 entity "Cuota" as Cuota {
+  Recargo por mora [opcional]
 }
 
 entity "Matrícula" as Matricula {
+  Fecha de generación
 }
 
 entity "Cobro Extraordinario" as CobroExtraordinario {
+  Fecha
 }
 
-entity "Configuración de Cuota" as ConfiguracionCuota {
-  Importe general
-  Porcentaje de interés
-  Vigente desde
-}
-
-entity "Período de Cuota" as PeriodoCuota {
-  Período
-  Fecha de vencimiento
+entity "Cobro de Indumentaria" as CobroIndumentaria {
+  Tipo de prenda
+  Talle
 }
 
 Alumno "1" -- "0..N" ObligacionPago : posee
@@ -120,59 +121,64 @@ ObligacionPago <|-- Cuota
 ObligacionPago <|-- Matricula
 ObligacionPago <|-- CobroExtraordinario
 
-ConfiguracionCuota "1" -- "0..N" PeriodoCuota : rige
-PeriodoCuota "1" -- "0..N" Cuota : comprende
+CobroExtraordinario <|-- CobroIndumentaria
 
 note top of ObligacionPago
   Especialización TOTAL y EXCLUSIVA:
   Cuota | Matrícula | Cobro Extraordinario.
-  Los subtipos heredan Importe.
+  Un Alumno tiene como máximo una Matrícula
+  y una Cuota por Período.
 end note
 
-note right of Matricula
-  Primer ingreso.
-  Reactivación no genera otra.
-  Pago total, sin parciales.
+note bottom of CobroExtraordinario
+  Todo Cobro Extraordinario corresponde a un Evento
+  o es un Cobro de Indumentaria, nunca ambos ni ninguno.
 end note
+
+entity "Configuración de Cuota" as ConfiguracionCuota {
+  <u>Vigente desde</u>
+  Importe general
+  Porcentaje de interés
+}
+
+entity "Período de Cuota" as PeriodoCuota {
+  <u>Período</u>
+  Fecha de vencimiento
+}
+
+ConfiguracionCuota "1" -- "0..N" PeriodoCuota : rige
+PeriodoCuota "1" -- "0..N" Cuota : comprende
+
+entity "Evento" as Evento {
+  <u>Nombre</u>
+  <u>Año</u>
+}
+
+Evento "0..1" -- "0..N" CobroExtraordinario : corresponde a
+
+' ===================== Pagos =====================
 
 entity "Pago" as Pago {
+  <u>Número de operación</u>
   Fecha
-  Importe total
   Medio de pago [opcional]
   Anulado
   Motivo de anulación [condicional]
+  Fecha de anulación [condicional]
 }
 
 entity "Recibo" as Recibo {
-  Número
+  <u>Número</u>
   Fecha de emisión
 }
 
 Pago "0..N" -- "1..N" ObligacionPago : se aplica a\n[Importe aplicado]
-Pago "1" -- "0..1" Recibo : genera
+Pago "1" -- "1" Recibo : genera
 
 note bottom of Pago
   Las obligaciones incluidas en un mismo Pago
   deben pertenecer al mismo Alumno.
-end note
-
-entity "Evento" as Evento {
-  Nombre
-  Año
-}
-
-entity "Pedido de Indumentaria" as PedidoIndumentaria {
-  Tipo de prenda
-  Talle
-}
-
-Evento "0..1" -- "0..N" CobroExtraordinario : origina
-PedidoIndumentaria "0..1" -- "1" CobroExtraordinario : origina
-
-note right of CobroExtraordinario
-  XOR:
-  exactamente un Evento
-  O un Pedido de Indumentaria.
+  Importe total = suma de Importes aplicados (derivado).
 end note
 
 @enduml

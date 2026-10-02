@@ -6,7 +6,7 @@ Este documento presenta el **modelo conceptual** revisado del sistema de gestió
 
 El objetivo de esta etapa es representar el dominio mediante **entidades, atributos, especializaciones, relaciones, cardinalidades y restricciones conceptuales**, sin incorporar todavía decisiones propias del modelo lógico o físico.
 
-Por lo tanto, en esta instancia no se definen IDs técnicos, PK, FK, tipos SQL, índices, triggers ni mecanismos de implementación.
+Por lo tanto, en esta instancia no se definen IDs técnicos, PK, FK, tipos SQL, índices, triggers ni mecanismos de implementación. Sí se indica, para cada entidad, el atributo o la combinación de atributos que la **identifica** conceptualmente (marcado como *identificador*).
 
 ---
 
@@ -17,11 +17,11 @@ Por lo tanto, en esta instancia no se definen IDs técnicos, PK, FK, tipos SQL, 
 Representa a una persona registrada definitivamente en el sistema.
 
 **Atributos:**
-- DNI
+- DNI *(identificador)*
 - Nombre
 - Apellido
 
-El DNI identifica conceptualmente a la persona dentro del dominio y no deben existir dos Personas distintas con el mismo DNI.
+No deben existir dos Personas distintas con el mismo DNI.
 
 ### Alumno
 
@@ -45,33 +45,21 @@ Especialización de Persona. Representa al adulto responsable de uno o más alum
 
 **Atributos:**
 - Teléfono
+- Contraseña *(opcional)*
+
+La contraseña permite al Responsable acceder al portal utilizando su DNI como identificación (RF-11). Es opcional porque un Responsable puede estar registrado sin haber activado todavía su acceso.
 
 El vínculo madre/padre/tutor no pertenece al Responsable de manera aislada, sino a la relación entre Alumno y Responsable.
 
-### Administrador
-
-Especialización de Persona. Representa el perfil de gestión que en los requisitos se denomina Administrador/Coordinador.
-
-No posee atributos propios adicionales. Hereda de Persona los atributos **DNI, Nombre y Apellido**.
-
-Se mantiene como subtipo porque se diferencia funcionalmente de Alumno y Responsable por las acciones de gestión y autorización que puede realizar dentro del sistema.
-
-### Usuario
-
-Representa una cuenta de acceso asociada a una Persona habilitada para autenticarse.
-
-**Atributos:**
-- Contraseña
-
-El DNI utilizado para autenticarse pertenece a Persona y no se duplica en Usuario.
-
-Solo una Persona de subtipo Responsable o Administrador puede poseer una cuenta de Usuario. Un Alumno no posee cuenta de acceso.
-
 ### Preinscripción
 
-Representa un formulario recibido y pendiente de revisión antes de crear o reutilizar registros definitivos.
+Representa un formulario de preinscripción recibido, que es revisado por la administración y luego aprobado o rechazado.
 
 **Atributos:**
+- Número de preinscripción *(identificador)*
+- Fecha
+- Estado: Pendiente, Aprobada o Rechazada
+- Fecha de resolución *(opcional; se completa al aprobarla o rechazarla)*
 - Datos declarados del alumno *(atributo compuesto)*:
   - Nombre
   - Apellido
@@ -81,45 +69,42 @@ Representa un formulario recibido y pendiente de revisión antes de crear o reut
   - Barrio
   - Localidad
   - Colegio
-- Datos declarados de responsable *(atributo compuesto, entre 1 y 2 ocurrencias)*:
+- Datos declarados de responsable *(atributo compuesto multivaluado, entre 1 y 2 ocurrencias)*:
   - Nombre
   - Apellido
   - DNI
   - Teléfono
   - Vínculo
 
-La Preinscripción contiene información declarada que debe ser revisada antes del alta definitiva.
+La Preinscripción conserva la información **declarada** por la familia. Mientras está pendiente puede ser corregida por la administración (RF-19); una vez resuelta, queda como registro de lo recibido.
 
-Mientras se encuentra pendiente, no representa todavía un Alumno o Responsable definitivo.
+Los datos declarados no constituyen una duplicación de los datos de Alumno y Responsable: representan un hecho distinto (lo declarado en una fecha determinada), mientras que Alumno y Responsable contienen los datos actuales y verificados, que se actualizan con el tiempo. Además, una Preinscripción rechazada nunca origina un Alumno, por lo que sus datos solo existen en ella.
 
-Si el DNI del alumno ya existe, no se crea un nuevo Alumno; si se encuentra inactivo, se reutiliza el registro existente para una eventual reactivación.
+Si el DNI del alumno ya corresponde a un Alumno registrado, la Preinscripción se rechaza y, si corresponde, el Alumno existente se reactiva por el procedimiento habitual.
 
-Una Preinscripción no genera cuotas ni otras obligaciones económicas hasta que el Alumno haya sido dado de alta definitivamente.
+Una Preinscripción no genera cuotas ni otras obligaciones económicas.
 
 ### Movimiento de Alumno
 
-Representa los cambios administrativos del Alumno a lo largo del tiempo.
+Entidad débil. Representa los cambios administrativos del Alumno a lo largo del tiempo.
 
 **Atributos:**
-- Tipo
-- Fecha
+- Fecha y hora *(identificador parcial)*
+- Tipo: Alta, Baja o Reactivación
 - Observación
 
-Tipos previstos:
-- Alta
-- Baja
-- Reactivación
+Se identifica por el Alumno al que pertenece junto con su fecha y hora. Se registra la hora para distinguir dos movimientos realizados el mismo día (por ejemplo, una baja por error y su reactivación inmediata).
 
-Todo Alumno registra al menos un movimiento. El estado activo o inactivo del Alumno se deriva del último movimiento válido.
+Todo Alumno registra al menos un movimiento. El estado activo o inactivo del Alumno se deriva de su último movimiento.
 
 ### Configuración de Cuota
 
-Representa las condiciones generales vigentes utilizadas para generar cuotas mensuales.
+Representa las condiciones generales utilizadas para generar cuotas mensuales.
 
 **Atributos:**
+- Vigente desde *(identificador)*
 - Importe general
 - Porcentaje de interés
-- Vigente desde
 
 Una nueva configuración afecta únicamente a los períodos futuros. Cada Período de Cuota conserva la relación con la Configuración que lo rige.
 
@@ -128,16 +113,17 @@ Una nueva configuración afecta únicamente a los períodos futuros. Cada Perío
 Representa cada período mensual para el cual se generan cuotas.
 
 **Atributos:**
-- Período
+- Período *(identificador; por ejemplo, 2026-03)*
 - Fecha de vencimiento
 
-Cada Período de Cuota posee una única fecha de vencimiento común para las cuotas correspondientes a ese período.
+Cada Período de Cuota posee una única fecha de vencimiento común para todas las cuotas de ese período (RF-23, RN-19). Se modela como entidad para registrar ese dato una sola vez, en lugar de repetirlo en cada cuota.
 
 ### Obligación de Pago
 
 Representa una obligación económica concreta de un Alumno.
 
 **Atributos:**
+- Número de obligación *(identificador)*
 - Importe
 
 Toda Obligación de Pago corresponde exactamente a uno de estos tipos:
@@ -151,70 +137,86 @@ La especialización es total y exclusiva.
 
 Especialización de Obligación de Pago. Representa la obligación mensual de un Alumno.
 
-No posee atributos propios adicionales. Hereda de Obligación de Pago el atributo **Importe**.
+**Atributos:**
+- Recargo por mora *(opcional)*
 
-Su diferenciación dentro del dominio está dada por sus relaciones y reglas específicas: pertenece a un **Período de Cuota**, se genera mensualmente para alumnos activos, debe abonarse en su totalidad en una sola operación y puede incorporar interés por mora cuando corresponde.
+Hereda de Obligación de Pago el atributo **Importe**, que queda fijado al generarse la cuota.
 
-El período y la fecha de vencimiento se obtienen a través de la relación con Período de Cuota.
+El **recargo por mora** registra el monto del interés aplicado cuando la cuota vence impaga. Se guarda en lugar de calcularse porque:
+- conserva el valor aplicado aunque luego cambie el porcentaje configurado (RN-23);
+- permite asegurar que el interés se aplique una sola vez (RN-21).
 
-El interés por mora, el saldo, el estado de la cuota y la condición de morosidad son datos derivados.
+Permanece vacío mientras no corresponda aplicar interés.
+
+El período y la fecha de vencimiento se obtienen a través de la relación con Período de Cuota. El saldo, el estado de la cuota y la condición de morosidad son datos derivados.
 
 ### Matrícula
 
 Especialización de Obligación de Pago. Representa la obligación económica correspondiente al primer ingreso del Alumno.
 
-No posee atributos propios adicionales. Hereda de Obligación de Pago el atributo **Importe**.
+**Atributos:**
+- Fecha de generación
 
-Se distingue por sus reglas de negocio: se genera únicamente por el primer ingreso del Alumno, una reactivación no genera una nueva Matrícula y debe abonarse en su totalidad en una única operación, sin pagos parciales.
+La fecha de generación corresponde a la inscripción del Alumno, momento en que nace la obligación. Es distinta de la fecha de pago, que pertenece al Pago: habitualmente la matrícula se abona al inscribirse, aunque puede quedar pendiente.
+
+Se genera únicamente por el primer ingreso del Alumno; una reactivación no genera una nueva Matrícula. Debe abonarse en su totalidad en una única operación.
 
 ### Cobro Extraordinario
 
-Especialización de Obligación de Pago. Representa una obligación no periódica correspondiente a un Evento o a un Pedido de Indumentaria.
-
-No posee atributos propios adicionales. Hereda de Obligación de Pago el atributo **Importe**.
-
-Se distingue por sus relaciones y reglas específicas: debe originarse en un **Evento** o en un **Pedido de Indumentaria**, admite pagos parciales y no está sujeto al interés por mora definido para las cuotas mensuales.
-
-### Evento
-
-Representa un evento de la escuela que puede originar cobros extraordinarios para distintos alumnos.
+Especialización de Obligación de Pago. Representa una obligación no periódica de un Alumno.
 
 **Atributos:**
-- Nombre
-- Año
+- Fecha
 
-El año se mantiene separado del nombre porque un mismo evento puede repetirse en distintas ediciones.
+Admite pagos parciales y no está sujeto al interés por mora definido para las cuotas mensuales.
 
-### Pedido de Indumentaria
+Todo Cobro Extraordinario corresponde a un **Evento** o es un **Cobro de Indumentaria**, nunca ambos ni ninguno. El concepto cobrado se obtiene del Evento o del tipo de prenda.
 
-Representa un pedido individual de indumentaria.
+### Cobro de Indumentaria
+
+Especialización de Cobro Extraordinario. Representa el pedido y cobro de una prenda institucional a un Alumno.
 
 **Atributos:**
 - Tipo de prenda
 - Talle
+
+El pedido y su cobro se registran en el mismo momento (habitualmente con una seña), por lo que constituyen una única entidad. El tipo de prenda y el talle se conservan para validar el pedido y resolver posibles reclamos (RF-44, RN-45).
+
+### Evento
+
+Representa un evento de la escuela al que pueden corresponder cobros extraordinarios de distintos alumnos.
+
+**Atributos:**
+- Nombre *(identificador, junto con Año)*
+- Año *(identificador, junto con Nombre)*
+
+El Año se mantiene separado del Nombre porque un mismo evento puede repetirse en distintas ediciones (por ejemplo, Mundialito 2026 y Mundialito 2027).
 
 ### Pago
 
 Representa una operación económica registrada en el sistema.
 
 **Atributos:**
+- Número de operación *(identificador)*
 - Fecha
-- Importe total
 - Medio de pago *(opcional)*
 - Anulado
 - Motivo de anulación *(obligatorio cuando el Pago está anulado)*
+- Fecha de anulación *(obligatoria cuando el Pago está anulado)*
+
+El importe total del Pago no se almacena: se obtiene como la suma de los importes aplicados a cada obligación.
 
 El medio de pago se mantiene como atributo controlado porque, en el alcance actual, únicamente contempla Efectivo y Transferencia y no posee información propia adicional que justifique una entidad independiente.
 
 ### Recibo
 
-Representa el comprobante correspondiente a un Pago confirmado.
+Representa el comprobante correspondiente a un Pago.
 
 **Atributos:**
-- Número
+- Número *(identificador)*
 - Fecha de emisión
 
-La información del Alumno, los conceptos abonados, los importes aplicados, el importe total y el medio de pago se obtiene a través del Pago y de las Obligaciones a las que se aplica.
+La información del Alumno, los conceptos abonados, los importes aplicados, el importe total, el medio de pago y el saldo pendiente informado se obtienen a través del Pago y de las Obligaciones a las que se aplica.
 
 ---
 
@@ -226,9 +228,8 @@ Persona se especializa de forma **total y exclusiva** en:
 
 - Alumno
 - Responsable
-- Administrador
 
-Esto significa que toda Persona registrada definitivamente pertenece exactamente a uno de esos tres subtipos.
+Toda Persona registrada definitivamente es Alumno o Responsable, y no ambas a la vez.
 
 ### Obligación de Pago
 
@@ -238,19 +239,19 @@ Obligación de Pago se especializa de forma **total y exclusiva** en:
 - Matrícula
 - Cobro Extraordinario
 
-Toda Obligación de Pago pertenece exactamente a uno de esos tres subtipos.
+Los subtipos heredan Número de obligación e Importe. Cada uno incorpora sus propios atributos o relaciones.
 
-Los subtipos comparten el atributo **Importe** heredado de Obligación de Pago, pero se mantienen diferenciados porque cada uno posee relaciones y reglas de negocio propias.
+### Cobro Extraordinario
+
+Cobro Extraordinario se especializa de forma **parcial** en:
+
+- Cobro de Indumentaria
+
+Los cobros extraordinarios que no son de indumentaria corresponden a un Evento. No se modela un subtipo "Cobro de Evento" porque no posee atributos propios: el alumno, el evento y el importe ya se obtienen de sus relaciones y de Obligación de Pago, y su condición de pago es derivada.
 
 ---
 
 ## 3. Relaciones y cardinalidades
-
-### Persona — Usuario: posee cuenta
-
-- Una Persona puede poseer 0..1 Usuario.
-- Cada Usuario corresponde exactamente a 1 Persona.
-- Solo Responsable y Administrador pueden poseer Usuario.
 
 ### Alumno — Responsable: tiene como responsable
 
@@ -259,10 +260,15 @@ Los subtipos comparten el atributo **Importe** heredado de Obligación de Pago, 
 - Es una relación N:M.
 - La relación posee el atributo **Vínculo**: madre, padre o tutor.
 
+### Preinscripción — Alumno: origina
+
+- Una Preinscripción origina 0..1 Alumno: uno si fue aprobada, ninguno si está pendiente o fue rechazada.
+- Un Alumno es originado por 0..1 Preinscripción: puede haber sido registrado directamente por la administración, sin preinscripción (RF-01).
+
 ### Alumno — Movimiento de Alumno: registra
 
 - Un Alumno registra 1..N Movimientos.
-- Cada Movimiento pertenece exactamente a 1 Alumno.
+- Cada Movimiento pertenece exactamente a 1 Alumno, del cual depende para su identificación.
 
 ### Alumno — Obligación de Pago: posee
 
@@ -278,19 +284,11 @@ Los subtipos comparten el atributo **Importe** heredado de Obligación de Pago, 
 
 - Un Período de Cuota puede comprender 0..N Cuotas.
 - Cada Cuota pertenece exactamente a 1 Período de Cuota.
-- Todas las Cuotas de un mismo período comparten la única fecha de vencimiento definida para ese Período de Cuota.
 
-### Evento — Cobro Extraordinario: origina
+### Evento — Cobro Extraordinario: corresponde a
 
-- Un Evento puede originar 0..N Cobros Extraordinarios.
-- Un Cobro Extraordinario puede corresponder a 0..1 Evento.
-
-### Pedido de Indumentaria — Cobro Extraordinario: origina
-
-- Cada Pedido de Indumentaria origina exactamente 1 Cobro Extraordinario.
-- Un Cobro Extraordinario puede corresponder a 0..1 Pedido de Indumentaria.
-
-Todo Cobro Extraordinario debe corresponder exactamente a un Evento **o** a un Pedido de Indumentaria, nunca a ambos.
+- A un Evento pueden corresponder 0..N Cobros Extraordinarios.
+- Un Cobro Extraordinario corresponde a 0..1 Evento: a uno si es un cobro de evento, a ninguno si es un Cobro de Indumentaria.
 
 ### Pago — Obligación de Pago: se aplica a
 
@@ -299,15 +297,14 @@ Todo Cobro Extraordinario debe corresponder exactamente a un Evento **o** a un P
 - Es una relación N:M.
 - La relación posee el atributo **Importe aplicado**.
 
-Todas las Obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
-
 ### Pago — Recibo: genera
 
-- Un Pago puede generar 0..1 Recibo.
+- Cada Pago genera exactamente 1 Recibo.
 - Cada Recibo corresponde exactamente a 1 Pago.
-- Un Pago confirmado genera exactamente 1 Recibo.
 
-El valor 0..1 permite contemplar el pago provisional registrado offline, que todavía no genera recibo hasta ser sincronizado y validado.
+Un pago registrado sin conexión se conserva en el dispositivo hasta su sincronización (RNF-10) y recién entonces se incorpora al sistema como Pago, junto con su Recibo (RF-64). Por eso, dentro del modelo conceptual, no existe un Pago sin Recibo.
+
+Si el Pago se anula, el Recibo se conserva (RF-40, RN-41); su condición de anulado se deriva del Pago.
 
 ---
 
@@ -322,13 +319,13 @@ Valores previstos:
 - Padre
 - Tutor
 
-No se almacena como atributo propio de Responsable porque una misma Persona puede cumplir distintos vínculos respecto de distintos alumnos.
+No se almacena como atributo propio de Responsable porque una misma persona puede cumplir distintos vínculos respecto de distintos alumnos.
 
 ### Importe aplicado
 
 Pertenece a la relación **Pago — se aplica a — Obligación de Pago**.
 
-Permite expresar cuánto del Importe total de un Pago corresponde a cada Obligación alcanzada.
+Permite expresar cuánto de un Pago corresponde a cada Obligación alcanzada.
 
 En el modelo conceptual se conserva como atributo de la relación N:M. Su transformación a una estructura intermedia se resolverá al construir el modelo relacional.
 
@@ -336,46 +333,56 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 
 ## 5. Restricciones conceptuales
 
+**Personas**
 - No deben existir dos Personas distintas con el mismo DNI.
 - La especialización de Persona es total y exclusiva.
-- Alumno, Responsable y Administrador no pueden superponerse para una misma Persona.
-- Solo Responsable y Administrador pueden poseer Usuario.
 - Un Alumno debe tener entre 1 y 2 Responsables.
-- El estado activo/inactivo del Alumno se deriva de su último Movimiento válido.
+
+**Alumnos y preinscripciones**
+- El estado activo/inactivo del Alumno se deriva de su último Movimiento.
 - La categoría del Alumno se deriva de su fecha de nacimiento.
-- El importe de cuota particular es opcional. Cuando no existe, se utiliza el importe general vigente de Configuración de Cuota para las futuras cuotas.
+- Una Preinscripción solo puede originar un Alumno si su estado es Aprobada.
+- Mientras se encuentra pendiente, una Preinscripción no representa todavía un Alumno o Responsable definitivo.
+- Una Preinscripción no genera cuotas ni otras obligaciones económicas.
+
+**Cuotas**
+- El importe de cuota particular es opcional. Cuando no existe, se utiliza el importe general de la Configuración que rige el período.
 - Cada Período de Cuota posee una única fecha de vencimiento aplicable a todas sus cuotas.
+- Un Alumno no puede tener más de una Cuota para un mismo Período de Cuota.
 - Los cambios posteriores de configuración no modifican los Períodos de Cuota ya generados ni las Cuotas comprendidas en ellos.
-- Toda Obligación de Pago pertenece exactamente a un Alumno.
-- La especialización de Obligación de Pago es total y exclusiva.
-- La Matrícula corresponde únicamente al primer ingreso del Alumno; una reactivación no genera una nueva.
-- Cada Cobro Extraordinario corresponde exactamente a un Evento o a un Pedido de Indumentaria, nunca a ambos.
-- Todas las Obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
-- La suma de los Importes aplicados debe coincidir con el Importe total del Pago.
+- El recargo por mora se aplica una sola vez, utilizando el porcentaje de la Configuración que rige el período de la cuota.
 - La Cuota debe abonarse en una única operación válida por el total adeudado.
+
+**Matrícula y cobros extraordinarios**
+- Un Alumno puede tener como máximo una Matrícula.
+- La Matrícula corresponde únicamente al primer ingreso del Alumno; una reactivación no genera una nueva.
 - La Matrícula debe abonarse en una única operación válida por el total adeudado y no admite pagos parciales.
-- Los Cobros Extraordinarios admiten pagos parciales.
-- Los Cobros Extraordinarios no están sujetos al interés por mora definido para las cuotas mensuales.
-- El motivo de anulación es obligatorio cuando el Pago está anulado.
-- La anulación de un Pago no elimina su registro histórico ni el Recibo previamente emitido.
+- La especialización de Obligación de Pago es total y exclusiva.
+- Todo Cobro Extraordinario corresponde a un Evento o es un Cobro de Indumentaria, nunca ambos ni ninguno.
+- Los Cobros Extraordinarios admiten pagos parciales y no están sujetos al interés por mora.
+
+**Pagos y recibos**
+- Toda Obligación de Pago pertenece exactamente a un Alumno.
+- Todas las Obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
+- El motivo y la fecha de anulación son obligatorios cuando el Pago está anulado.
+- La anulación de un Pago no elimina su registro histórico ni el Recibo emitido.
 - El medio de pago es opcional y, en el alcance actual, admite Efectivo o Transferencia.
-- La Preinscripción contiene información declarada que debe ser revisada antes del alta definitiva.
-- Mientras se encuentra pendiente, no representa todavía un Alumno o Responsable definitivo.
-- Una Preinscripción no genera cuotas ni otras obligaciones económicas hasta que el Alumno haya sido dado de alta definitivamente.
 
 ---
 
 ## 6. Datos derivados
 
-Los siguientes datos se obtienen a partir de información ya modelada y no se consideran atributos almacenados independientes en esta etapa conceptual:
+Los siguientes datos se obtienen a partir de información ya modelada y no se consideran atributos almacenados:
 
 - Categoría del Alumno.
 - Estado activo/inactivo del Alumno.
-- Interés por mora.
+- Importe total de un Pago (suma de los importes aplicados).
 - Saldo de una obligación.
+- Saldo pendiente informado en el Recibo de un pago parcial.
+- Estado de una cuota (pendiente, vencida, pagada).
 - Deuda total.
 - Morosidad.
-- Condición de Recibo asociado a un Pago posteriormente anulado.
+- Condición de anulado de un Recibo (se obtiene del Pago).
 
 ---
 
@@ -383,17 +390,18 @@ Los siguientes datos se obtienen a partir de información ya modelada y no se co
 
 Luego de la revisión se excluyen deliberadamente:
 
-- **Condición Particular de Cuota** como entidad: el importe particular pasa a ser un atributo opcional de Alumno.
-- **Aplicación de Pago** como entidad conceptual: se representa mediante la relación N:M Pago — Obligación de Pago con el atributo Importe aplicado.
-- Relación directa **Alumno — Pago**: el Alumno correspondiente se determina a través de las Obligaciones alcanzadas por el Pago.
-- Rol y estado de cuenta en Usuario.
-- Mes y Año en Matrícula.
+- **Administrador** como entidad: la escuela cuenta con una única persona a cargo de la gestión (el coordinador). Es un **actor** del sistema, que se autentica y opera, pero no una entidad del dominio: no posee atributos ni relaciones que aporten información, ya que toda operación administrativa es realizada por la misma persona. Su credencial de acceso es un dato de configuración del sistema. Si en el futuro hubiera varias personas que registren pagos, se incorporaría como entidad relacionada con Pago.
+- **Usuario** como entidad: sin Administrador, solo el Responsable accede al sistema. Su identificación es el DNI, que ya pertenece a Persona, y su contraseña se modela como atributo opcional de Responsable.
+- **Pedido de Indumentaria** como entidad separada: se relacionaba 1:1 de forma obligatoria con su cobro. Se integra como subtipo **Cobro de Indumentaria**.
+- **Condición Particular de Cuota** como entidad: el importe particular es un atributo opcional de Alumno.
+- **Aplicación de Pago** como entidad: se representa mediante la relación N:M Pago — Obligación de Pago con el atributo Importe aplicado.
+- Relación directa **Alumno — Pago**: el Alumno se determina a través de las Obligaciones alcanzadas por el Pago.
+- **Importe total** como atributo de Pago: es un dato derivado.
 - Período y Fecha de vencimiento como atributos propios de Cuota: ambos se obtienen mediante la relación con Período de Cuota.
-- Interés aplicado como atributo almacenado de Cuota.
-- Concepto y Saldo como atributos propios de Cobro Extraordinario.
+- Concepto y Saldo como atributos propios de Cobro Extraordinario: el concepto se obtiene del Evento o del tipo de prenda, y el saldo es derivado.
 - Categoría como entidad independiente.
 - Colegio, Barrio y Localidad como entidades independientes.
-- Entidades específicas para offline o auditoría.
+- Entidades específicas para funcionamiento offline o auditoría técnica.
 
 ---
 
@@ -407,25 +415,45 @@ El archivo fuente del diagrama se conserva en [`der-conceptual.puml`](./der-conc
 
 ---
 
-## 9. Decisiones que se resolverán en etapas posteriores
+## 9. Cambios respecto de la versión anterior
+
+A partir de la devolución docente ("entidades sin atributos" y "relaciones o entidades que lógicamente no tienen sentido") se aplicaron los siguientes cambios:
+
+| # | Cambio | Motivo |
+|---|---|---|
+| 1 | Se elimina **Administrador** | Entidad sin atributos ni relaciones, con una única ocurrencia. Es un actor, no una entidad. |
+| 2 | Se elimina **Usuario**; la contraseña pasa a **Responsable** | Relación 1:0..1 con un único atributo y sin identificador propio. |
+| 3 | Se elimina **Pedido de Indumentaria**; se incorpora el subtipo **Cobro de Indumentaria**, y Evento se relaciona directamente con Cobro Extraordinario | El pedido y su cobro eran una misma cosa unida 1:1 obligatoria. No se crea un subtipo "Cobro de Evento" porque quedaría sin atributos. |
+| 4 | **Matrícula** incorpora Fecha de generación | Subtipo sin atributos. |
+| 5 | **Cuota** incorpora Recargo por mora | Subtipo sin atributos. Conserva el interés aplicado (RN-21, RN-23). |
+| 6 | **Preinscripción** incorpora Número, Estado y Fecha de resolución, y se relaciona con **Alumno** | Entidad aislada, sin relaciones. |
+| 7 | Todas las entidades indican su identificador; **Movimiento de Alumno** se identifica como entidad débil | Faltaban identificadores. |
+| 8 | Se quita **Importe total** de Pago | Dato derivado de los importes aplicados. |
+| 9 | **Pago — Recibo** pasa de 1:0..1 a 1:1 | El caso offline se excluyó del modelo conceptual y no puede justificar la cardinalidad. |
+| 10 | Pago incorpora **Fecha de anulación** | Trazabilidad de la anulación (RNF-12). |
+| 11 | Se agregan restricciones: una Matrícula por Alumno y una Cuota por Alumno y Período | El modelo no las expresaba. |
+
+---
+
+## 10. Decisiones que se resolverán en etapas posteriores
 
 Quedan fuera de este documento y se tratarán al trabajar claves, restricciones, modelo relacional y modelo físico:
 
 - claves primarias, candidatas y foráneas;
 - necesidad de identificadores técnicos;
 - resolución física de relaciones N:M;
-- análisis formal de entidades débiles;
 - restricciones de integridad para especializaciones y exclusiones;
 - mecanismos para garantizar unicidad;
 - restricciones temporales de vigencia;
 - tipos de datos;
 - índices;
 - auditoría técnica;
-- mecanismos de sincronización offline.
+- mecanismos de sincronización offline;
+- credencial de acceso del Administrador/Coordinador.
 
 ---
 
-## 10. Próximos pasos
+## 11. Próximos pasos
 
 Una vez validado este modelo conceptual y su DER por el equipo y el tutor:
 
