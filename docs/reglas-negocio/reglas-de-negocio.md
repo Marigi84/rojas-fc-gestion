@@ -132,6 +132,9 @@ La matrícula corresponde únicamente al primer ingreso del alumno a la escuela.
 ### RN-31 – Pago total de matrícula
 La matrícula deberá abonarse en su totalidad en una única operación y no admitirá pagos parciales.
 
+### RN-48 – Importe de la matrícula
+El importe de la matrícula es establecido por la administración al registrar el ingreso del alumno.
+
 ---
 
 ## 8. Pagos de cuotas
