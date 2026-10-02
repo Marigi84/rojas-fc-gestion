@@ -362,7 +362,7 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 
 **Pagos y recibos**
 - Toda Obligación de Pago pertenece exactamente a un Alumno.
-- Todas las Obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
+- Un Pago corresponde a exactamente un Alumno, determinado a través de las Obligaciones de Pago a las que se aplica. Por eso todas las Obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
 - El motivo y la fecha de anulación son obligatorios cuando el Pago está anulado.
 - La anulación de un Pago no elimina su registro histórico ni el Recibo emitido.
 - El medio de pago es opcional y, en el alcance actual, admite Efectivo o Transferencia.
@@ -383,6 +383,8 @@ Los siguientes datos se obtienen a partir de información ya modelada y no se co
 - Deuda total.
 - Morosidad.
 - Condición de anulado de un Recibo (se obtiene del Pago).
+
+**Saldo pendiente y RN-44.** RN-44 exige conservar el saldo pendiente de un cobro extraordinario no abonado en su totalidad. Esa exigencia se cumple aunque el saldo sea un dato derivado: se obtiene siempre del importe de la obligación menos los importes aplicados de los pagos no anulados, información que nunca se elimina (RN-35, RN-37). Calcularlo en lugar de almacenarlo evita que el saldo guardado y los pagos registrados queden inconsistentes.
 
 ---
 
