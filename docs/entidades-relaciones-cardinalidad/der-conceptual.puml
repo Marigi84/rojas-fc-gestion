@@ -8,8 +8,8 @@ hide stereotypes
 skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam linetype ortho
-skinparam nodesep 35
-skinparam ranksep 40
+skinparam nodesep 60
+skinparam ranksep 90
 skinparam ArrowColor #444444
 skinparam NoteBackgroundColor #FFFDEB
 skinparam NoteBorderColor #888888
@@ -50,7 +50,7 @@ note top of Persona
   Alumno | Responsable.
 end note
 
-Responsable "1..2" -- "1..N" Alumno : tiene como responsable\n[Vínculo]
+Alumno "1..N" -- "1..2" Responsable : tiene como\nresponsable\n[Vínculo]
 
 ' ===================== Preinscripción y movimientos =====================
 
@@ -76,11 +76,12 @@ entity "Preinscripción" as Preinscripcion {
   Vínculo
 }
 
-Preinscripcion "0..1" -- "0..1" Alumno : origina
+Preinscripcion "0..N" -- "0..1" Alumno : corresponde a
 
 note bottom of Preinscripcion
   Estado: Pendiente | Aprobada | Rechazada.
-  Solo una preinscripción Aprobada origina un Alumno.
+  Solo una preinscripción Aprobada corresponde a un Alumno
+  (alta nueva o reactivación).
 end note
 
 entity "Movimiento de Alumno\n(entidad débil)" as MovimientoAlumno {
@@ -102,10 +103,6 @@ entity "Cuota" as Cuota {
   Recargo por mora [opcional]
 }
 
-entity "Matrícula" as Matricula {
-  Fecha de generación
-}
-
 entity "Cobro Extraordinario" as CobroExtraordinario {
   Fecha
 }
@@ -116,18 +113,19 @@ entity "Cobro de Indumentaria" as CobroIndumentaria {
 }
 
 Alumno "1" -- "0..N" ObligacionPago : posee
+MovimientoAlumno "0..1" -- "0..1" ObligacionPago : origina matrícula
 
 ObligacionPago <|-- Cuota
-ObligacionPago <|-- Matricula
 ObligacionPago <|-- CobroExtraordinario
 
 CobroExtraordinario <|-- CobroIndumentaria
 
 note top of ObligacionPago
-  Especialización TOTAL y EXCLUSIVA:
-  Cuota | Matrícula | Cobro Extraordinario.
-  Un Alumno tiene como máximo una Matrícula
-  y una Cuota por Período.
+  Especialización PARCIAL y EXCLUSIVA:
+  Cuota | Cobro Extraordinario.
+  La obligación originada por el Movimiento
+  de Alta es la Matrícula.
+  Un Alumno tiene como máximo una Cuota por Período.
 end note
 
 note bottom of CobroExtraordinario
@@ -172,7 +170,7 @@ entity "Recibo" as Recibo {
   Fecha de emisión
 }
 
-Pago "0..N" -- "1..N" ObligacionPago : se aplica a\n[Importe aplicado]
+ObligacionPago "1..N" -- "0..N" Pago : se aplica a\n[Importe aplicado]
 Pago "1" -- "1" Recibo : genera
 
 note bottom of Pago

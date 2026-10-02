@@ -3,6 +3,8 @@
 **2ª Entrega — Trabajo Final Integrador**
 Tecnicatura Universitaria en Programación (UTN)
 
+> **Nota:** el modelo conceptual vigente se encuentra en [`docs/entidades-relaciones-cardinalidad/propuesta-der-conceptual-revision.md`](entidades-relaciones-cardinalidad/propuesta-der-conceptual-revision.md). El diagrama de este documento corresponde a una versión anterior del modelo.
+
 El listado de módulos vive en [`docs/modulos/propuesta-modulos.md`](modulos/propuesta-modulos.md). Este documento cubre solo el modelado de entidades y el esquema de base de datos, construidos contra [`docs/requisitos/requisitos-funcionales.md`](requisitos/requisitos-funcionales.md), [`docs/requisitos/requisitos-no-funcionales.md`](requisitos/requisitos-no-funcionales.md) y [`docs/reglas-negocio/reglas-de-negocio.md`](reglas-negocio/reglas-de-negocio.md).
 
 ---

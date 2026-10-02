@@ -53,7 +53,7 @@ El vínculo madre/padre/tutor no pertenece al Responsable de manera aislada, sin
 
 ### Preinscripción
 
-Representa un formulario de preinscripción recibido, que es revisado por la administración y luego aprobado o rechazado.
+Representa un formulario de preinscripción recibido, que es revisado por la administración y luego aprobado o rechazado. Una Preinscripción aprobada da lugar al alta de un nuevo Alumno o a la reactivación de un Alumno existente.
 
 **Atributos:**
 - Número de preinscripción *(identificador)*
@@ -78,9 +78,9 @@ Representa un formulario de preinscripción recibido, que es revisado por la adm
 
 La Preinscripción conserva la información **declarada** por la familia. Mientras está pendiente puede ser corregida por la administración (RF-19); una vez resuelta, queda como registro de lo recibido.
 
-Los datos declarados no constituyen una duplicación de los datos de Alumno y Responsable: representan un hecho distinto (lo declarado en una fecha determinada), mientras que Alumno y Responsable contienen los datos actuales y verificados, que se actualizan con el tiempo. Además, una Preinscripción rechazada nunca origina un Alumno, por lo que sus datos solo existen en ella.
+Los datos declarados no constituyen una duplicación de los datos de Alumno y Responsable: representan un hecho distinto (lo declarado en una fecha determinada), mientras que Alumno y Responsable contienen los datos actuales y verificados, que se actualizan con el tiempo. Además, una Preinscripción rechazada nunca corresponde a un Alumno, por lo que sus datos solo existen en ella.
 
-Si el DNI del alumno ya corresponde a un Alumno registrado, la Preinscripción se rechaza y, si corresponde, el Alumno existente se reactiva por el procedimiento habitual.
+Si el DNI del alumno ya corresponde a un Alumno inactivo, no se crea un nuevo Alumno: al aprobarse la Preinscripción, se reactiva el Alumno existente utilizando los datos actualizados del formulario (RF-17, RF-20). Habitualmente la reactivación la realiza directamente la administración, pero puede ocurrir que la familia complete nuevamente el formulario.
 
 Una Preinscripción no genera cuotas ni otras obligaciones económicas.
 
@@ -96,6 +96,8 @@ Entidad débil. Representa los cambios administrativos del Alumno a lo largo del
 Se identifica por el Alumno al que pertenece junto con su fecha y hora. Se registra la hora para distinguir dos movimientos realizados el mismo día (por ejemplo, una baja por error y su reactivación inmediata).
 
 Todo Alumno registra al menos un movimiento. El estado activo o inactivo del Alumno se deriva de su último movimiento.
+
+El Movimiento de tipo **Alta**, que corresponde al primer ingreso del Alumno, origina su Matrícula (ver Obligación de Pago).
 
 ### Configuración de Cuota
 
@@ -127,11 +129,15 @@ Representa una obligación económica concreta de un Alumno.
 - Importe
 
 Toda Obligación de Pago corresponde exactamente a uno de estos tipos:
-- Cuota
-- Matrícula
-- Cobro Extraordinario
+- Cuota *(subtipo)*
+- Cobro Extraordinario *(subtipo)*
+- Matrícula *(originada por el Movimiento de Alta)*
 
-La especialización es total y exclusiva.
+**Matrícula.** Es la obligación económica correspondiente al primer ingreso del Alumno. No se modela como subtipo porque no posee datos propios: su importe es el de toda Obligación de Pago y su fecha coincide con la del alta. Lo que la distingue es su origen, por lo que se representa mediante la relación **Movimiento de Alumno — origina matrícula — Obligación de Pago**:
+- solo el Movimiento de tipo Alta origina matrícula; una Reactivación no genera una nueva (RN-30);
+- como cada Alumno tiene un único Movimiento de Alta, no puede tener más de una Matrícula;
+- debe abonarse en su totalidad en una única operación, sin pagos parciales (RN-31);
+- habitualmente se abona al momento de la inscripción, aunque puede quedar pendiente.
 
 ### Cuota
 
@@ -149,17 +155,6 @@ El **recargo por mora** registra el monto del interés aplicado cuando la cuota 
 Permanece vacío mientras no corresponda aplicar interés.
 
 El período y la fecha de vencimiento se obtienen a través de la relación con Período de Cuota. El saldo, el estado de la cuota y la condición de morosidad son datos derivados.
-
-### Matrícula
-
-Especialización de Obligación de Pago. Representa la obligación económica correspondiente al primer ingreso del Alumno.
-
-**Atributos:**
-- Fecha de generación
-
-La fecha de generación corresponde a la inscripción del Alumno, momento en que nace la obligación. Es distinta de la fecha de pago, que pertenece al Pago: habitualmente la matrícula se abona al inscribirse, aunque puede quedar pendiente.
-
-Se genera únicamente por el primer ingreso del Alumno; una reactivación no genera una nueva Matrícula. Debe abonarse en su totalidad en una única operación.
 
 ### Cobro Extraordinario
 
@@ -233,13 +228,12 @@ Toda Persona registrada definitivamente es Alumno o Responsable, y no ambas a la
 
 ### Obligación de Pago
 
-Obligación de Pago se especializa de forma **total y exclusiva** en:
+Obligación de Pago se especializa de forma **parcial y exclusiva** en:
 
 - Cuota
-- Matrícula
 - Cobro Extraordinario
 
-Los subtipos heredan Número de obligación e Importe. Cada uno incorpora sus propios atributos o relaciones.
+Los subtipos heredan Número de obligación e Importe. Las obligaciones que no pertenecen a ninguno de los dos subtipos son Matrículas, originadas por el Movimiento de Alta del Alumno.
 
 ### Cobro Extraordinario
 
@@ -260,15 +254,20 @@ Los cobros extraordinarios que no son de indumentaria corresponden a un Evento. 
 - Es una relación N:M.
 - La relación posee el atributo **Vínculo**: madre, padre o tutor.
 
-### Preinscripción — Alumno: origina
+### Preinscripción — Alumno: corresponde a
 
-- Una Preinscripción origina 0..1 Alumno: uno si fue aprobada, ninguno si está pendiente o fue rechazada.
-- Un Alumno es originado por 0..1 Preinscripción: puede haber sido registrado directamente por la administración, sin preinscripción (RF-01).
+- Una Preinscripción corresponde a 0..1 Alumno: a uno si fue aprobada (alta nueva o reactivación), a ninguno si está pendiente o fue rechazada.
+- A un Alumno pueden corresponder 0..N Preinscripciones: ninguna si fue registrado directamente por la administración (RF-01), una por su alta y otra por cada reactivación realizada mediante formulario.
 
 ### Alumno — Movimiento de Alumno: registra
 
 - Un Alumno registra 1..N Movimientos.
 - Cada Movimiento pertenece exactamente a 1 Alumno, del cual depende para su identificación.
+
+### Movimiento de Alumno — Obligación de Pago: origina matrícula
+
+- Un Movimiento de Alumno origina 0..1 Obligación de Pago: solo el Movimiento de tipo Alta origina la Matrícula.
+- Una Obligación de Pago es originada por 0..1 Movimiento: por uno si es la Matrícula, por ninguno si es Cuota o Cobro Extraordinario.
 
 ### Alumno — Obligación de Pago: posee
 
@@ -341,7 +340,7 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 **Alumnos y preinscripciones**
 - El estado activo/inactivo del Alumno se deriva de su último Movimiento.
 - La categoría del Alumno se deriva de su fecha de nacimiento.
-- Una Preinscripción solo puede originar un Alumno si su estado es Aprobada.
+- Una Preinscripción solo puede corresponder a un Alumno si su estado es Aprobada.
 - Mientras se encuentra pendiente, una Preinscripción no representa todavía un Alumno o Responsable definitivo.
 - Una Preinscripción no genera cuotas ni otras obligaciones económicas.
 
@@ -350,14 +349,14 @@ En el modelo conceptual se conserva como atributo de la relación N:M. Su transf
 - Cada Período de Cuota posee una única fecha de vencimiento aplicable a todas sus cuotas.
 - Un Alumno no puede tener más de una Cuota para un mismo Período de Cuota.
 - Los cambios posteriores de configuración no modifican los Períodos de Cuota ya generados ni las Cuotas comprendidas en ellos.
+- Una Cuota ya pagada no puede modificar su importe (RN-25).
 - El recargo por mora se aplica una sola vez, utilizando el porcentaje de la Configuración que rige el período de la cuota.
 - La Cuota debe abonarse en una única operación válida por el total adeudado.
 
 **Matrícula y cobros extraordinarios**
-- Un Alumno puede tener como máximo una Matrícula.
-- La Matrícula corresponde únicamente al primer ingreso del Alumno; una reactivación no genera una nueva.
+- Toda Obligación de Pago es una Cuota, un Cobro Extraordinario o una Matrícula, y solo una de ellas.
+- Solo un Movimiento de tipo Alta puede originar una Matrícula; una Reactivación no genera una nueva.
 - La Matrícula debe abonarse en una única operación válida por el total adeudado y no admite pagos parciales.
-- La especialización de Obligación de Pago es total y exclusiva.
 - Todo Cobro Extraordinario corresponde a un Evento o es un Cobro de Indumentaria, nunca ambos ni ninguno.
 - Los Cobros Extraordinarios admiten pagos parciales y no están sujetos al interés por mora.
 
@@ -376,6 +375,7 @@ Los siguientes datos se obtienen a partir de información ya modelada y no se co
 
 - Categoría del Alumno.
 - Estado activo/inactivo del Alumno.
+- Fecha de la Matrícula (se obtiene del Movimiento de Alta).
 - Importe total de un Pago (suma de los importes aplicados).
 - Saldo de una obligación.
 - Saldo pendiente informado en el Recibo de un pago parcial.
@@ -393,6 +393,7 @@ Luego de la revisión se excluyen deliberadamente:
 - **Administrador** como entidad: la escuela cuenta con una única persona a cargo de la gestión (el coordinador). Es un **actor** del sistema, que se autentica y opera, pero no una entidad del dominio: no posee atributos ni relaciones que aporten información, ya que toda operación administrativa es realizada por la misma persona. Su credencial de acceso es un dato de configuración del sistema. Si en el futuro hubiera varias personas que registren pagos, se incorporaría como entidad relacionada con Pago.
 - **Usuario** como entidad: sin Administrador, solo el Responsable accede al sistema. Su identificación es el DNI, que ya pertenece a Persona, y su contraseña se modela como atributo opcional de Responsable.
 - **Pedido de Indumentaria** como entidad separada: se relacionaba 1:1 de forma obligatoria con su cobro. Se integra como subtipo **Cobro de Indumentaria**.
+- **Matrícula** como subtipo: no posee datos propios; se representa como la Obligación de Pago originada por el Movimiento de Alta.
 - **Condición Particular de Cuota** como entidad: el importe particular es un atributo opcional de Alumno.
 - **Aplicación de Pago** como entidad: se representa mediante la relación N:M Pago — Obligación de Pago con el atributo Importe aplicado.
 - Relación directa **Alumno — Pago**: el Alumno se determina a través de las Obligaciones alcanzadas por el Pago.
@@ -424,14 +425,14 @@ A partir de la devolución docente ("entidades sin atributos" y "relaciones o en
 | 1 | Se elimina **Administrador** | Entidad sin atributos ni relaciones, con una única ocurrencia. Es un actor, no una entidad. |
 | 2 | Se elimina **Usuario**; la contraseña pasa a **Responsable** | Relación 1:0..1 con un único atributo y sin identificador propio. |
 | 3 | Se elimina **Pedido de Indumentaria**; se incorpora el subtipo **Cobro de Indumentaria**, y Evento se relaciona directamente con Cobro Extraordinario | El pedido y su cobro eran una misma cosa unida 1:1 obligatoria. No se crea un subtipo "Cobro de Evento" porque quedaría sin atributos. |
-| 4 | **Matrícula** incorpora Fecha de generación | Subtipo sin atributos. |
+| 4 | Se elimina el subtipo **Matrícula**; se modela mediante la relación *origina matrícula* entre Movimiento de Alumno (Alta) y Obligación de Pago | Subtipo sin atributos: su importe es el de toda obligación y su fecha es la del alta. La relación garantiza que solo el primer ingreso genere matrícula y que haya una sola por alumno. |
 | 5 | **Cuota** incorpora Recargo por mora | Subtipo sin atributos. Conserva el interés aplicado (RN-21, RN-23). |
-| 6 | **Preinscripción** incorpora Número, Estado y Fecha de resolución, y se relaciona con **Alumno** | Entidad aislada, sin relaciones. |
+| 6 | **Preinscripción** incorpora Número, Estado y Fecha de resolución, y se relaciona con **Alumno** (0..N — 0..1), tanto para altas como para reactivaciones | Entidad aislada, sin relaciones. |
 | 7 | Todas las entidades indican su identificador; **Movimiento de Alumno** se identifica como entidad débil | Faltaban identificadores. |
 | 8 | Se quita **Importe total** de Pago | Dato derivado de los importes aplicados. |
 | 9 | **Pago — Recibo** pasa de 1:0..1 a 1:1 | El caso offline se excluyó del modelo conceptual y no puede justificar la cardinalidad. |
 | 10 | Pago incorpora **Fecha de anulación** | Trazabilidad de la anulación (RNF-12). |
-| 11 | Se agregan restricciones: una Matrícula por Alumno y una Cuota por Alumno y Período | El modelo no las expresaba. |
+| 11 | Se agregan restricciones: una Cuota por Alumno y Período, y protección del importe de cuotas pagadas (RN-25) | El modelo no las expresaba. |
 
 ---
 
