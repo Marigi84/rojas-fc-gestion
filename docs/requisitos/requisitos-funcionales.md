@@ -105,7 +105,7 @@ El formulario podrá incluir un segundo responsable de manera opcional, con los 
 Si el DNI ingresado corresponde a un alumno ya registrado, la preinscripción no deberá generar un nuevo registro de alumno. Si el alumno se encuentra inactivo, su registro existente deberá poder utilizarse para una eventual reactivación.
 
 ### RF-18 – Consultar preinscripciones
-El sistema deberá permitir al Administrador/Coordinador consultar los formularios de preinscripción recibidos y la información contenida en ellos.
+El sistema deberá permitir al Administrador/Coordinador consultar los formularios de preinscripción pendientes de revisión y la información contenida en ellos.
 
 ### RF-19 – Corregir preinscripción
 El sistema deberá permitir al Administrador/Coordinador corregir los datos recibidos en una preinscripción antes de utilizarlos para registrar al alumno.
@@ -292,6 +292,16 @@ El sistema deberá informar al Administrador/Coordinador si la sincronización f
 
 ### RF-64 – Emitir recibo luego de la sincronización
 El sistema deberá generar el recibo correspondiente una vez que el pago registrado sin conexión haya sido sincronizado y validado correctamente.
+
+---
+
+## 14. Eventos
+
+### RF-65 – Registrar evento
+El sistema deberá permitir al Administrador/Coordinador registrar un evento indicando nombre, año e importe.
+
+### RF-66 – Asignar alumnos a un evento
+El sistema deberá permitir al Administrador/Coordinador asignar uno o más alumnos como participantes de un evento. Al asignar cada alumno, el sistema deberá generar el Cobro Extraordinario correspondiente utilizando el importe definido para ese Evento.
 
 ---
 

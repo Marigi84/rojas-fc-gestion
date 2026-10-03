@@ -83,7 +83,7 @@ Representa un formulario de preinscripción **pendiente de revisión** (RF-17 a 
 
 | Atributo | Observación |
 |---|---|
-| Fecha | |
+| Fecha | Decisión confirmada con Rojas FC: permite atender los formularios pendientes por orden de llegada |
 | Datos del alumno: Nombre, Apellido, DNI, Fecha de nacimiento, Domicilio, Barrio, Localidad, Colegio | Atributo compuesto |
 
 La Preinscripción es **temporal**. Mientras está pendiente, los datos declarados permanecen solo en ella: no se crean todavía Persona, Alumno ni Responsable. Al **aceptarse**, la información validada se utiliza para crear o actualizar los registros definitivos, se registra el Movimiento de Alta o de Reactivación y la Preinscripción se elimina. Al **rechazarse**, también se elimina (RN-49).
@@ -175,7 +175,7 @@ Especialización de Obligación de Pago. Obligación no periódica correspondien
 
 | Atributo | Observación |
 |---|---|
-| Fecha de generación | |
+| Fecha de generación | Decisión confirmada con Rojas FC: fecha en que el administrador registra el pedido de indumentaria o asigna al alumno a un evento |
 
 Admite pagos parciales (RN-43) y no está sujeto al interés por mora (RN-46). Un cobro correspondiente a un evento representa la participación confirmada del alumno: no todos los alumnos participan de cada evento.
 
@@ -195,6 +195,11 @@ En Rojas FC cada pedido corresponde a una sola prenda, genera un único cobro y 
 | Atributo | Observación |
 |---|---|
 | **Nombre + Año** | Identificador compuesto: un mismo evento puede repetirse en distintas ediciones |
+| Importe | Único para todos los participantes (RN-50); no puede modificarse una vez asignado el primer participante (RN-51) |
+
+El administrador registra el evento con su nombre, año e importe (RF-65) y luego le asigna los alumnos participantes; por cada uno se genera un Cobro Extraordinario con el importe del evento (RF-66). Un Evento puede existir antes de tener participantes.
+
+No se modela una relación directa Evento — Alumno: los participantes se obtienen a través de los cobros (Evento → Cobro Extraordinario → Alumno), por lo que esa relación duplicaría información.
 
 ### Pago
 
@@ -247,16 +252,16 @@ En el diagrama, el número junto a una entidad indica cuántas ocurrencias de es
 | R2 | Preinscripción — **declara** — Responsable declarado | 1 — 1..2 | RF-17, RN-11, RN-12 |
 | R3 | Tipo de Vínculo — **indica vínculo** — Responsable declarado | 1 — 0..N | RN-09 |
 | R4 | Alumno — **registra movimiento** — Movimiento de Alumno (identificadora) | 1 — 1..N | RF-04, RF-05, RF-51 |
-| R5 | Personal Administrativo — **realiza** — Movimiento de Alumno | 1 — 0..N | RF-04, RF-05, RNF-14 |
+| R5 | Personal Administrativo — **realiza** — Movimiento de Alumno | 1 — 0..N | RF-04, RF-05, RNF-12 |
 | R6 | Tipo de Movimiento — **clasifica** — Movimiento de Alumno | 1 — 0..N | RF-51 |
 | R7 | Movimiento de Alumno — **origina** — Matrícula | 1 — 0..1 | RN-29, RN-30 |
 | R8 | Alumno — **posee** — Obligación de Pago | 1 — 0..N | RN-42, RF-28 |
 | R9 | Configuración de Cuota — **rige** — Período de Cuota | 1 — 0..N | RN-17, RN-23 |
 | R10 | Período de Cuota — **comprende** — Cuota | 1 — 0..N | RF-23, RN-19 |
-| R11 | Evento — **corresponde a** — Cobro Extraordinario | 0..1 — 0..N | RF-41 |
+| R11 | Evento — **corresponde a** — Cobro Extraordinario | Cada Evento tiene 0..N cobros · cada Cobro tiene 0..1 Evento (ninguno si es de indumentaria) | RF-41, RF-66 |
 | R12 | Pago — **se aplica a** — Obligación de Pago | Cada Pago se aplica a 1..N Obligaciones · cada Obligación recibe 0..N Pagos. Atributo: **Importe aplicado** | RF-34, RF-42 |
-| R13 | Personal Administrativo — **registra pago** — Pago | 1 — 0..N | RF-32 |
-| R14 | Personal Administrativo — **anula** — Pago | 0..1 — 0..N | RF-35, RN-36 |
+| R13 | Personal Administrativo — **registra pago** — Pago | 1 — 0..N | RF-32, RNF-12 |
+| R14 | Personal Administrativo — **anula** — Pago | 0..1 — 0..N | RF-35, RN-36, RNF-12 |
 | R15 | Medio de Pago — **se abona con** — Pago | 0..1 — 0..N | RN-33, RN-34 |
 | R16 | Pago — **genera** — Recibo | 1 — 0..1 | RN-38, RF-61, RF-64 |
 
@@ -305,14 +310,15 @@ En el diagrama, el número junto a una entidad indica cuántas ocurrencias de es
 18. Solo un Movimiento de tipo Alta origina una Matrícula (RN-30).
 19. La Matrícula se abona en una única operación por su importe exacto (RN-31).
 20. Todo Cobro Extraordinario corresponde a un Evento o es un Cobro de Indumentaria, nunca ambos ni ninguno.
-21. Un Cobro Extraordinario admite pagos parciales (RN-43), pero la suma de los importes aplicados por pagos no anulados no puede superar su importe. Si se recibe de más, la administración devuelve la diferencia y solo se registra lo efectivamente cobrado.
+21. El importe de un cobro correspondiente a un Evento es el importe del Evento, que no puede modificarse una vez asignado el primer participante (RN-50, RN-51, RF-66).
+22. Un Cobro Extraordinario admite pagos parciales (RN-43), pero la suma de los importes aplicados por pagos no anulados no puede superar su importe. Si se recibe de más, la administración devuelve la diferencia y solo se registra lo efectivamente cobrado.
 
 ### Pagos y recibos
 
-22. Un Pago corresponde a exactamente un Alumno, determinado a través de las Obligaciones a las que se aplica.
-23. Si el Pago está anulado, son obligatorios el Motivo, la Fecha de anulación y el integrante del Personal Administrativo que lo anuló (RN-35, RN-36). La Fecha de anulación es igual o posterior a la Fecha del Pago.
-24. Todo Pago genera exactamente un Recibo; si se registró sin conexión, el Recibo se genera al sincronizarse y validarse (RN-38, RF-64).
-25. La anulación de un Pago no elimina su registro ni su Recibo; el Recibo pasa a considerarse anulado (RN-37, RN-41, RF-40).
+23. Un Pago corresponde a exactamente un Alumno, determinado a través de las Obligaciones a las que se aplica.
+24. Si el Pago está anulado, son obligatorios el Motivo, la Fecha de anulación y el integrante del Personal Administrativo que lo anuló (RN-35, RN-36). La Fecha de anulación es igual o posterior a la Fecha del Pago.
+25. Todo Pago genera exactamente un Recibo; si se registró sin conexión, el Recibo se genera al sincronizarse y validarse (RN-38, RF-64).
+26. La anulación de un Pago no elimina su registro ni su Recibo; el Recibo pasa a considerarse anulado (RN-37, RN-41, RF-40).
 
 ---
 
@@ -357,17 +363,17 @@ El diagrama se genera con PlantUML a partir de [`der-conceptual.puml`](./der-con
 
 | # | Cambio | Motivo |
 |---|---|---|
-| 1 | **Administrador** pasa a **Personal Administrativo**, con Contraseña y las relaciones realiza, registra pago y anula | Tenía atributos solo heredados y ninguna relación. Ahora tiene atributo propio y representa quién opera (RF-58, RF-32, RF-35, RNF-14) |
+| 1 | **Administrador** pasa a **Personal Administrativo**, con Contraseña y las relaciones realiza, registra pago y anula | Tenía atributos solo heredados y ninguna relación. Ahora tiene atributo propio y representa quién opera (RF-58, RF-32, RF-35, RNF-12) |
 | 2 | Se elimina **Usuario**; la contraseña pasa a Responsable (opcional) y a Personal Administrativo | Usuario tenía un único atributo y no tenía identificador propio |
 | 3 | **Preinscripción** temporal, sin relación con Alumno, con **Responsable declarado** como entidad débil | Evita registrar el DNI en dos lugares, como se observó en la devolución docente (RN-49) |
 | 4 | Se incorporan **Tipo de Vínculo**, **Tipo de Movimiento** y **Medio de Pago** como entidades | Evita valores repetidos como texto, como se observó con el medio de pago |
-| 5 | **Cuota** incorpora Recargo por mora; **Matrícula**, Fecha de matriculación derivada y su relación con el Movimiento de Alta | Subtipos que no tenían atributos propios |
+| 5 | **Cuota** incorpora Recargo por mora; **Matrícula**, Fecha de matriculación derivada y su relación con el Movimiento de Alta | El recargo conserva el monto de mora aplicado (RN-21, RN-23); la fecha de matriculación se deriva del Movimiento de Alta, el único que origina la matrícula (RN-30) |
 | 6 | **Pedido de Indumentaria** se integra como **Cobro de Indumentaria** | El pedido y su cobro estaban en relación 1:1 obligatoria y representan el mismo hecho |
-| 7 | **Evento** se relaciona directamente con Cobro Extraordinario | Un subtipo "Cobro de Evento" no tendría atributos propios |
+| 7 | **Evento** incorpora Importe y se relaciona directamente con Cobro Extraordinario | El importe es único para todos los participantes y no cambia una vez asignado el primero (RN-50, RN-51). Un subtipo "Cobro de Evento" no tendría atributos propios |
 | 8 | Los **atributos derivados** se representan en el diagrama; Anulado e Importe total de Pago pasan a derivados | Evita almacenar información que se obtiene de otros datos |
 | 9 | Solo se indican **identificadores naturales**; el resto se resuelve en #13 | Evita adelantar decisiones del modelo lógico o físico |
 | 10 | Se agregan restricciones de unicidad, de acceso, de preinscripción, de secuencia de movimientos y de importes | El modelo no las expresaba |
-| 11 | Ajustes en RF-58 y en las reglas RN-48 y RN-49 | Formalizan decisiones confirmadas con Rojas FC |
+| 11 | Ajustes en RF-18 y RF-58; nuevos RF-65 y RF-66; nuevas reglas RN-48 a RN-51 | Formalizan decisiones confirmadas con Rojas FC |
 
 ---
 

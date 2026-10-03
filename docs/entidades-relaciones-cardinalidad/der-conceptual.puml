@@ -186,6 +186,7 @@ Periodo "1" -- "0..N" Cuota : comprende
 entity "Evento" as Evento {
   <u>Nombre</u>
   <u>Año</u>
+  Importe
 }
 
 Evento "0..1" -- "0..N" Cobro : corresponde a

@@ -132,9 +132,6 @@ La matrícula corresponde únicamente al primer ingreso del alumno a la escuela.
 ### RN-31 – Pago total de matrícula
 La matrícula deberá abonarse en su totalidad en una única operación y no admitirá pagos parciales.
 
-### RN-48 – Definición del importe de matrícula
-El importe de la matrícula será definido por el Administrador/Coordinador al momento de realizar la inscripción del alumno.
-
 ---
 
 ## 8. Pagos de cuotas
@@ -203,8 +200,21 @@ Los cobros extraordinarios correspondientes a eventos o indumentaria no estarán
 ### RN-47 – Inicio de obligaciones económicas
 Una preinscripción no generará cuotas ni otras obligaciones económicas hasta que el alumno haya sido dado de alta de manera definitiva.
 
+---
+
+## 13. Reglas incorporadas durante la revisión del modelo conceptual
+
+### RN-48 – Definición del importe de matrícula
+El importe de la matrícula será definido por el Administrador/Coordinador al momento de realizar la inscripción del alumno.
+
 ### RN-49 – Eliminación de la preinscripción procesada
 Una vez que una preinscripción haya sido aceptada o rechazada, el formulario de preinscripción no deberá conservarse. En caso de aceptación, la información validada se incorporará a los registros definitivos correspondientes y el alta o reactivación quedará reflejada en el historial del alumno.
+
+### RN-50 – Importe único del evento
+Cada Evento tendrá un único importe, aplicable por igual a todos los alumnos participantes.
+
+### RN-51 – Inmutabilidad del importe del evento
+El importe de un Evento no podrá modificarse una vez asignado el primer participante.
 
 ---
 
