@@ -2,218 +2,228 @@
 
 **Trabajo Final Integrador — Sistema de Gestión Rojas FC**
 
-Este documento presenta el **modelo conceptual** del sistema de gestión de Rojas FC. Se construye a partir de los requisitos funcionales, los requisitos no funcionales, las reglas de negocio y las devoluciones docentes recibidas sobre las versiones anteriores.
+Este documento presenta el **modelo conceptual** del sistema de gestión de Rojas FC. Se construye a partir de los requisitos funcionales, los requisitos no funcionales, las reglas de negocio, las decisiones confirmadas con Rojas FC y las devoluciones docentes recibidas sobre las versiones anteriores.
 
-El modelo representa el dominio mediante **entidades, atributos, relaciones, cardinalidades, especializaciones y restricciones**. Para cada entidad se marca su **identificador**, que se convertirá en clave primaria al construir el modelo relacional. No se incluyen todavía decisiones del modelo lógico o físico: claves foráneas, tablas intermedias, tipos de datos, índices ni triggers.
+El modelo representa el dominio mediante **entidades, atributos, relaciones, cardinalidades, especializaciones y restricciones**. No incluye decisiones del modelo lógico o físico: claves foráneas, tablas intermedias, tipos de datos, índices ni triggers.
 
-El diagrama utiliza **notación Chen**: rectángulos para las entidades (doble para la entidad débil), rombos para las relaciones (doble para la relación identificadora) y óvalos para los atributos. El identificador se muestra subrayado, los atributos derivados con línea punteada y los multivaluados con doble óvalo. Las cardinalidades se expresan como **(mín, máx)** junto a cada entidad: indican en cuántas ocurrencias de la relación participa cada ocurrencia de esa entidad.
+Se indican únicamente los **identificadores que surgen naturalmente del dominio**. Las entidades que no tienen un identificador natural definido por el negocio no reciben uno artificial: su identificación se analizará en la etapa de claves y restricciones (#13).
 
 ---
 
 ## 1. Criterio de modelado
 
-Un elemento del dominio se modela como **entidad** cuando tiene varias ocurrencias, **atributos o relaciones propias que la distinguen del resto** y algo que permita identificar cada ocurrencia. Si no cumple esas condiciones, se modela como atributo, como relación o queda fuera del modelo.
+Un elemento del dominio se modela como **entidad** cuando tiene varias ocurrencias y **atributos o relaciones propias que lo distinguen del resto**. Si no cumple esa condición, se modela como atributo, como relación o queda fuera del modelo.
 
-Todo elemento del modelo se justifica con un requisito o una regla de negocio. La cantidad de ocurrencias que hoy tiene una entidad en la escuela no condiciona su estructura: el modelo no limita, por ejemplo, la cantidad de personas que integran el personal administrativo, porque ningún requisito lo establece.
+Cada entidad, atributo y relación se justifica con un requisito, una regla de negocio o una decisión confirmada con Rojas FC. No se agregan atributos solamente para completar entidades.
 
 ---
 
 ## 2. Entidades y atributos
 
-Referencias: *(c)* compuesto · *(m)* multivaluado · *(d)* derivado · *(opc.)* opcional.
+Referencias: **identificador** · *(d)* derivado · *(opc.)* opcional · *(parcial)* identificador parcial de entidad débil.
 
 ### Persona
 
 Representa a una persona registrada en el sistema.
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **DNI** | Identificador |
+| **DNI** | Identificador. No deben existir dos Personas con el mismo DNI (RN-02, RN-08) |
 | Nombre | |
 | Apellido | |
 
-No deben existir dos Personas con el mismo DNI (RN-02, RN-08). El personal administrativo también se identifica por su DNI, al ser una Persona; ningún requisito lo exige ni lo prohíbe, y se adopta como supuesto del modelo.
-
 ### Alumno
 
-Especialización de Persona. Representa al alumno registrado en la escuela (RF-01).
+Especialización de Persona. Representa al alumno de la escuela (RF-01).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
 | Fecha de nacimiento | |
-| Dirección: Domicilio, Barrio, Localidad | *(c)* |
+| Dirección: Domicilio, Barrio, Localidad | Atributo compuesto |
 | Colegio | |
-| Importe de cuota particular | *(opc.)* — RF-24, RN-18 |
-| Categoría | *(d)* — del año de nacimiento (RF-16, RN-10) |
-| Estado (activo/inactivo) | *(d)* — del último Movimiento de Alumno |
-| Moroso | *(d)* — si posee al menos una cuota vencida con saldo (RN-26) |
+| Importe de cuota particular | *(opc.)* RF-24, RN-18 |
+| Categoría | *(d)* Año de nacimiento (RF-16, RN-10) |
+| Estado (activo/inactivo) | *(d)* Último Movimiento de Alumno |
+| Moroso | *(d)* Al menos una cuota vencida con saldo (RN-26) |
+
+El Alumno no posee acceso al sistema.
 
 ### Responsable
 
 Especialización de Persona. Representa al adulto responsable de uno o más alumnos (RF-06).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
 | Teléfono | |
-| Contraseña | *(opc.)* — acceso al portal con DNI y contraseña (RF-11, RF-15) |
+| Contraseña | *(opc.)* Acceso al portal con DNI y contraseña (RF-11, RF-15) |
 
-La contraseña es opcional porque un Responsable puede estar registrado sin haber activado todavía su acceso. El vínculo madre/padre/tutor pertenece a la relación con el Alumno, no al Responsable.
+La contraseña es opcional porque un Responsable puede estar registrado sin haber activado su acceso al portal.
 
 ### Personal Administrativo
 
-Especialización de Persona. Representa el perfil que los requisitos denominan **Administrador/Coordinador**: se autentica para acceder a las funcionalidades de gestión (RF-58) y el sistema lo distingue del Responsable (RF-59).
+Especialización de Persona. Representa el perfil que los requisitos denominan **Administrador/Coordinador**.
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| Correo electrónico | Clave candidata (único) — identificación de acceso |
-| Contraseña | |
+| Contraseña | Obligatoria: se autentica con DNI y contraseña para acceder a las funciones de gestión (RF-58, RF-59) |
 
-Se relaciona con las operaciones que realiza: revisa preinscripciones, registra y anula pagos, y registra los movimientos de los alumnos.
+Además de su atributo, se distingue por las operaciones que realiza: registra los movimientos de los alumnos y registra y anula pagos.
+
+### Tipo de Vínculo
+
+| Atributo | Observación |
+|---|---|
+| **Nombre** | Identificador. Valores: Madre, Padre, Tutor (RN-09) |
+
+Se modela como entidad para no repetir el vínculo como texto en cada relación entre alumno y responsable.
 
 ### Preinscripción
 
-Representa un formulario de preinscripción recibido, que la administración revisa y luego aprueba o rechaza (RF-17 a RF-20, RN-11 a RN-14). Una Preinscripción aprobada da lugar al alta de un nuevo Alumno o a la reactivación de uno existente.
+Representa un formulario de preinscripción **pendiente de revisión** (RF-17 a RF-20, RN-11 a RN-14).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Número** | Identificador |
 | Fecha | |
-| Estado: Pendiente, Aprobada o Rechazada | |
-| Fecha de resolución | *(opc.)* — se completa al aprobarla o rechazarla |
-| Datos del alumno: Nombre, Apellido, DNI, Fecha de nacimiento, Domicilio, Barrio, Localidad, Colegio | *(c)* |
-| Datos del responsable: Nombre, Apellido, DNI, Teléfono, Vínculo | *(c) (m)* — entre 1 y 2 ocurrencias |
+| Datos del alumno: Nombre, Apellido, DNI, Fecha de nacimiento, Domicilio, Barrio, Localidad, Colegio | Atributo compuesto |
 
-La Preinscripción conserva la información **declarada** por la familia. Mientras está pendiente puede ser corregida por la administración (RF-19); una vez resuelta, queda como registro de lo recibido.
+La Preinscripción es **temporal**. Mientras está pendiente, los datos declarados permanecen solo en ella: no se crean todavía Persona, Alumno ni Responsable. Al **aceptarse**, la información validada se utiliza para crear o actualizar los registros definitivos, se registra el Movimiento de Alta o de Reactivación y la Preinscripción se elimina. Al **rechazarse**, también se elimina (RN-49).
 
-Los datos declarados no duplican los de Alumno y Responsable: representan un hecho distinto (lo declarado en una fecha determinada), mientras que Alumno y Responsable contienen los datos actuales y verificados. Además, una Preinscripción rechazada nunca corresponde a un Alumno, por lo que sus datos solo existen en ella.
+Por eso la Preinscripción **no se relaciona con Alumno**: los datos nunca están registrados en los dos lugares al mismo tiempo, lo que evita la duplicación del DNI observada en la devolución docente.
+
+Su identificación, junto con la de Responsable declarado, se resolverá en la etapa de claves (#13).
+
+### Responsable declarado
+
+**Entidad débil**, dependiente de Preinscripción. Representa cada responsable informado en el formulario (uno o dos, RN-11, RN-12).
+
+| Atributo | Observación |
+|---|---|
+| DNI | *(parcial)* Distingue a los responsables de una misma preinscripción |
+| Nombre | |
+| Apellido | |
+| Teléfono | |
+
+Su vínculo con el alumno se indica mediante Tipo de Vínculo. Se elimina junto con la Preinscripción.
 
 ### Movimiento de Alumno
 
 **Entidad débil**, dependiente de Alumno. Representa cada cambio administrativo del alumno (RF-04, RF-05, RF-51).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Fecha y hora** | Identificador parcial (discriminador) |
-| Tipo: Alta, Baja o Reactivación | |
+| Fecha y hora | *(parcial)* Se identifica por el Alumno junto con su fecha y hora |
 | Observación | *(opc.)* |
 
-Se identifica por el Alumno al que pertenece junto con su fecha y hora. Se registra la hora para distinguir dos movimientos del mismo día, por ejemplo una baja por error y su reactivación inmediata.
+La hora permite distinguir dos movimientos del mismo día, por ejemplo una baja por error y su reactivación inmediata.
+
+### Tipo de Movimiento
+
+| Atributo | Observación |
+|---|---|
+| **Nombre** | Identificador. Valores: Alta, Baja, Reactivación |
 
 ### Configuración de Cuota
 
-Representa las condiciones generales utilizadas para generar las cuotas (RF-21, RF-26, RN-22).
+Condiciones generales para generar las cuotas (RF-21, RF-26, RN-22).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Vigente desde** | Identificador |
+| **Vigente desde** | Identificador. Un cambio realizado el mismo día de vigencia corrige la configuración existente |
 | Importe general | |
 | Porcentaje de interés | |
 
-Un cambio realizado el mismo día de vigencia de una configuración la corrige, en lugar de crear una nueva; por eso la fecha de vigencia la identifica.
-
 ### Período de Cuota
 
-Representa cada período mensual para el cual se generan cuotas.
-
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Período** (por ejemplo, 2026-03) | Identificador |
-| Fecha de vencimiento | |
-
-Cada período tiene una única fecha de vencimiento común a todas sus cuotas (RF-23, RN-19). Se modela como entidad para registrar ese dato una sola vez y no repetirlo en cada cuota.
+| **Período** | Identificador (por ejemplo, 2026-03) |
+| Fecha de vencimiento | Única para todas las cuotas del período (RF-23, RN-19) |
 
 ### Obligación de Pago
 
 Superclase. Representa una obligación económica concreta de un Alumno.
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Número** | Identificador |
 | Importe | |
-| Saldo | *(d)* — importe menos los importes aplicados por pagos no anulados |
-
-Se especializa en Cuota, Matrícula y Cobro Extraordinario.
+| Saldo | *(d)* Importe menos los importes aplicados por pagos no anulados |
 
 ### Cuota
 
 Especialización de Obligación de Pago. Representa la obligación mensual de un Alumno (RF-22).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| Recargo por mora | *(opc.)* |
-| Estado: Pendiente, Vencida o Pagada | *(d)* — del vencimiento del período y de los pagos |
+| Recargo por mora | *(opc.)* Monto del interés aplicado al vencer impaga |
+| Estado (Pendiente, Vencida, Pagada) | *(d)* Vencimiento del período y pagos aplicados |
 
-El **Recargo por mora** registra el monto del interés aplicado cuando la cuota vence impaga. Se registra en lugar de calcularse porque conserva el valor aplicado aunque luego cambie el porcentaje configurado (RN-23) y permite asegurar que el interés se aplique una sola vez (RN-21). El período y la fecha de vencimiento se obtienen a través de la relación con Período de Cuota.
+El recargo se registra porque conserva el valor aplicado aunque luego cambie el porcentaje configurado (RN-23) y permite asegurar que se aplique una sola vez (RN-21). El período y el vencimiento se obtienen de Período de Cuota.
 
 ### Matrícula
 
-Especialización de Obligación de Pago. Representa la obligación económica correspondiente al primer ingreso del Alumno (RF-31, RN-29).
+Especialización de Obligación de Pago. Representa la obligación correspondiente al primer ingreso del Alumno (RF-31, RN-29).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| Fecha de matriculación | *(d)* — fecha del Movimiento de Alta que la origina |
+| Fecha de matriculación | *(d)* Fecha del Movimiento de Alta que la origina |
 
-El importe es definido por la administración al momento de la inscripción de cada alumno (RN-48). Lo que distingue a la Matrícula de los demás subtipos es su relación con el **Movimiento de Alta**: solo ese movimiento la origina, por lo que una reactivación no genera una nueva (RN-30). Debe abonarse en su totalidad en una única operación (RN-31); habitualmente se abona al momento de la inscripción, aunque puede quedar pendiente.
+Su importe lo define el Administrador/Coordinador al realizar la inscripción (RN-48). Solo el Movimiento de Alta la origina, por lo que una reactivación no genera una nueva (RN-30). Se abona en su totalidad en una única operación (RN-31).
 
 ### Cobro Extraordinario
 
-Especialización de Obligación de Pago. Representa una obligación no periódica de un Alumno, correspondiente a un evento o a un pedido de indumentaria (RF-41, RN-42).
+Especialización de Obligación de Pago. Obligación no periódica correspondiente a un evento o a un pedido de indumentaria (RF-41, RN-42).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
 | Fecha de generación | |
 
-Admite pagos parciales (RN-43) y no está sujeto al interés por mora (RN-46). El concepto cobrado se obtiene del Evento o del tipo de prenda.
-
-Un cobro correspondiente a un evento representa la **participación confirmada** del alumno: no todos los alumnos participan de cada evento, y el cobro se asigna al confirmar la asistencia, aunque el pago se realice después.
+Admite pagos parciales (RN-43) y no está sujeto al interés por mora (RN-46). Un cobro correspondiente a un evento representa la participación confirmada del alumno: no todos los alumnos participan de cada evento.
 
 ### Cobro de Indumentaria
 
-Especialización de Cobro Extraordinario. Representa el cobro de una prenda institucional solicitada para un Alumno.
+Especialización de Cobro Extraordinario.
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| Tipo de prenda | |
-| Talle | |
+| Tipo de prenda | RF-44, RN-45 |
+| Talle | RF-44, RN-45 |
 
-RF-44 solo exige identificar el tipo de prenda y el talle solicitado dentro del cobro, y RN-45 requiere definirlos para validar el pedido. Ningún requisito pide registrar el pedido por separado, con un ciclo de vida propio, por lo que el pedido y su cobro se modelan como una única entidad.
+En Rojas FC cada pedido corresponde a una sola prenda, genera un único cobro y no se administra un ciclo de pedido o entrega por separado. Por eso el pedido y su cobro se modelan como una única entidad: separarlos crearía una relación 1:1 entre dos entidades que representan el mismo hecho. La situación es distinta de Evento, que genera cobros para muchos alumnos.
 
 ### Evento
 
-Representa un evento de la escuela al que pueden corresponder cobros de distintos alumnos.
-
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Nombre + Año** | Identificador compuesto |
-
-El año se mantiene separado del nombre porque un mismo evento puede repetirse en distintas ediciones (por ejemplo, Mundialito 2026 y Mundialito 2027). Se modela como entidad, y no como texto dentro de cada cobro, porque un mismo evento genera cobros para muchos alumnos.
+| **Nombre + Año** | Identificador compuesto: un mismo evento puede repetirse en distintas ediciones |
 
 ### Pago
 
-Representa una operación económica registrada en el sistema (RF-32 a RF-35).
+Operación económica registrada en el sistema (RF-32 a RF-35).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Número de operación** | Identificador |
 | Fecha | |
-| Medio de pago: Efectivo o Transferencia | *(opc.)* — RN-33, RN-34 |
-| Anulado | |
-| Motivo de anulación | *(opc.)* — obligatorio si el pago está anulado (RN-36) |
-| Fecha de anulación | *(opc.)* — obligatoria si el pago está anulado |
-| Importe total | *(d)* — suma de los importes aplicados |
+| Motivo de anulación | *(opc.)* Obligatorio si el pago está anulado (RN-36) |
+| Fecha de anulación | *(opc.)* Obligatoria si el pago está anulado |
+| Anulado | *(d)* El pago está anulado si tiene fecha de anulación |
+| Importe total | *(d)* Suma de los importes aplicados |
 
-La anulación se modela con atributos de Pago y no como una entidad propia, porque no tiene identidad independiente: existe solo si existe el Pago y como máximo una vez por pago.
+La anulación se modela con atributos de Pago porque no tiene identidad propia: existe solo si existe el Pago y como máximo una vez por pago.
+
+### Medio de Pago
+
+| Atributo | Observación |
+|---|---|
+| **Nombre** | Identificador. Valores: Efectivo, Transferencia (RN-33) |
 
 ### Recibo
 
-Representa el comprobante correspondiente a un Pago (RF-36, RN-38, RN-39).
+Comprobante correspondiente a un Pago (RF-36, RN-38).
 
-| Atributo | Tipo |
+| Atributo | Observación |
 |---|---|
-| **Número** | Identificador |
+| **Número** | Identificador (RN-39) |
 | Fecha de emisión | |
-
-La información del alumno, los conceptos, los importes, el medio de pago y el saldo pendiente informado se obtienen a través del Pago y de las obligaciones a las que se aplica.
 
 ---
 
@@ -221,140 +231,121 @@ La información del alumno, los conceptos, los importes, el medio de pago y el s
 
 | Superclase | Subclases | Tipo | Justificación |
 |---|---|---|---|
-| Persona | Alumno, Responsable, Personal Administrativo | **Total y solapada** | Toda persona registrada es al menos uno de los tres. Un Responsable puede integrar también el Personal Administrativo. Alumno y Responsable no se superponen: el responsable es un adulto a cargo del alumno (RN-07) y el alumno es el menor que asiste a la escuela. |
-| Obligación de Pago | Cuota, Matrícula, Cobro Extraordinario | **Total y exclusiva** | Toda obligación es exactamente de uno de los tres tipos, cada uno con reglas propias. |
-| Cobro Extraordinario | Cobro de Indumentaria | **Parcial** | Los cobros que no son de indumentaria corresponden a un Evento. No se modela un subtipo "Cobro de Evento" porque no tendría atributos propios. |
+| Persona | Alumno, Responsable, Personal Administrativo | **Total y exclusiva** | Toda Persona pertenece exactamente a uno de los tres subtipos, según el alcance definido para Rojas FC |
+| Obligación de Pago | Cuota, Matrícula, Cobro Extraordinario | **Total y exclusiva** | Cada tipo de obligación tiene reglas propias |
+| Cobro Extraordinario | Cobro de Indumentaria | **Parcial** | Los cobros que no son de indumentaria corresponden a un Evento |
 
 ---
 
 ## 4. Relaciones y cardinalidades
 
-Cada cardinalidad indica en cuántas ocurrencias de la relación participa cada ocurrencia de la entidad.
+En el diagrama, el número junto a una entidad indica cuántas ocurrencias de esa entidad se vinculan con una ocurrencia de la entidad del otro extremo.
 
 | # | Relación | Cardinalidades | Justificación |
 |---|---|---|---|
-| R1 | Alumno — **tiene como responsable** — Responsable | Alumno (1,2) · Responsable (1,N) | RN-01, RN-05, RN-07. Atributo de la relación: **Vínculo** |
-| R2 | Preinscripción — **corresponde a** — Alumno | Preinscripción (0,1) · Alumno (0,N) | RF-01 (alta directa sin preinscripción), RF-17, RF-20 (alta o reactivación) |
-| R3 | Personal Administrativo — **revisa** — Preinscripción | Personal (0,N) · Preinscripción (0,1) | RF-19, RF-20, RN-14. Una preinscripción pendiente aún no tiene revisor |
-| R4 | Alumno — **registra** — Movimiento de Alumno *(identificadora)* | Alumno (1,N) · Movimiento (1,1) | RF-04, RF-05, RF-51 |
-| R5 | Personal Administrativo — **realiza** — Movimiento de Alumno | Personal (0,N) · Movimiento (1,1) | RF-04, RF-05, RNF-14 (la baja es una operación sensible) |
-| R6 | Alumno — **posee** — Obligación de Pago | Alumno (0,N) · Obligación (1,1) | RN-42, RF-28 |
-| R7 | Movimiento de Alumno — **origina** — Matrícula | Movimiento (0,1) · Matrícula (1,1) | RN-29, RN-30 |
-| R8 | Configuración de Cuota — **rige** — Período de Cuota | Configuración (0,N) · Período (1,1) | RN-17, RN-23 |
-| R9 | Período de Cuota — **comprende** — Cuota | Período (0,N) · Cuota (1,1) | RF-23, RN-19 |
-| R10 | Evento — **corresponde a** — Cobro Extraordinario | Evento (0,N) · Cobro (0,1) | RF-41. Un evento puede existir antes de que los alumnos confirmen su participación |
-| R11 | Pago — **se aplica a** — Obligación de Pago | Pago (1,N) · Obligación (0,N) | RF-34, RF-42. Atributo de la relación: **Importe aplicado** |
-| R12 | Personal Administrativo — **registra** — Pago | Personal (0,N) · Pago (1,1) | RF-32 |
-| R13 | Personal Administrativo — **anula** — Pago | Personal (0,N) · Pago (0,1) | RF-35, RN-36, RNF-14 |
-| R14 | Pago — **genera** — Recibo | Pago (1,1) · Recibo (1,1) | RN-38, RF-64 |
+| R1 | **tiene como responsable** (ternaria): Alumno, Responsable y Tipo de Vínculo | Cada Alumno tiene 1 a 2 Responsables · cada Responsable tiene 1 a N Alumnos · cada par Alumno–Responsable tiene 1 Tipo de Vínculo | RN-01, RN-05, RN-07, RN-09 |
+| R2 | Preinscripción — **declara** — Responsable declarado | 1 — 1..2 | RF-17, RN-11, RN-12 |
+| R3 | Tipo de Vínculo — **indica vínculo** — Responsable declarado | 1 — 0..N | RN-09 |
+| R4 | Alumno — **registra movimiento** — Movimiento de Alumno (identificadora) | 1 — 1..N | RF-04, RF-05, RF-51 |
+| R5 | Personal Administrativo — **realiza** — Movimiento de Alumno | 1 — 0..N | RF-04, RF-05, RNF-14 |
+| R6 | Tipo de Movimiento — **clasifica** — Movimiento de Alumno | 1 — 0..N | RF-51 |
+| R7 | Movimiento de Alumno — **origina** — Matrícula | 1 — 0..1 | RN-29, RN-30 |
+| R8 | Alumno — **posee** — Obligación de Pago | 1 — 0..N | RN-42, RF-28 |
+| R9 | Configuración de Cuota — **rige** — Período de Cuota | 1 — 0..N | RN-17, RN-23 |
+| R10 | Período de Cuota — **comprende** — Cuota | 1 — 0..N | RF-23, RN-19 |
+| R11 | Evento — **corresponde a** — Cobro Extraordinario | 0..1 — 0..N | RF-41 |
+| R12 | Pago — **se aplica a** — Obligación de Pago | Cada Pago se aplica a 1..N Obligaciones · cada Obligación recibe 0..N Pagos. Atributo: **Importe aplicado** | RF-34, RF-42 |
+| R13 | Personal Administrativo — **registra pago** — Pago | 1 — 0..N | RF-32 |
+| R14 | Personal Administrativo — **anula** — Pago | 0..1 — 0..N | RF-35, RN-36 |
+| R15 | Medio de Pago — **se abona con** — Pago | 0..1 — 0..N | RN-33, RN-34 |
+| R16 | Pago — **genera** — Recibo | 1 — 0..1 | RN-38, RF-61, RF-64 |
 
-**Relaciones que no se dibujan a propósito:**
+**Pago y Recibo.** Cuando hay conexión, al registrarse el Pago se genera automáticamente su Recibo. Cuando no la hay, el Pago queda registrado igual y el Recibo se genera automáticamente al restablecerse la conexión, una vez sincronizado y validado (RF-61, RF-64). Por eso un Pago puede existir transitoriamente sin Recibo. La relación misma indica si el recibo ya fue emitido, por lo que no se agrega un atributo para eso.
 
-- **Alumno — Pago:** sería redundante, porque el alumno de un pago se obtiene a través de las obligaciones a las que se aplica.
-- **Personal Administrativo — Configuración de Cuota y — Cuota:** las cuotas se generan automáticamente (RF-22), y ningún requisito pide registrar quién modificó la configuración.
-
-**Pago y Recibo 1:1.** Un pago registrado sin conexión se conserva en el dispositivo hasta su sincronización (RNF-10) y recién entonces se incorpora al sistema como Pago, junto con su Recibo (RF-64). Por eso, dentro del modelo conceptual, no existe un Pago sin Recibo. Si el Pago se anula, el Recibo se conserva (RF-40, RN-41).
-
----
-
-## 5. Atributos de relaciones
-
-- **Vínculo** (Madre, Padre, Tutor), en la relación Alumno — tiene como responsable — Responsable (RN-09). No pertenece al Responsable, porque una misma persona puede tener distinto vínculo con distintos alumnos.
-- **Importe aplicado**, en la relación Pago — se aplica a — Obligación de Pago. Indica cuánto de un pago corresponde a cada obligación. En el modelo relacional, esta relación N:M se resolverá con una tabla intermedia.
+**Relación que no se dibuja:** Alumno — Pago. Sería redundante, porque el alumno de un pago se obtiene a través de las obligaciones a las que se aplica.
 
 ---
 
-## 6. Restricciones
+## 5. Restricciones
 
-Reglas que el diagrama no puede expresar. En la etapa de claves y restricciones se definirá cómo se garantiza cada una.
-
-### A. Dominio
-
-- Vínculo: Madre, Padre o Tutor (RN-09).
-- Tipo de Movimiento: Alta, Baja o Reactivación.
-- Estado de Preinscripción: Pendiente, Aprobada o Rechazada.
-- Medio de pago: Efectivo o Transferencia (RN-33).
-- Los importes son mayores que cero; el porcentaje de interés es mayor o igual que cero (RN-22).
-
-### B. Unicidad
+### Dominio y unicidad
 
 1. No hay dos Personas con el mismo DNI (RN-02, RN-08).
-2. No hay dos integrantes del Personal Administrativo con el mismo Correo electrónico.
+2. Los importes son mayores que cero; el porcentaje de interés es mayor o igual que cero (RN-22).
 3. Un Alumno tiene como máximo una Cuota por Período de Cuota.
 4. Existe una sola Configuración de Cuota por fecha de vigencia.
 
-### C. Personas
+### Personas y acceso
 
-5. Una Persona no puede ser Alumno y Responsable a la vez (RN-07).
+5. Toda Persona es exactamente Alumno, Responsable o Personal Administrativo.
+6. Responsable y Personal Administrativo ingresan con DNI y contraseña. La contraseña es obligatoria para el Personal Administrativo y opcional para el Responsable. El Alumno no posee acceso al sistema (RF-11, RF-58).
 
-### D. Alumnos y movimientos
+### Preinscripción
 
-6. Cada Alumno tiene un único Movimiento de tipo Alta, que es el primero de su historial.
-7. Una Baja solo puede registrarse si el alumno está activo, y una Reactivación solo si está dado de baja (RN-03, RN-04).
+7. Mientras la Preinscripción está pendiente, sus datos no se registran en Persona, Alumno ni Responsable (RN-13, RN-14).
+8. Al recibir una Preinscripción, el sistema compara los DNI declarados con los registrados: si el alumno está inactivo, la aceptación registra una Reactivación; si está activo, la solicitud no corresponde; si un responsable ya existe, se reutiliza (RF-17, RN-08).
+9. Una Preinscripción aceptada o rechazada se elimina (RN-49).
+10. Una Preinscripción no genera obligaciones económicas (RN-47).
 
-### E. Preinscripción
+### Alumnos y movimientos
 
-8. Solo una Preinscripción Aprobada puede corresponder a un Alumno.
-9. La Fecha de resolución y el revisor existen solo si la Preinscripción no está Pendiente.
-10. Si el DNI declarado corresponde a un Alumno registrado, no se crea un nuevo Alumno: se reactiva el existente con los datos actualizados (RF-17, RF-20).
-11. Una Preinscripción no genera obligaciones económicas (RN-47).
+11. Cada Alumno tiene un único Movimiento de tipo Alta, que es el primero de su historial.
+12. Una Baja solo puede registrarse si el alumno está activo, y una Reactivación solo si está dado de baja (RN-03, RN-04).
 
-### F. Cuotas
+### Cuotas
 
-12. Las cuotas se generan el día 1 de cada mes, solo para los alumnos activos (RN-15, RN-16).
-13. El importe de la cuota es el importe particular del alumno, si lo tiene; si no, el importe general de la Configuración que rige el período (RN-17, RN-18).
-14. El Recargo por mora se aplica una sola vez, solo si la cuota venció impaga, con el porcentaje de la Configuración que rige el período (RN-20, RN-21).
-15. Solo puede corregirse el importe de las cuotas pendientes del período en curso; una cuota pagada no se modifica (RN-24, RN-25).
-16. Una Cuota se abona en una única operación cuyo importe aplicado es exactamente el total adeudado (importe más recargo, si corresponde) (RN-32). Por eso no admite pagos parciales ni saldo a favor.
+13. Las cuotas se generan el día 1 de cada mes, solo para alumnos activos (RN-15, RN-16).
+14. El importe de la cuota es el importe particular del alumno si lo tiene; si no, el importe general de la Configuración que rige el período (RN-17, RN-18).
+15. El recargo por mora se aplica una sola vez, solo si la cuota venció impaga, con el porcentaje de la Configuración del período (RN-20, RN-21).
+16. Solo puede corregirse el importe de las cuotas pendientes del período en curso; una cuota pagada no se modifica (RN-24, RN-25).
+17. Una Cuota se abona en una única operación cuyo importe aplicado es exactamente el total adeudado (RN-32). No admite pagos parciales ni saldo a favor.
 
-### G. Matrícula y cobros extraordinarios
+### Matrícula y cobros extraordinarios
 
-17. Solo un Movimiento de tipo Alta origina una Matrícula (RN-30).
-18. La Matrícula se abona en una única operación cuyo importe aplicado es exactamente su importe (RN-31).
-19. Todo Cobro Extraordinario corresponde a un Evento o es un Cobro de Indumentaria, nunca ambos ni ninguno.
-20. Un Cobro Extraordinario admite pagos parciales (RN-43), pero la suma de los importes aplicados por pagos no anulados no puede superar su importe. Si se recibe un importe mayor, la administración devuelve la diferencia y solo se registra lo efectivamente cobrado.
+18. Solo un Movimiento de tipo Alta origina una Matrícula (RN-30).
+19. La Matrícula se abona en una única operación por su importe exacto (RN-31).
+20. Todo Cobro Extraordinario corresponde a un Evento o es un Cobro de Indumentaria, nunca ambos ni ninguno.
+21. Un Cobro Extraordinario admite pagos parciales (RN-43), pero la suma de los importes aplicados por pagos no anulados no puede superar su importe. Si se recibe de más, la administración devuelve la diferencia y solo se registra lo efectivamente cobrado.
 
-### H. Pagos y recibos
+### Pagos y recibos
 
-21. Un Pago corresponde a exactamente un Alumno, determinado a través de las Obligaciones de Pago a las que se aplica. Por eso todas las obligaciones alcanzadas por un mismo Pago deben pertenecer al mismo Alumno.
-22. Si el Pago está anulado, son obligatorios el Motivo de anulación, la Fecha de anulación y el integrante del Personal Administrativo que lo anuló; si no está anulado, no existen (RN-35, RN-36).
-23. La Fecha de anulación es igual o posterior a la Fecha del Pago.
-24. La anulación de un Pago no elimina su registro ni su Recibo; el Recibo pasa a considerarse anulado (RN-37, RN-41, RF-40).
+22. Un Pago corresponde a exactamente un Alumno, determinado a través de las Obligaciones a las que se aplica.
+23. Si el Pago está anulado, son obligatorios el Motivo, la Fecha de anulación y el integrante del Personal Administrativo que lo anuló (RN-35, RN-36). La Fecha de anulación es igual o posterior a la Fecha del Pago.
+24. Todo Pago genera exactamente un Recibo; si se registró sin conexión, el Recibo se genera al sincronizarse y validarse (RN-38, RF-64).
+25. La anulación de un Pago no elimina su registro ni su Recibo; el Recibo pasa a considerarse anulado (RN-37, RN-41, RF-40).
 
 ---
 
-## 7. Datos derivados
+## 6. Datos derivados
 
-Los atributos derivados se representan en el diagrama, marcados como tales, porque forman parte del dominio aunque se calculen a partir de otros datos. Al construir el modelo relacional, en general no se almacenarán.
+Se representan en el diagrama precedidos por "/" porque forman parte del dominio, aunque se calculen a partir de otros datos.
 
-| Atributo derivado | Se obtiene de |
+| Atributo | Se obtiene de |
 |---|---|
-| Categoría del Alumno | Año de nacimiento (RN-10) |
-| Estado del Alumno | Último Movimiento de Alumno |
-| Moroso | Cuotas vencidas con saldo (RN-26) |
+| Categoría, Estado y Moroso del Alumno | Año de nacimiento, último Movimiento y cuotas vencidas con saldo |
 | Saldo de una Obligación | Importe menos importes aplicados por pagos no anulados |
 | Estado de una Cuota | Vencimiento del período y pagos aplicados |
 | Fecha de matriculación | Fecha del Movimiento de Alta |
-| Importe total de un Pago | Suma de los importes aplicados |
+| Anulado e Importe total del Pago | Fecha de anulación y suma de importes aplicados |
 
-**Saldo pendiente y RN-44.** RN-44 exige conservar el saldo pendiente de un cobro extraordinario no abonado en su totalidad. Esa exigencia se cumple aunque el saldo sea derivado: se obtiene siempre del importe de la obligación menos los importes aplicados por pagos no anulados, información que nunca se elimina (RN-35, RN-37). Calcularlo evita que un saldo registrado y los pagos queden inconsistentes. Lo mismo vale para el saldo informado en el recibo de un pago parcial (RF-36).
+**Saldo y RN-44.** RN-44 exige conservar el saldo pendiente de un cobro extraordinario. Se cumple aunque el saldo sea derivado: se obtiene siempre del importe menos los pagos no anulados, información que nunca se elimina (RN-35, RN-37). Lo mismo vale para el saldo informado en el recibo de un pago parcial (RF-36).
 
 ---
 
-## 8. Elementos que no forman parte del modelo
+## 7. Elementos que no forman parte del modelo
 
-- **Usuario** como entidad separada: el acceso del Responsable se resuelve con su DNI y su contraseña, y el del Personal Administrativo con su correo y su contraseña.
+- **Usuario** como entidad separada y **correo electrónico**: ningún requisito los pide; el acceso se resuelve con DNI y contraseña.
 - **Pedido de Indumentaria** separado del cobro: ver Cobro de Indumentaria.
 - **Anulación** como entidad: ver Pago.
-- **Cobro de Evento** como subtipo: no tendría atributos propios.
-- **Condición Particular de Cuota** como entidad: el importe particular es un atributo opcional de Alumno.
+- **Identificadores técnicos** (códigos o números asignados): se analizarán en #13.
+- **Historial de preinscripciones procesadas**: no requerido (RN-49).
+- **Saldo a favor**: las reglas de pago total de cuotas y matrícula lo impiden, y en los cobros extraordinarios se devuelve el excedente.
 - **Categoría, Colegio, Barrio y Localidad** como entidades: son atributos del Alumno.
-- **Saldo a favor:** las reglas de pago total de cuotas y matrícula lo impiden, y en los cobros extraordinarios la administración devuelve el excedente.
-- **Funcionamiento offline y auditoría técnica:** se resuelven en etapas posteriores, como decisiones de arquitectura e implementación.
+- **Mecanismos de sincronización offline y auditoría técnica**: decisiones de etapas posteriores.
 
 ---
 
-## 9. DER conceptual
+## 8. DER conceptual
 
 ![DER conceptual Rojas FC](./img/der-conceptual.svg)
 
@@ -362,45 +353,27 @@ El diagrama se genera con PlantUML a partir de [`der-conceptual.puml`](./der-con
 
 ---
 
-## 10. Cambios respecto de la versión anterior
-
-A partir de la devolución docente ("entidades sin atributos" y "relaciones o entidades que lógicamente no tienen sentido") y de la revisión del equipo, el modelo se reconstruyó desde los requisitos y se comparó con la versión anterior.
+## 9. Cambios respecto de la versión presentada anteriormente
 
 | # | Cambio | Motivo |
 |---|---|---|
-| 1 | Se incorpora **Personal Administrativo** como subtipo de Persona, con Correo electrónico y Contraseña | El sistema debe autenticarlo y distinguirlo del Responsable (RF-58, RF-59). Reemplaza a la entidad Administrador, que no tenía atributos ni relaciones |
-| 2 | Se agregan las relaciones **revisa**, **realiza**, **registra** y **anula** | El modelo no representaba quién realiza las operaciones (RF-20, RF-32, RF-35, RNF-14) |
-| 3 | La especialización de Persona pasa a ser **total y solapada** | Un Responsable puede integrar también el Personal Administrativo |
-| 4 | Se elimina **Usuario**; cada tipo de persona con acceso tiene su contraseña | Usuario tenía un único atributo y no tenía identificador propio |
-| 5 | **Matrícula** vuelve a ser un subtipo, relacionado con el **Movimiento de Alta** | La relación debe dibujarse sobre el subtipo al que corresponde, y la matrícula no puede quedar definida por exclusión |
-| 6 | Se elimina **Pedido de Indumentaria**; se incorpora el subtipo **Cobro de Indumentaria** | El pedido y su cobro estaban en relación 1:1 obligatoria |
-| 7 | **Evento** se relaciona directamente con Cobro Extraordinario | Un subtipo "Cobro de Evento" habría quedado sin atributos |
-| 8 | **Cuota** incorpora Recargo por mora | Conserva el interés aplicado (RN-21, RN-23) |
-| 9 | **Preinscripción** incorpora Número, Estado y Fecha de resolución, y se relaciona con Alumno y con Personal Administrativo | Antes no tenía relaciones |
-| 10 | Se marcan los **identificadores**; **Movimiento de Alumno** es entidad débil | Faltaban identificadores |
-| 11 | Los **atributos derivados** se representan en el diagrama | Forman parte del modelo conceptual |
-| 12 | **Dirección** se modela como atributo compuesto | Agrupa Domicilio, Barrio y Localidad |
-| 13 | **Pago — Recibo** pasa a 1:1 | El funcionamiento offline no puede justificar una cardinalidad del modelo conceptual |
-| 14 | Se agregan restricciones de unicidad, de secuencia de movimientos y de importes aplicados | El modelo no las expresaba |
-| 15 | El diagrama pasa a **notación Chen** | Es la notación de referencia de la cátedra |
+| 1 | **Administrador** pasa a **Personal Administrativo**, con Contraseña y las relaciones realiza, registra pago y anula | Tenía atributos solo heredados y ninguna relación. Ahora tiene atributo propio y representa quién opera (RF-58, RF-32, RF-35, RNF-14) |
+| 2 | Se elimina **Usuario**; la contraseña pasa a Responsable (opcional) y a Personal Administrativo | Usuario tenía un único atributo y no tenía identificador propio |
+| 3 | **Preinscripción** temporal, sin relación con Alumno, con **Responsable declarado** como entidad débil | Evita registrar el DNI en dos lugares, como se observó en la devolución docente (RN-49) |
+| 4 | Se incorporan **Tipo de Vínculo**, **Tipo de Movimiento** y **Medio de Pago** como entidades | Evita valores repetidos como texto, como se observó con el medio de pago |
+| 5 | **Cuota** incorpora Recargo por mora; **Matrícula**, Fecha de matriculación derivada y su relación con el Movimiento de Alta | Subtipos que no tenían atributos propios |
+| 6 | **Pedido de Indumentaria** se integra como **Cobro de Indumentaria** | El pedido y su cobro estaban en relación 1:1 obligatoria y representan el mismo hecho |
+| 7 | **Evento** se relaciona directamente con Cobro Extraordinario | Un subtipo "Cobro de Evento" no tendría atributos propios |
+| 8 | Los **atributos derivados** se representan en el diagrama; Anulado e Importe total de Pago pasan a derivados | Evita almacenar información que se obtiene de otros datos |
+| 9 | Solo se indican **identificadores naturales**; el resto se resuelve en #13 | Evita adelantar decisiones del modelo lógico o físico |
+| 10 | Se agregan restricciones de unicidad, de acceso, de preinscripción, de secuencia de movimientos y de importes | El modelo no las expresaba |
+| 11 | Ajustes en RF-58 y en las reglas RN-48 y RN-49 | Formalizan decisiones confirmadas con Rojas FC |
 
 ---
 
-## 11. Decisiones de etapas posteriores
+## 10. Próximos pasos
 
-Se tratarán al trabajar claves, restricciones, modelo relacional y modelo físico:
-
-- claves primarias, candidatas y foráneas, y uso de claves sustitutas;
-- resolución de las relaciones N:M, de las especializaciones y de los atributos multivaluados;
-- implementación de las restricciones de la sección 6;
-- tipos de datos e índices;
-- auditoría técnica y sincronización offline.
-
----
-
-## 12. Próximos pasos
-
-1. Validar este modelo conceptual con el equipo y el tutor.
-2. Definir claves y restricciones de integridad (#13).
+1. Validar este modelo conceptual con el tutor.
+2. Definir claves y restricciones de integridad, incluida la identificación de Preinscripción, Responsable declarado, Obligación de Pago y Pago (#13).
 3. Construir el modelo relacional y actualizar `schema.sql` (#14).
 4. Generar el diagrama de tablas con MySQL Workbench mediante ingeniería inversa.

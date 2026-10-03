@@ -269,7 +269,7 @@ El sistema deberá mostrar en el dashboard un resumen de las altas y bajas corre
 ## 12. Autenticación y autorización
 
 ### RF-58 – Iniciar sesión como Administrador/Coordinador
-El sistema deberá permitir al Administrador/Coordinador autenticarse para acceder a las funcionalidades de gestión.
+El sistema deberá permitir al Administrador/Coordinador autenticarse mediante su DNI y contraseña para acceder a las funcionalidades de gestión.
 
 ### RF-59 – Restringir funcionalidades según tipo de usuario
 El sistema deberá limitar las funcionalidades disponibles según el tipo de usuario autenticado, diferenciando al Administrador/Coordinador del Responsable.
