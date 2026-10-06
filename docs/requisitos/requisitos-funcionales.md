@@ -93,19 +93,19 @@ El formulario deberá contemplar:
 - localidad;
 - colegio.
 
-**Datos del responsable principal:**
+**Datos del primer responsable:**
 - nombre;
 - apellido;
 - DNI;
 - teléfono;
 - vínculo con el alumno.
 
-El formulario podrá incluir un segundo responsable de manera opcional, con los mismos datos.
+El formulario podrá incluir un segundo responsable de manera opcional, con los mismos datos. Ambos responsables tienen la misma jerarquía (RN-06).
 
 Si el DNI ingresado corresponde a un alumno ya registrado, la preinscripción no deberá generar un nuevo registro de alumno. Si el alumno se encuentra inactivo, su registro existente deberá poder utilizarse para una eventual reactivación.
 
 ### RF-18 – Consultar preinscripciones
-El sistema deberá permitir al Administrador/Coordinador consultar los formularios de preinscripción recibidos y la información contenida en ellos.
+El sistema deberá permitir al Administrador/Coordinador consultar las preinscripciones recibidas, filtrándolas por estado (pendiente, aceptada o rechazada), y la información contenida en ellas.
 
 ### RF-19 – Corregir preinscripción
 El sistema deberá permitir al Administrador/Coordinador corregir los datos recibidos en una preinscripción antes de utilizarlos para registrar al alumno.
@@ -126,11 +126,11 @@ El sistema deberá generar automáticamente las cuotas mensuales correspondiente
 ### RF-23 – Establecer vencimiento
 El sistema deberá permitir al Administrador/Coordinador establecer una única fecha de vencimiento para las cuotas de cada período.
 
-### RF-24 – Establecer importe particular para un alumno
-El sistema deberá permitir al Administrador/Coordinador establecer un importe de cuota diferente del valor general para un alumno determinado.
+### RF-24 – Establecer importe particular para un alumno *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** No forma parte del alcance aprobado en la Primera Entrega.
 
-### RF-25 – Corregir importe del período actual
-El sistema deberá permitir al Administrador/Coordinador corregir el importe de las cuotas pendientes del período en curso cuando el valor utilizado en su generación automática sea incorrecto.
+### RF-25 – Corregir importe del período actual *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** No forma parte del alcance aprobado en la Primera Entrega.
 
 ### RF-26 – Configurar interés por mora
 El sistema deberá permitir al Administrador/Coordinador establecer y modificar el porcentaje de interés por mora aplicable a las cuotas vencidas e impagas.
@@ -147,8 +147,8 @@ El sistema deberá permitir al Administrador/Coordinador consultar las cuotas ve
 ### RF-30 – Consultar alumnos morosos
 El sistema deberá permitir al Administrador/Coordinador acceder al listado de alumnos que posean deuda vencida.
 
-### RF-31 – Registrar cobro de matrícula
-El sistema deberá permitir al Administrador/Coordinador registrar el cobro correspondiente a la matrícula de un alumno.
+### RF-31 – Registrar cobro de matrícula *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** No forma parte del alcance aprobado en la Primera Entrega. La matrícula no se menciona en la Primera Entrega.
 
 ---
 
@@ -161,7 +161,7 @@ El sistema deberá permitir al Administrador/Coordinador registrar un importe re
 El sistema deberá permitir al Administrador/Coordinador asociar el pago de una cuota mensual pendiente al período correspondiente, requiriendo el abono total del importe adeudado de esa cuota.
 
 ### RF-34 – Consultar historial de pagos
-El sistema deberá permitir al Administrador/Coordinador consultar los pagos registrados para un alumno, incluyendo fecha, importe, obligaciones a las que fueron aplicados y medio de pago cuando haya sido informado.
+El sistema deberá permitir al Administrador/Coordinador consultar los pagos registrados para un alumno, incluyendo fecha, importe, la cuota o cobro extraordinario al que corresponde cada uno y el medio de pago cuando haya sido informado.
 
 ### RF-35 – Anular pago
 El sistema deberá permitir al Administrador/Coordinador anular un pago registrado, indicando obligatoriamente el motivo de la anulación y conservando el registro de la operación.
@@ -269,7 +269,7 @@ El sistema deberá mostrar en el dashboard un resumen de las altas y bajas corre
 ## 12. Autenticación y autorización
 
 ### RF-58 – Iniciar sesión como Administrador/Coordinador
-El sistema deberá permitir al Administrador/Coordinador autenticarse para acceder a las funcionalidades de gestión.
+El sistema deberá permitir al Administrador/Coordinador autenticarse mediante su DNI y contraseña para acceder a las funcionalidades de gestión.
 
 ### RF-59 – Restringir funcionalidades según tipo de usuario
 El sistema deberá limitar las funcionalidades disponibles según el tipo de usuario autenticado, diferenciando al Administrador/Coordinador del Responsable.
@@ -281,17 +281,27 @@ El sistema deberá limitar las funcionalidades disponibles según el tipo de usu
 ### RF-60 – Consultar información básica sin conexión
 El sistema deberá permitir al Administrador/Coordinador consultar, durante una pérdida de conectividad, información básica de alumnos que haya quedado disponible previamente en el dispositivo.
 
-### RF-61 – Registrar pago provisional sin conexión
-El sistema deberá permitir al Administrador/Coordinador registrar provisionalmente un pago asociado a una obligación previamente disponible cuando no exista conexión.
+### RF-61 – Registrar pago provisional sin conexión *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La Primera Entrega compromete el funcionamiento offline de "las operaciones que se definan como aptas". Se define que sin conexión solo se consulta información (RF-60); no se registran pagos provisionales ni se sincronizan operaciones.
 
-### RF-62 – Sincronizar pagos registrados sin conexión
-El sistema deberá sincronizar los pagos registrados provisionalmente cuando se restablezca la conexión.
+### RF-62 – Sincronizar pagos registrados sin conexión *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La Primera Entrega compromete el funcionamiento offline de "las operaciones que se definan como aptas". Se define que sin conexión solo se consulta información (RF-60); no se registran pagos provisionales ni se sincronizan operaciones.
 
-### RF-63 – Informar resultado de sincronización
-El sistema deberá informar al Administrador/Coordinador si la sincronización fue realizada correctamente o si requiere intervención.
+### RF-63 – Informar resultado de sincronización *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La Primera Entrega compromete el funcionamiento offline de "las operaciones que se definan como aptas". Se define que sin conexión solo se consulta información (RF-60); no se registran pagos provisionales ni se sincronizan operaciones.
 
-### RF-64 – Emitir recibo luego de la sincronización
-El sistema deberá generar el recibo correspondiente una vez que el pago registrado sin conexión haya sido sincronizado y validado correctamente.
+### RF-64 – Emitir recibo luego de la sincronización *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La Primera Entrega compromete el funcionamiento offline de "las operaciones que se definan como aptas". Se define que sin conexión solo se consulta información (RF-60); no se registran pagos provisionales ni se sincronizan operaciones.
+
+---
+
+## 14. Eventos
+
+### RF-65 – Registrar evento
+El sistema deberá permitir al Administrador/Coordinador registrar un evento indicando nombre, año e importe.
+
+### RF-66 – Asignar alumnos a un evento
+El sistema deberá permitir al Administrador/Coordinador asignar uno o más alumnos como participantes de un evento. Al asignar cada alumno, el sistema deberá generar el Cobro Extraordinario correspondiente utilizando el importe definido para ese Evento.
 
 ---
 
@@ -302,6 +312,18 @@ El sistema deberá generar el recibo correspondiente una vez que el pago registr
 3. Los pagos parciales quedarán limitados a cobros extraordinarios correspondientes a eventos e indumentaria.
 4. Los recibos de pagos parciales de cobros extraordinarios deberán informar el saldo pendiente.
 5. La existencia previa de un DNI no deberá generar un alumno duplicado; si corresponde a un alumno inactivo, se reutilizará su registro para una eventual reactivación.
+
+---
+
+## Revisión de alcance (06/10/2026)
+
+A partir de la devolución del tutor sobre la Segunda Entrega, se compararon los requisitos con el alcance aprobado en la Primera Entrega y se eliminaron los que no formaban parte de él o que complicaban el modelo sin ser necesarios:
+
+- **Eliminados por no estar en la Primera Entrega:** RF-24 (importe particular), RF-25 (corrección de importe del período) y RF-31 (matrícula).
+- **Funcionamiento offline reducido a consulta:** se mantiene RF-60 y se eliminan RF-61 a RF-64.
+- **Ajustados:** RF-17 (sin "responsable principal", para ser coherente con RN-06), RF-18 (las preinscripciones se conservan con su estado) y RF-34 (cada pago corresponde a una única obligación).
+
+Los números de los requisitos eliminados no se reutilizan, para conservar la trazabilidad.
 
 ---
 

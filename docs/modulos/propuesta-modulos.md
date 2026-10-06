@@ -34,9 +34,9 @@ Esta etapa no define tablas, claves, entidades ni atributos — eso corresponde 
 
 ## 4. Cuotas
 
-**Responsabilidad principal:** configuración del valor general, vencimiento e interés por mora; generación mensual para alumnos activos; corrección de importes del período en curso; consulta de cuotas, deuda y morosidad.
+**Responsabilidad principal:** configuración del valor general, vencimiento e interés por mora; generación mensual para alumnos activos; consulta de cuotas, deuda y morosidad.
 
-**Requisitos funcionales cubiertos:** RF-21, RF-22, RF-23, RF-24, RF-25, RF-26, RF-27, RF-28, RF-29, RF-30.
+**Requisitos funcionales cubiertos:** RF-21, RF-22, RF-23, RF-26, RF-27, RF-28, RF-29, RF-30.
 
 ---
 
@@ -48,11 +48,11 @@ Esta etapa no define tablas, claves, entidades ni atributos — eso corresponde 
 
 ---
 
-## 6. Cobros Extraordinarios (Eventos, Indumentaria y Matrícula)
+## 6. Cobros Extraordinarios (Eventos e Indumentaria)
 
-**Responsabilidad principal:** registrar y consultar cobros puntuales asociados a un alumno — eventos deportivos, pedidos de indumentaria y matrícula de ingreso —, admitiendo pagos parciales y conservando el saldo pendiente. Se incluye la matrícula (RF-31) acá y no en Cuotas porque, a diferencia de la cuota mensual, es un cobro único vinculado al alta y no a un período recurrente.
+**Responsabilidad principal:** registrar eventos, asignarles alumnos participantes y registrar y consultar cobros puntuales asociados a un alumno — eventos deportivos y pedidos de indumentaria —, admitiendo pagos parciales y conservando el saldo pendiente.
 
-**Requisitos funcionales cubiertos:** RF-31, RF-41, RF-42, RF-43, RF-44.
+**Requisitos funcionales cubiertos:** RF-41, RF-42, RF-43, RF-44, RF-65, RF-66.
 
 ---
 
@@ -74,17 +74,17 @@ Esta etapa no define tablas, claves, entidades ni atributos — eso corresponde 
 
 ---
 
-## 9. Funcionamiento Offline y Sincronización
+## 9. Consulta sin Conexión
 
-**Responsabilidad principal:** consulta de información básica y registro provisional de pagos sin conexión, y su sincronización posterior con el sistema central, incluyendo el aviso de conflictos y la emisión del recibo definitivo una vez sincronizado.
+**Responsabilidad principal:** consulta de información básica de alumnos previamente disponible en el dispositivo durante una pérdida de conexión. Sin conexión no se registran operaciones, por lo que no se requiere sincronización.
 
-**Requisitos funcionales cubiertos:** RF-60, RF-61, RF-62, RF-63, RF-64.
+**Requisitos funcionales cubiertos:** RF-60.
 
 ---
 
 ## Cobertura
 
-Los 9 módulos cubren la totalidad de los 64 requisitos funcionales consolidados (RF-01 a RF-64), cada uno con un módulo principal responsable. Esto no implica que los módulos operen de forma aislada: varios interactúan entre sí (por ejemplo, Pagos y Recibos con Cuotas y con Cobros Extraordinarios, o Búsquedas/Reportes leyendo datos de casi todos los demás), pero cada RF tiene un único módulo dueño de su implementación.
+Los 9 módulos cubren la totalidad de los requisitos funcionales vigentes (RF-01 a RF-66, excepto los eliminados en la revisión de alcance del 06/10/2026: RF-24, RF-25, RF-31 y RF-61 a RF-64), cada uno con un módulo principal responsable. Esto no implica que los módulos operen de forma aislada: varios interactúan entre sí (por ejemplo, Pagos y Recibos con Cuotas y con Cobros Extraordinarios, o Búsquedas/Reportes leyendo datos de casi todos los demás), pero cada RF tiene un único módulo dueño de su implementación.
 
 ## Requisitos no funcionales
 

@@ -82,14 +82,14 @@ Las cuotas se generan el día 1 de cada mes.
 ### RN-17 – Valor general vigente
 Las cuotas mensuales deberán generarse utilizando el valor general vigente para el período correspondiente.
 
-### RN-18 – Importe particular por alumno
-Un alumno podrá tener un importe de cuota diferente del valor general cuando exista una condición particular definida por la administración.
+### RN-18 – Importe particular por alumno *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** No forma parte del alcance aprobado en la Primera Entrega. Acompaña la eliminación de RF-24.
 
 ### RN-19 – Vencimiento de la cuota
 Cada período tendrá una única fecha de vencimiento definida por la administración.
 
 ### RN-20 – Aplicación del interés por mora
-Toda cuota que permanezca impaga después de su fecha de vencimiento deberá incorporar el interés por mora vigente.
+Toda cuota que permanezca impaga después de su fecha de vencimiento deberá incorporar el interés por mora definido en la configuración que rige el período de dicha cuota.
 
 ### RN-21 – Aplicación única del interés
 El interés por mora se aplicará una sola vez sobre la cuota vencida y no se acumulará de forma periódica.
@@ -100,11 +100,11 @@ El porcentaje de interés por mora será definido por la administración y podr�
 ### RN-23 – Conservación histórica de condiciones
 Los cambios posteriores en el valor general de la cuota, vencimiento o porcentaje de interés no deberán modificar las condiciones correspondientes a cuotas ya generadas.
 
-### RN-24 – Corrección del importe del período actual
-Cuando una cuota pendiente del período en curso haya sido generada con un importe incorrecto, su valor podrá ser corregido por la administración.
+### RN-24 – Corrección del importe del período actual *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** No forma parte del alcance aprobado en la Primera Entrega. Acompaña la eliminación de RF-25.
 
-### RN-25 – Protección de cuotas ya pagadas
-Una cuota ya abonada no deberá ser modificada como consecuencia de una corrección posterior del importe del período.
+### RN-25 – Protección de cuotas ya pagadas *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** No forma parte del alcance aprobado en la Primera Entrega. Acompaña la eliminación de RF-25.
 
 ---
 
@@ -123,76 +123,104 @@ La condición de morosidad no provocará automáticamente la baja del alumno.
 
 ## 7. Matrícula
 
-### RN-29 – Cobro de matrícula
-La matrícula constituye un cobro vinculado al ingreso del alumno a la escuela.
+### RN-29 – Cobro de matrícula *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La matrícula no forma parte del alcance aprobado en la Primera Entrega (ver RF-31).
+
+### RN-30 – Generación única de matrícula *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La matrícula no forma parte del alcance aprobado en la Primera Entrega (ver RF-31).
+
+### RN-31 – Pago total de matrícula *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La matrícula no forma parte del alcance aprobado en la Primera Entrega (ver RF-31).
 
 ---
 
 ## 8. Pagos de cuotas
 
-### RN-30 – Pago total de la cuota mensual
+### RN-32 – Pago total de la cuota mensual
 Cada cuota mensual deberá abonarse en su totalidad en una sola operación.
 
 ---
 
 ## 9. Pagos
 
-### RN-31 – Medios de pago admitidos
+### RN-33 – Medios de pago admitidos
 Los pagos podrán registrarse en efectivo o mediante transferencia.
 
-### RN-32 – Medio de pago opcional
+### RN-34 – Medio de pago opcional
 El registro del medio de pago podrá omitirse cuando la administración no disponga de esa información.
 
-### RN-33 – Anulación de pagos
+### RN-35 – Anulación de pagos
 Un pago registrado incorrectamente deberá anularse en lugar de eliminarse.
 
-### RN-34 – Motivo de anulación
+### RN-36 – Motivo de anulación
 Toda anulación de pago deberá registrar un motivo.
 
-### RN-35 – Conservación del historial de pagos
+### RN-37 – Conservación del historial de pagos
 Los pagos anulados deberán conservarse como parte del historial administrativo.
 
 ---
 
 ## 10. Recibos
 
-### RN-36 – Emisión de recibo
+### RN-38 – Emisión de recibo
 Todo pago confirmado deberá generar un recibo.
 
-### RN-37 – Identificación del recibo
+### RN-39 – Identificación del recibo
 Cada recibo deberá contar con un número identificatorio propio.
 
-### RN-38 – Comprobante de pago parcial
+### RN-40 – Comprobante de pago parcial
 La emisión de un recibo por pago parcial respalda únicamente el importe efectivamente percibido y no extingue la obligación económica pendiente.
 
-### RN-39 – Inalterabilidad de comprobantes
+### RN-41 – Inalterabilidad de comprobantes
 Los recibos emitidos no podrán destruirse ni eliminarse del registro histórico; ante la anulación de una cobranza, el comprobante asociado pierde validez fiscal/administrativa pero manteniendo su trazabilidad.
 
 ---
 
 ## 11. Cobros extraordinarios
 
-### RN-40 – Asociación del cobro extraordinario
+### RN-42 – Asociación del cobro extraordinario
 Todo cobro extraordinario deberá estar asociado a un alumno y a un concepto determinado.
 
-### RN-41 – Pagos parciales en cobros extraordinarios
+### RN-43 – Pagos parciales en cobros extraordinarios
 Los cobros correspondientes a eventos o indumentaria podrán recibir uno o más pagos parciales.
 
-### RN-42 – Conservación del saldo
+### RN-44 – Conservación del saldo
 Cuando un cobro extraordinario no haya sido abonado en su totalidad, deberá conservarse el saldo pendiente.
 
-### RN-43 – Especificación de pedidos de indumentaria
+### RN-45 – Especificación de pedidos de indumentaria
 La gestión y cobro de indumentaria institucional requiere la definición previa del tipo de prenda y talle correspondiente para validar el pedido.
 
-### RN-44 – Interés en cobros extraordinarios
+### RN-46 – Interés en cobros extraordinarios
 Los cobros extraordinarios correspondientes a eventos o indumentaria no estarán sujetos al interés por mora definido para las cuotas mensuales.
 
 ---
 
 ## 12. Preinscripción y obligaciones económicas
 
-### RN-45 – Inicio de obligaciones económicas
+### RN-47 – Inicio de obligaciones económicas
 Una preinscripción no generará cuotas ni otras obligaciones económicas hasta que el alumno haya sido dado de alta de manera definitiva.
+
+---
+
+## 13. Reglas incorporadas durante la revisión del modelo conceptual
+
+### RN-48 – Definición del importe de matrícula *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La matrícula no forma parte del alcance aprobado en la Primera Entrega (ver RF-31).
+
+### RN-49 – Conservación de la preinscripción procesada
+Una preinscripción aceptada o rechazada se conserva indicando su estado. En caso de aceptación, la información validada se incorpora a los registros definitivos del alumno y sus responsables, sin duplicar registros existentes (RN-02, RN-08).
+
+### RN-50 – Importe único del evento *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** Se mantiene el registro de eventos (RF-65, RF-66) sin reglas adicionales sobre su importe, para simplificar el modelo.
+
+### RN-51 – Inmutabilidad del importe del evento *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** Ver RN-50.
+
+### RN-52 – Pago de una única obligación
+Cada pago corresponde a una única obligación económica: una cuota mensual o un cobro extraordinario.
+
+### RN-53 – Una cuota por alumno y período
+Un alumno no podrá tener más de una cuota correspondiente al mismo período.
 
 ---
 
@@ -202,6 +230,14 @@ Una preinscripción no generará cuotas ni otras obligaciones económicas hasta 
 2. Las cuotas mensuales deberán abonarse en su totalidad; no se habilitarán pagos parciales de cuotas.
 3. Los pagos parciales quedarán limitados a eventos e indumentaria.
 4. Los recibos correspondientes a pagos parciales de cobros extraordinarios deberán informar el saldo pendiente.
+
+---
+
+## Revisión de alcance (06/10/2026)
+
+- **Eliminadas por no estar en la Primera Entrega:** RN-18, RN-24, RN-25, matrícula (RN-29 a RN-31, RN-48) y reglas de importe de eventos (RN-50, RN-51).
+- **Modificada:** RN-49 (la preinscripción se conserva con su estado en lugar de eliminarse).
+- **Agregadas:** RN-52 (un pago, una obligación) y RN-53 (una cuota por alumno y período), que antes solo estaban implícitas.
 
 ---
 

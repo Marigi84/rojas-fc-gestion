@@ -55,18 +55,18 @@ La interfaz deberá adaptarse a distintos tamaños de pantalla y permitir la uti
 
 ## 5. Funcionamiento sin conexión y sincronización
 
-### RNF-10 – Preservación de operaciones offline
-Las operaciones permitidas sin conexión deberán conservarse localmente hasta que puedan ser sincronizadas, evitando su pérdida ante interrupciones temporales de conectividad.
+### RNF-10 – Preservación de operaciones offline *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La Primera Entrega compromete el funcionamiento offline de "las operaciones que se definan como aptas". Se define que sin conexión solo se consulta información (RF-60); no se registran pagos provisionales ni se sincronizan operaciones.
 
-### RNF-11 – Consistencia de sincronización
-La sincronización de operaciones pendientes deberá evitar la generación involuntaria de registros duplicados y detectar situaciones que requieran intervención del Administrador/Coordinador.
+### RNF-11 – Consistencia de sincronización *(eliminado)*
+> **Eliminado en la revisión de alcance (06/10/2026).** La Primera Entrega compromete el funcionamiento offline de "las operaciones que se definan como aptas". Se define que sin conexión solo se consulta información (RF-60); no se registran pagos provisionales ni se sincronizan operaciones.
 
 ---
 
 ## 6. Trazabilidad
 
 ### RNF-12 – Trazabilidad de operaciones relevantes
-El sistema deberá conservar información suficiente para identificar operaciones administrativas relevantes realizadas sobre los registros y conocer cuándo fueron efectuadas.
+El sistema deberá registrar qué usuario realizó y en qué fecha y hora las operaciones relevantes: registro y anulación de pagos, altas, bajas y reactivaciones de alumnos, y aceptación o rechazo de preinscripciones.
 
 ---
 
