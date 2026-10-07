@@ -120,6 +120,7 @@ REALIZA -1- MEDIO
 entity "Recibo" as RECIBO {
   "Número de recibo" as RE_NUM <<key>>
   "Fecha de emisión" as RE_FE
+  "Anulado" as RE_ANU <<derived>>
 }
 relationship "genera" as GENERA {
 }

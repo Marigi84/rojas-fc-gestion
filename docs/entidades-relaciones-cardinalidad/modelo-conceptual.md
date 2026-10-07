@@ -177,6 +177,7 @@ Representa el comprobante generado por un pago (RF-29).
 |---|---|
 | **Número de recibo** | Clave (RN-34) |
 | Fecha de emisión | RF-29 |
+| Anulado | Derivado: el pago que lo generó fue anulado (RF-33, RN-37) |
 
 ---
 
