@@ -238,7 +238,7 @@ rojas-fc-gestion/
 - [`docs/requisitos/requisitos-funcionales.md`](docs/requisitos/requisitos-funcionales.md) — Requisitos funcionales consolidados.
 - [`docs/requisitos/requisitos-no-funcionales.md`](docs/requisitos/requisitos-no-funcionales.md) — Requisitos no funcionales consolidados.
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
-- [`docs/requisitos/revision-del-alcance.md`](docs/requisitos/revision-del-alcance.md) — Ajustes de prioridad sobre el alcance de la Primera Entrega.
+- [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md) — Ajustes sobre el alcance de la Primera Entrega.
 - [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
 
 ## Estado del proyecto
