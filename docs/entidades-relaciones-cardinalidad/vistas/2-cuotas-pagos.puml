@@ -1,0 +1,83 @@
+@startchen
+title Vista 2 — Cuotas y pagos (Participación y Encargo: ver vista 3)
+
+entity "Alumno" as ALUMNO {
+}
+entity "Administrador" as ADMIN {
+}
+entity "Período" as PERIODO {
+  "Mes y año" as PE_MA <<key>>
+  "Importe" as PE_IMP
+  "Fecha de vencimiento" as PE_VEN
+  "Porcentaje de interés" as PE_INT
+}
+entity "Cuota" as CUOTA <<weak>> {
+  "Fecha de generación" as CU_FG
+  "Monto a pagar" as CU_MON <<derived>>
+  "Estado" as CU_EST <<derived>>
+}
+relationship "debe" as DEBE <<identifying>> {
+}
+ALUMNO -1- DEBE
+DEBE =N= CUOTA
+relationship "corresponde" as CORRESP <<identifying>> {
+}
+PERIODO -1- CORRESP
+CORRESP =N= CUOTA
+
+entity "Pago" as PAGO {
+  "Número de pago" as PG_NUM <<key>>
+  "Fecha" as PG_FEC
+  "Monto" as PG_MON
+}
+relationship "salda" as SALDA {
+}
+PAGO -N- SALDA
+SALDA -1- CUOTA
+
+entity "Medio de pago" as MEDIO {
+  "Nombre" as MP_NOM <<key>>
+}
+relationship "se realiza con" as REALIZA {
+}
+PAGO =N= REALIZA
+REALIZA -1- MEDIO
+
+entity "Recibo" as RECIBO {
+  "Número de recibo" as RE_NUM <<key>>
+  "Fecha de emisión" as RE_FE
+}
+relationship "genera" as GENERA {
+}
+PAGO -1- GENERA
+GENERA =1= RECIBO
+
+entity "Participación" as PARTIC <<weak>> {
+}
+entity "Encargo" as ENCARGO <<weak>> {
+}
+relationship "abona" as ABONA_EV {
+}
+PAGO -N- ABONA_EV
+ABONA_EV -1- PARTIC
+relationship "abona" as ABONA_EN {
+}
+PAGO -N- ABONA_EN
+ABONA_EN -1- ENCARGO
+
+relationship "configura" as CONFIGURA {
+  "Fecha" as CF_FEC
+}
+ADMIN -1- CONFIGURA
+CONFIGURA =N= PERIODO
+relationship "registra" as REG_PAGO {
+}
+ADMIN -1- REG_PAGO
+REG_PAGO =N= PAGO
+relationship "anula" as ANULA {
+  "Fecha de anulación" as AN_FEC
+  "Motivo" as AN_MOT
+}
+ADMIN -1- ANULA
+ANULA -N- PAGO
+@endchen

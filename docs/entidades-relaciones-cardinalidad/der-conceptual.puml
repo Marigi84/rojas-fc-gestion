@@ -1,219 +1,168 @@
-@startuml
+@startchen
 title DER conceptual — Sistema de Gestión Rojas FC
 
-left to right direction
-
-hide methods
-hide stereotypes
-hide circle
-skinparam classAttributeIconSize 0
-skinparam shadowing false
-skinparam linetype ortho
-skinparam nodesep 80
-skinparam ranksep 120
-skinparam ArrowColor #444444
-skinparam NoteBackgroundColor #FFFDEB
-skinparam NoteBorderColor #888888
-
-legend top right
-  <u>Subrayado</u>: identificador
-  {parcial}: identificador parcial de entidad débil
-  /Atributo: derivado (se calcula)
-  [opcional]: puede no tener valor
-  Sin subrayado: identificador a definir en la etapa de claves (#13)
-  Cardinalidad: el número junto a una entidad indica
-  cuántas ocurrencias de esa entidad se vinculan
-  con una ocurrencia de la entidad del otro extremo.
-end legend
-
-' ===================== Personas =====================
-
-entity "Persona" as Persona {
-  <u>DNI</u>
-  Nombre
-  Apellido
+' ===== Personas =====
+entity "Persona" as PERSONA {
+  "DNI" as P_DNI <<key>>
+  "Nombre" as P_NOM
+  "Apellido" as P_APE
 }
-
-entity "Alumno" as Alumno {
-  Fecha de nacimiento
-  Dirección: Domicilio, Barrio, Localidad
-  Colegio
-  Importe de cuota particular [opcional]
-  /Categoría
-  /Estado
-  /Moroso
+entity "Alumno" as ALUMNO {
+  "Fecha de nacimiento" as A_FN
+  "Dirección" as A_DIR
+  "Categoría" as A_CAT <<derived>>
+  "Estado" as A_EST <<derived>>
+  "Moroso" as A_MOR <<derived>>
 }
-
-entity "Responsable" as Responsable {
-  Teléfono
-  Contraseña [opcional]
+entity "Responsable" as RESPONSABLE {
+  "Teléfono" as R_TEL
 }
-
-entity "Personal Administrativo" as Personal {
-  Contraseña
+entity "Administrador" as ADMIN {
+  "Email" as AD_MAIL
 }
+PERSONA =>= o { ALUMNO, RESPONSABLE, ADMIN }
 
-Persona <|-- Alumno
-Persona <|-- Responsable
-Persona <|-- Personal
-
-note top of Persona
-  Especialización TOTAL y EXCLUSIVA:
-  Alumno | Responsable | Personal Administrativo.
-  Responsable y Personal Administrativo ingresan con DNI + contraseña.
-  Alumno no posee acceso al sistema.
-end note
-
-entity "Tipo de Vínculo" as TipoVinculo {
-  <u>Nombre</u>
+relationship "está a cargo de" as TIENE {
+  "Vínculo" as T_VINC
 }
+ALUMNO =N= TIENE
+RESPONSABLE -M- TIENE
 
-diamond TIENE
-Alumno "1..N" -- TIENE
-Responsable "1..2" -- TIENE
-TipoVinculo "1" -- TIENE
-
-note bottom of TIENE
-  tiene como responsable (ternaria):
-  cada Alumno tiene 1 a 2 Responsables,
-  cada Responsable tiene 1 a N Alumnos y
-  cada par Alumno–Responsable tiene 1 Tipo de Vínculo.
-end note
-
-' ===================== Inscripción y movimientos =====================
-
-entity "Preinscripción" as Preinscripcion {
-  Fecha
-  == Datos del alumno ==
-  Nombre
-  Apellido
-  DNI
-  Fecha de nacimiento
-  Domicilio
-  Barrio
-  Localidad
-  Colegio
+entity "Permanencia" as PERM <<weak>> {
+  "~~Fecha de alta~~" as PM_FA
+  "Fecha de baja" as PM_FB
 }
-
-entity "Responsable declarado\n(entidad débil)" as RespDeclarado {
-  DNI {parcial}
-  Nombre
-  Apellido
-  Teléfono
+relationship "registra" as REG_PERM <<identifying>> {
 }
+ALUMNO =1= REG_PERM
+REG_PERM =N= PERM
 
-entity "Movimiento de Alumno\n(entidad débil)" as Movimiento {
-  Fecha y hora {parcial}
-  Observación [opcional]
+
+' ===== Cuotas =====
+entity "Período" as PERIODO {
+  "Mes y año" as PE_MA <<key>>
+  "Importe" as PE_IMP
+  "Fecha de vencimiento" as PE_VEN
+  "Porcentaje de interés" as PE_INT
 }
-
-entity "Tipo de Movimiento" as TipoMovimiento {
-  <u>Nombre</u>
+entity "Cuota" as CUOTA <<weak>> {
+  "Fecha de generación" as CU_FG
+  "Monto a pagar" as CU_MON <<derived>>
+  "Estado" as CU_EST <<derived>>
 }
-
-Preinscripcion "1" -- "1..2" RespDeclarado : declara
-TipoVinculo "1" -- "0..N" RespDeclarado : indica vínculo
-Alumno "1" -- "1..N" Movimiento : registra\nmovimiento
-Personal "1" -- "0..N" Movimiento : realiza
-TipoMovimiento "1" -- "0..N" Movimiento : clasifica
-note bottom of Preinscripcion
-  Solicitud pendiente de revisión.
-  Al aceptarse, sus datos pasan a Persona,
-  Alumno y Responsable, y se elimina.
-  Al rechazarse, se elimina.
-  La identificación de Preinscripción y de
-  Responsable declarado se resolverá en #13.
-end note
-
-' ===================== Obligaciones =====================
-
-entity "Obligación de Pago" as Obligacion {
-  Importe
-  /Saldo
+relationship "debe" as DEBE <<identifying>> {
 }
-
-entity "Cuota" as Cuota {
-  Recargo por mora [opcional]
-  /Estado
+ALUMNO -1- DEBE
+DEBE =N= CUOTA
+relationship "corresponde" as CORRESP <<identifying>> {
 }
+PERIODO -1- CORRESP
+CORRESP =N= CUOTA
 
-entity "Matrícula" as Matricula {
-  /Fecha de matriculación
+' ===== Eventos =====
+entity "Evento" as EVENTO {
+  "Nombre" as E_NOM <<key>>
+  "Año" as E_ANIO <<key>>
+  "Importe" as E_IMP
 }
-
-entity "Cobro Extraordinario" as Cobro {
-  Fecha de generación
+entity "Participación" as PARTIC <<weak>> {
+  "Fecha de inscripción" as PA_FI
+  "Saldo" as PA_SAL <<derived>>
 }
-
-entity "Cobro de Indumentaria" as Indumentaria {
-  Tipo de prenda
-  Talle
+relationship "se anota" as ANOTA <<identifying>> {
 }
-
-Obligacion <|-- Cuota
-Obligacion <|-- Matricula
-Obligacion <|-- Cobro
-Cobro <|-- Indumentaria
-
-note top of Obligacion
-  Especialización TOTAL y EXCLUSIVA:
-  Cuota | Matrícula | Cobro Extraordinario.
-end note
-
-note bottom of Cobro
-  Especialización PARCIAL: Cobro de Indumentaria.
-  Todo Cobro Extraordinario corresponde a un Evento
-  o es de Indumentaria, nunca ambos ni ninguno.
-end note
-
-Alumno "1" -- "0..N" Obligacion : posee
-Movimiento "1" -- "0..1" Matricula : origina
-
-entity "Configuración de Cuota" as Configuracion {
-  <u>Vigente desde</u>
-  Importe general
-  Porcentaje de interés
+ALUMNO -1- ANOTA
+ANOTA =N= PARTIC
+relationship "de" as DE <<identifying>> {
 }
+EVENTO -1- DE
+DE =N= PARTIC
 
-entity "Período de Cuota" as Periodo {
-  <u>Período</u>
-  Fecha de vencimiento
+' ===== Indumentaria =====
+entity "Encargo" as ENCARGO <<weak>> {
+  "~~Fecha y hora~~" as EN_FEC
+  "Monto" as EN_MON
+  "Descripción" as EN_DESC
+  "Saldo" as EN_SAL <<derived>>
 }
-
-Configuracion "1" -- "0..N" Periodo : rige
-Periodo "1" -- "0..N" Cuota : comprende
-
-entity "Evento" as Evento {
-  <u>Nombre</u>
-  <u>Año</u>
-  Importe
+relationship "encarga" as ENCARGA <<identifying>> {
 }
+ALUMNO -1- ENCARGA
+ENCARGA =N= ENCARGO
 
-Evento "0..1" -- "0..N" Cobro : corresponde a
-
-' ===================== Pagos =====================
-
-entity "Pago" as Pago {
-  Fecha
-  Motivo de anulación [opcional]
-  Fecha de anulación [opcional]
-  /Anulado
-  /Importe total
+' ===== Pagos =====
+entity "Pago" as PAGO {
+  "Número de pago" as PG_NUM <<key>>
+  "Fecha" as PG_FEC
+  "Monto" as PG_MON
 }
-
-entity "Medio de Pago" as MedioPago {
-  <u>Nombre</u>
+relationship "salda" as SALDA {
 }
-
-entity "Recibo" as Recibo {
-  <u>Número</u>
-  Fecha de emisión
+PAGO -N- SALDA
+SALDA -1- CUOTA
+relationship "abona" as ABONA_EV {
 }
+PAGO -N- ABONA_EV
+ABONA_EV -1- PARTIC
+relationship "abona" as ABONA_EN {
+}
+PAGO -N- ABONA_EN
+ABONA_EN -1- ENCARGO
 
-Obligacion "1..N" -- "0..N" Pago : se aplica a\n[Importe aplicado]
-Pago "0..N" -- "1" Personal : registra\npago
-Pago "0..N" -- "0..1" Personal : anula
-MedioPago "0..1" -- "0..N" Pago : se abona con
-Pago "1" -- "0..1" Recibo : genera
+entity "Medio de pago" as MEDIO {
+  "Nombre" as MP_NOM <<key>>
+}
+relationship "se realiza con" as REALIZA {
+}
+PAGO =N= REALIZA
+REALIZA -1- MEDIO
 
-@enduml
+entity "Recibo" as RECIBO {
+  "Número de recibo" as RE_NUM <<key>>
+  "Fecha de emisión" as RE_FE
+}
+relationship "genera" as GENERA {
+}
+PAGO -1- GENERA
+GENERA =1= RECIBO
+
+' ===== Acciones del administrador =====
+relationship "da de alta" as ALTA {
+}
+ADMIN -1- ALTA
+ALTA =N= PERM
+
+relationship "da de baja" as BAJA {
+}
+ADMIN -1- BAJA
+BAJA -N- PERM
+
+relationship "registra" as REG_PAGO {
+}
+ADMIN -1- REG_PAGO
+REG_PAGO =N= PAGO
+
+relationship "anula" as ANULA {
+  "Fecha de anulación" as AN_FEC
+  "Motivo" as AN_MOT
+}
+ADMIN -1- ANULA
+ANULA -N- PAGO
+
+relationship "configura" as CONFIGURA {
+  "Fecha" as CF_FEC
+}
+ADMIN -1- CONFIGURA
+CONFIGURA =N= PERIODO
+
+relationship "registra" as REG_ENC {
+}
+ADMIN -1- REG_ENC
+REG_ENC =N= ENCARGO
+
+relationship "registra" as REG_EV {
+  "Fecha" as RE_FEC
+}
+ADMIN -1- REG_EV
+REG_EV =N= EVENTO
+@endchen

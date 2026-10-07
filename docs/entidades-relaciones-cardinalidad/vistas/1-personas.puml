@@ -1,0 +1,47 @@
+@startchen
+title Vista 1 — Personas y permanencia
+
+entity "Persona" as PERSONA {
+  "DNI" as P_DNI <<key>>
+  "Nombre" as P_NOM
+  "Apellido" as P_APE
+}
+entity "Alumno" as ALUMNO {
+  "Fecha de nacimiento" as A_FN
+  "Dirección" as A_DIR
+  "Categoría" as A_CAT <<derived>>
+  "Estado" as A_EST <<derived>>
+  "Moroso" as A_MOR <<derived>>
+}
+entity "Responsable" as RESPONSABLE {
+  "Teléfono" as R_TEL
+}
+entity "Administrador" as ADMIN {
+  "Email" as AD_MAIL
+}
+PERSONA =>= o { ALUMNO, RESPONSABLE, ADMIN }
+
+relationship "está a cargo de" as TIENE {
+  "Vínculo" as T_VINC
+}
+ALUMNO =N= TIENE
+RESPONSABLE -M- TIENE
+
+entity "Permanencia" as PERM <<weak>> {
+  "~~Fecha de alta~~" as PM_FA
+  "Fecha de baja" as PM_FB
+}
+relationship "registra" as REG_PERM <<identifying>> {
+}
+ALUMNO =1= REG_PERM
+REG_PERM =N= PERM
+
+relationship "da de alta" as ALTA {
+}
+ADMIN -1- ALTA
+ALTA =N= PERM
+relationship "da de baja" as BAJA {
+}
+ADMIN -1- BAJA
+BAJA -N- PERM
+@endchen
