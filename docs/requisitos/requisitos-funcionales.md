@@ -13,7 +13,7 @@ En este documento, **Administrador** designa al actor "Administrador / Coordinad
 ## 1. Gestión de alumnos
 
 ### RF-01 – Registrar alumno
-El sistema deberá permitir al Administrador registrar un alumno ingresando nombre, apellido, DNI, fecha de nacimiento y dirección.
+El sistema deberá permitir al Administrador registrar un alumno ingresando nombre, apellido, DNI, fecha de nacimiento, dirección y al menos un responsable.
 
 Si el DNI ya corresponde a un alumno registrado, el sistema no deberá crear un nuevo alumno. Si el registro existente se encuentra inactivo, deberá utilizarse para su eventual reactivación.
 
@@ -50,7 +50,7 @@ El sistema deberá permitir al Administrador modificar los datos registrados de 
 El sistema deberá permitir al Administrador asociar responsables a un alumno y asociar un mismo responsable a distintos alumnos.
 
 ### RF-10 – Desvincular responsable
-El sistema deberá permitir al Administrador desvincular un responsable de un alumno sin eliminar su registro cuando continúe asociado a otro alumno.
+El sistema deberá permitir al Administrador desvincular un responsable de un alumno, siempre que el alumno conserve al menos otro responsable asociado, sin eliminar su registro cuando continúe asociado a otro alumno.
 
 ---
 
