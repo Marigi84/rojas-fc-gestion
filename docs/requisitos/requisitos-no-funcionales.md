@@ -8,12 +8,14 @@ La definición se realizó tomando como base la Primera Entrega aprobada y las d
 
 Los requisitos aquí definidos establecen condiciones de calidad, seguridad, rendimiento, integridad, usabilidad y operación que deberá cumplir el sistema.
 
+En este documento, **Administrador** designa al actor "Administrador / Coordinador" definido en la Primera Entrega.
+
 ---
 
 ## 1. Seguridad
 
 ### RNF-01 – Protección de credenciales
-El sistema deberá almacenar las contraseñas de los usuarios de forma segura, evitando su almacenamiento en texto plano.
+El sistema deberá almacenar las contraseñas de los usuarios de forma segura, evitando su almacenamiento en texto plano. Las contraseñas asignadas o restablecidas por el Administrador serán provisorias y el usuario deberá cambiarlas en su primer ingreso.
 
 ### RNF-02 – Protección de funcionalidades restringidas
 El acceso a las funcionalidades administrativas deberá validarse en el backend, evitando que puedan utilizarse únicamente mediante manipulación de la interfaz del cliente.
@@ -39,57 +41,54 @@ Una operación económica no deberá dejar registros parciales o inconsistentes 
 El sistema deberá utilizar paginación y consultas acotadas para evitar la carga innecesaria de grandes volúmenes de registros y favorecer tiempos de respuesta adecuados.
 
 ### RNF-07 – Tiempo de respuesta
-El sistema deberá responder a las operaciones habituales de búsqueda, filtrado y consulta de listados en un tiempo objetivo no superior a 2 segundos, bajo condiciones normales de uso y conectividad.
-
-### RNF-08 – Rendimiento ante crecimiento de datos
-El sistema deberá mantener un funcionamiento adecuado a medida que aumenten los registros históricos de alumnos, cuotas, pagos y recibos.
+El sistema deberá responder a las operaciones habituales de búsqueda, filtrado y consulta de listados en un tiempo objetivo no superior a 2 segundos, bajo condiciones normales de uso y conectividad, aun con el crecimiento del historial de alumnos, cuotas, pagos y recibos.
 
 ---
 
 ## 4. Adaptabilidad de la interfaz
 
-### RNF-09 – Diseño responsive
+### RNF-08 – Diseño responsive
 La interfaz deberá adaptarse a distintos tamaños de pantalla y permitir la utilización de las funcionalidades principales desde computadoras, tablets y teléfonos móviles.
 
 ---
 
 ## 5. Funcionamiento sin conexión y sincronización
 
-### RNF-10 – Preservación de operaciones offline
+### RNF-09 – Preservación de operaciones offline
 Las operaciones permitidas sin conexión deberán conservarse localmente hasta que puedan ser sincronizadas, evitando su pérdida ante interrupciones temporales de conectividad.
 
-### RNF-11 – Consistencia de sincronización
-La sincronización de operaciones pendientes deberá evitar la generación involuntaria de registros duplicados y detectar situaciones que requieran intervención del Administrador/Coordinador.
+### RNF-10 – Consistencia de sincronización
+La sincronización de operaciones pendientes deberá evitar la generación involuntaria de registros duplicados y detectar situaciones que requieran intervención del Administrador.
 
 ---
 
 ## 6. Trazabilidad
 
-### RNF-12 – Trazabilidad de operaciones relevantes
-El sistema deberá conservar información suficiente para identificar operaciones administrativas relevantes realizadas sobre los registros y conocer cuándo fueron efectuadas.
+### RNF-11 – Trazabilidad de operaciones
+El sistema deberá registrar qué administrador realizó cada una de las siguientes operaciones y en qué fecha: alta y baja de alumnos, registro y anulación de pagos, configuración de las cuotas de cada período, y registro de eventos y de encargos de indumentaria.
 
 ---
 
 ## 7. Usabilidad
 
-### RNF-13 – Claridad de la interfaz
+### RNF-12 – Claridad de la interfaz
 La interfaz deberá presentar las funcionalidades administrativas de manera clara y consistente, utilizando mensajes comprensibles para informar resultados, errores o acciones que requieran intervención del usuario.
 
-### RNF-14 – Confirmación de operaciones sensibles
+### RNF-13 – Confirmación de operaciones sensibles
 Las operaciones que puedan modificar significativamente el estado de la información, como una baja o la anulación de un pago, deberán solicitar confirmación antes de ejecutarse.
 
 ---
 
 ## 8. Plataforma y disponibilidad
 
-### RNF-15 – Aplicación web
+### RNF-14 – Aplicación web
 El sistema deberá poder utilizarse desde un navegador web sin requerir la instalación de una aplicación nativa.
 
-### RNF-16 – Disponibilidad
+### RNF-15 – Disponibilidad
 El sistema deberá estar disponible para su utilización mientras los servicios de infraestructura y conectividad requeridos se encuentren operativos, contemplando las funcionalidades offline definidas para interrupciones temporales de conexión.
 
-### RNF-17 – Despliegue online
-La solución deberá contemplar el despliegue de al menos uno de sus componentes principales en un servicio online.
+### RNF-16 – Despliegue en la nube
+La solución deberá contemplar el despliegue de al menos uno de sus componentes principales en un servicio en la nube.
 
 ---
 
@@ -98,11 +97,3 @@ La solución deberá contemplar el despliegue de al menos uno de sus componentes
 Las copias de seguridad automáticas de la base de datos no se incorporan como requisito obligatorio del alcance actual del Trabajo Final Integrador.
 
 Se consideran una mejora futura recomendable para la etapa de operación real del sistema.
-
----
-
-## Estado del documento
-
-**Estado:** Verificado por el equipo.
-
-Esta versión puede utilizarse como base para las siguientes etapas del proyecto.
