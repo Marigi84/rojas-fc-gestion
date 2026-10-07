@@ -238,11 +238,9 @@ rojas-fc-gestion/
 - [`docs/requisitos/requisitos-funcionales.md`](docs/requisitos/requisitos-funcionales.md) — Requisitos funcionales consolidados.
 - [`docs/requisitos/requisitos-no-funcionales.md`](docs/requisitos/requisitos-no-funcionales.md) — Requisitos no funcionales consolidados.
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
-- [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
-- [`docs/entidades-relaciones-cardinalidad/entidades-relaciones-cardinalidad.md`](docs/entidades-relaciones-cardinalidad/entidades-relaciones-cardinalidad.md) — Propuesta conceptual de entidades, relaciones y cardinalidades.
-- [`docs/2da Entrega - Diseño y Modulos.md`](docs/2da%20Entrega%20-%20Diseño%20y%20Modulos.md) — Esquema de base de datos (diagrama entidad-relación).
-- [`database/schema.sql`](database/schema.sql) — Script DDL completo del esquema relacional (MySQL).
+- [`docs/requisitos/revision-del-alcance.md`](docs/requisitos/revision-del-alcance.md) — Ajustes de prioridad sobre el alcance de la Primera Entrega.
+- [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
 
 ## Estado del proyecto
 
-🟡 **En desarrollo — Segunda etapa: diseño y módulos, en revisión previa a la aprobación del tutor.**
+🟡 **En desarrollo — Segunda etapa: diseño del modelo de datos y módulos.**
