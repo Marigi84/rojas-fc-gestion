@@ -2,7 +2,7 @@
 
 ## Sistema de Gestión Rojas FC
 
-Este documento registra los ajustes de prioridad realizados sobre el alcance definido en la Primera Entrega, conforme a lo previsto en su sección 6.7 "Organización y seguimiento del trabajo":
+Este documento registra los ajustes realizados sobre el alcance definido en la Primera Entrega, conforme a lo previsto en su sección 6.7 "Organización y seguimiento del trabajo":
 
 > Durante el avance se revisará periódicamente el alcance y la planificación. En caso de surgir dificultades técnicas o desvíos respecto de los tiempos previstos, se priorizarán las funcionalidades centrales relacionadas con la gestión de alumnos, responsables, cuotas y pagos, evitando comprometer la estabilidad del producto final.
 
@@ -32,3 +32,23 @@ Se priorizan las funcionalidades centrales de gestión de alumnos, responsables,
 El Administrador registra a cada alumno junto con al menos un responsable (RF-01 y RF-06). Los datos se ingresan una sola vez y el sistema evita registros duplicados de personas (RN-01).
 
 La preinscripción podrá incorporarse en un incremento posterior sin modificar la gestión de alumnos y responsables definida en los requisitos actuales.
+
+---
+
+## 2. Vencimiento único por período
+
+### Qué preveía la Primera Entrega
+
+La Primera Entrega preveía configurar "uno o más vencimientos" por período (sección 2, "Propuesta de solución y valor agregado").
+
+### Ajuste
+
+Cada período tiene una única fecha de vencimiento.
+
+### Motivo
+
+Simplifica la configuración de las cuotas y el cálculo del interés por mora.
+
+### Cómo queda
+
+El Administrador establece una única fecha de vencimiento para las cuotas de cada período (RF-19, RN-18).
