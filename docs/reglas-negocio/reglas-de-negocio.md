@@ -20,8 +20,8 @@ Una persona se registra una sola vez, aunque cumpla más de un rol en la escuela
 ### RN-02 – Rol de las personas registradas
 Toda persona registrada deberá cumplir al menos un rol en la escuela: alumno, responsable o administrador.
 
-### RN-03 – Alumno y responsable en simultáneo
-Una persona no podrá ser alumno activo y responsable al mismo tiempo.
+### RN-03 – Incompatibilidad entre alumno activo y responsable
+Una persona no podrá ser responsable mientras sea alumno activo.
 
 ---
 
