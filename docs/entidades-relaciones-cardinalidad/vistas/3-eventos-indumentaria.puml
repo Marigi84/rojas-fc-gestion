@@ -1,0 +1,57 @@
+@startchen
+title Vista 3 — Eventos e indumentaria
+
+entity "Alumno" as ALUMNO {
+}
+entity "Administrador" as ADMIN {
+}
+entity "Pago" as PAGO {
+}
+entity "Evento" as EVENTO {
+  "Nombre" as E_NOM <<key>>
+  "Año" as E_ANIO <<key>>
+  "Importe" as E_IMP
+}
+entity "Participación" as PARTIC <<weak>> {
+  "Fecha de inscripción" as PA_FI
+  "Saldo" as PA_SAL <<derived>>
+}
+relationship "se anota" as ANOTA <<identifying>> {
+}
+ALUMNO -1- ANOTA
+ANOTA =N= PARTIC
+relationship "de" as DE <<identifying>> {
+}
+EVENTO -1- DE
+DE =N= PARTIC
+
+entity "Encargo" as ENCARGO <<weak>> {
+  "~~Fecha y hora~~" as EN_FEC
+  "Monto" as EN_MON
+  "Descripción" as EN_DESC
+  "Saldo" as EN_SAL <<derived>>
+}
+relationship "encarga" as ENCARGA <<identifying>> {
+}
+ALUMNO -1- ENCARGA
+ENCARGA =N= ENCARGO
+
+relationship "abona" as ABONA_EV {
+}
+PAGO -N- ABONA_EV
+ABONA_EV -1- PARTIC
+relationship "abona" as ABONA_EN {
+}
+PAGO -N- ABONA_EN
+ABONA_EN -1- ENCARGO
+
+relationship "registra" as REG_EV {
+  "Fecha" as RE_FEC
+}
+ADMIN -1- REG_EV
+REG_EV =N= EVENTO
+relationship "registra" as REG_ENC {
+}
+ADMIN -1- REG_ENC
+REG_ENC =N= ENCARGO
+@endchen
