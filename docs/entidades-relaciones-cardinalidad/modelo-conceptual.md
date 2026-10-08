@@ -187,8 +187,10 @@ Representa el comprobante generado por un pago (RF-29).
 
 | Relación | Entidades | Cardinalidad | Participación | Atributos | Referencia |
 |---|---|---|---|---|---|
-| está a cargo de | Responsable – Alumno | M:N | Alumno total, Responsable parcial | Vínculo (madre, padre, tutor u otro) | RF-06, RF-09, RF-10, RN-05, RN-10, RN-11, RN-12 |
+| está a cargo de | Responsable – Alumno | M:N | Ambas totales | Vínculo (madre, padre, tutor u otro) | RF-06, RF-09, RF-10, RN-05, RN-10, RN-11, RN-12 |
 | registra *(identificadora)* | Alumno – Permanencia | 1:N | Permanencia total | | RN-06, RN-09 |
+
+Responsable tiene participación total en "está a cargo de" porque siempre se registra como responsable de un alumno (RF-06), y porque al desvincularlo el sistema exige que conserve al menos otro alumno a cargo (RF-10): un Responsable sin ningún Alumno asociado no tiene razón de existir en el modelo.
 
 ### Cuotas
 
@@ -244,9 +246,23 @@ Las siguientes reglas no pueden expresarse con la notación del DER y se control
 | RN-03 | Una persona no puede ser alumno con permanencia vigente y responsable al mismo tiempo. |
 | RN-07 | Un alumno no puede tener más de una permanencia sin fecha de baja. |
 | RN-08 | La fecha de baja de una permanencia no puede ser anterior a su fecha de alta. |
+| RN-14 | Las cuotas mensuales solo se generan para los alumnos que se encuentren activos al momento de la generación. |
 | RN-22 | El importe, la fecha de vencimiento y el porcentaje de interés de un período no pueden modificarse una vez generadas sus cuotas. |
 | RN-25 | Cada pago participa exactamente en una de las relaciones "salda", "abona" (participación) o "abona" (encargo). |
 | RN-28 | El monto del pago de una cuota debe ser igual al monto a pagar de la cuota. |
 | RN-29 | Una cuota puede tener pagos anulados, pero a lo sumo un pago no anulado. |
 | RN-32 | Un pago anulado no se considera para el estado de la obligación, el saldo ni la recaudación. |
 | RN-39 | El importe de un evento no puede modificarse una vez que tiene al menos una participación. |
+
+---
+
+## 5. Decisiones de modelado: atributos excluidos del modelo conceptual
+
+Este modelo representa el dominio del negocio: personas, alumnos, cuotas, pagos y demás entidades que existen independientemente de cómo se implemente el sistema. Por ese motivo se excluyen deliberadamente dos atributos de naturaleza técnica, que no son datos del negocio sino mecanismos de acceso y de sincronización. Ambos se incorporan en el modelo lógico/físico, no en este diagrama.
+
+| Atributo excluido | Dónde se requeriría | Motivo de la exclusión | Dónde se define |
+|---|---|---|---|
+| Contraseña (de Responsable y de Administrador) | RF-11, RF-15, RF-49, RNF-01 | Es una credencial de autenticación, no un dato propio de la persona en el negocio. | Modelo físico |
+| Estado de sincronización (de Pago) | RF-55, RF-56, RNF-10 | Es un detalle del mecanismo técnico de funcionamiento sin conexión, no de la obligación económica que el pago salda. | Modelo físico |
+
+Esta exclusión no deja esos requisitos sin cubrir: se van a resolver en el esquema relacional (columnas de `database/schema.sql`), que es la etapa siguiente a este modelo conceptual.
