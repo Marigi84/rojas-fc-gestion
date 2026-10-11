@@ -190,7 +190,7 @@ Representa el comprobante generado por un pago (RF-29).
 | está a cargo de | Responsable – Alumno | M:N | Ambas totales | Vínculo (madre, padre, tutor u otro) | RF-06, RF-09, RF-10, RN-05, RN-10, RN-11, RN-12 |
 | registra *(identificadora)* | Alumno – Permanencia | 1:N | Permanencia total | | RN-06, RN-09 |
 
-Responsable tiene participación total en "está a cargo de" porque siempre se registra como responsable de un alumno (RF-06), y porque al desvincularlo el sistema exige que conserve al menos otro alumno a cargo (RF-10): un Responsable sin ningún Alumno asociado no tiene razón de existir en el modelo.
+Responsable tiene participación total en "está a cargo de" porque siempre se registra como responsable de un alumno (RF-06), y su registro se conserva al desvincularlo solo si continúa asociado a otro alumno (RF-10).
 
 ### Cuotas
 
@@ -258,11 +258,11 @@ Las siguientes reglas no pueden expresarse con la notación del DER y se control
 
 ## 5. Decisiones de modelado: atributos excluidos del modelo conceptual
 
-Este modelo representa el dominio del negocio: personas, alumnos, cuotas, pagos y demás entidades que existen independientemente de cómo se implemente el sistema. Por ese motivo se excluyen deliberadamente dos atributos de naturaleza técnica, que no son datos del negocio sino mecanismos de acceso y de sincronización. Ambos se incorporan en el modelo lógico/físico, no en este diagrama.
+Este modelo representa el dominio del negocio: personas, alumnos, cuotas, pagos y demás entidades que existen independientemente de cómo se implemente el sistema. Por ese motivo se excluyen deliberadamente dos atributos de naturaleza técnica, que no son datos del negocio sino mecanismos de acceso y de sincronización. Ambos se incorporan en el modelo físico, no en este diagrama.
 
 | Atributo excluido | Dónde se requeriría | Motivo de la exclusión | Dónde se define |
 |---|---|---|---|
 | Contraseña (de Responsable y de Administrador) | RF-11, RF-15, RF-49, RNF-01 | Es una credencial de autenticación, no un dato propio de la persona en el negocio. | Modelo físico |
 | Estado de sincronización (de Pago) | RF-55, RF-56, RNF-10 | Es un detalle del mecanismo técnico de funcionamiento sin conexión, no de la obligación económica que el pago salda. | Modelo físico |
 
-Esta exclusión no deja esos requisitos sin cubrir: se van a resolver en el esquema relacional (columnas de `database/schema.sql`), que es la etapa siguiente a este modelo conceptual.
+Esta exclusión no deja esos requisitos sin cubrir: se resuelven en el esquema relacional, que es la etapa siguiente a este modelo conceptual.
