@@ -16,10 +16,6 @@ En este documento, **Administrador** designa al actor "Administrador / Coordinad
 
 Esta etapa define únicamente la estructura funcional del sistema: qué módulos existen, de qué se encarga cada uno y qué requisitos funcionales cubre. **No se definen tablas, claves, entidades ni atributos** — esas decisiones corresponden al modelado de entidades y relaciones y al diseño del esquema relacional, que siguen a esta propuesta.
 
-### Antecedente
-
-Existió una propuesta de módulos anterior (issue #7, validada por el equipo), construida sobre una versión previa de los requisitos (64 RF). Se utiliza aquí únicamente como antecedente. Varios requisitos cambiaron sustancialmente desde entonces —se retiró la preinscripción, se reformularon eventos e indumentaria, se unificó Administrador/Coordinador— por lo que cada módulo fue revisado desde cero contra el documento de requisitos vigente, sin asumir que una decisión anterior sigue siendo válida solo por haber sido incluida antes.
-
 ---
 
 ## 1. Autenticación y Autorización
@@ -36,7 +32,7 @@ Existió una propuesta de módulos anterior (issue #7, validada por el equipo), 
 
 Se agrupan los tres porque comparten el mismo actor (Administrador) y porque un alumno no tiene sentido administrativo sin al menos un responsable asociado ni sin su categoría asignada. El alta de un alumno —directa, ya que la preinscripción quedó fuera del alcance actual (ver sección "Fuera de alcance")— exige asociar al menos un responsable (RF-01, RN-05), y ese mínimo se preserva también al desvincular (RF-10). Si el DNI ya corresponde a una persona registrada con otro rol, el sistema reutiliza sus datos (RF-01, RF-06, RN-01).
 
-Las categorías quedan fijas, determinadas únicamente por el año de nacimiento (RF-16, RN-13); esta entrega no incluye un ABM de categorías, por no formar parte del alcance comprometido en la Primera Entrega.
+La categoría del alumno se determina según su año de nacimiento (RF-16, RN-13).
 
 **Requisitos funcionales cubiertos:** RF-01, RF-02, RF-03, RF-04, RF-05, RF-06, RF-07, RF-08, RF-09, RF-10, RF-16.
 
@@ -62,7 +58,7 @@ Las categorías quedan fijas, determinadas únicamente por el año de nacimiento
 
 ## 5. Pagos y Recibos
 
-**Responsabilidad principal:** registrar pagos —de cuotas, de participaciones en eventos o de encargos de indumentaria—, admitiendo pagos parciales donde corresponda; anularlos cuando se registren incorrectamente; y generar, consultar, descargar y compartir el recibo asociado a cada pago confirmado.
+**Responsabilidad principal:** registrar pagos —de cuotas, de participaciones en eventos o de encargos de indumentaria—, admitiendo pagos parciales donde corresponda; anularlos cuando se registren incorrectamente, conservando el registro de la operación anulada (RF-28); y generar, consultar, descargar y compartir el recibo asociado a cada pago confirmado, conservando también los recibos cuyo pago fue anulado (RF-33).
 
 Se agrupan Pagos y Recibos en un mismo módulo porque todo pago confirmado genera un recibo (RN-33): son dos caras de la misma operación, no dos funcionalidades independientes.
 
@@ -128,14 +124,13 @@ Esto no impide que los módulos interactúen entre sí en tiempo de ejecución (
 ## Fuera de alcance
 
 - **Preinscripción en línea:** reprogramada como evolución posterior del sistema. El detalle y la justificación están en `docs/alcance/revision-del-alcance.md`, sección 1. Ningún módulo de esta propuesta la incluye.
-- **Matrícula de ingreso:** no forma parte de los requisitos vigentes. RN-25 enumera taxativamente las obligaciones económicas del sistema —cuota, participación en evento o encargo de indumentaria— y la matrícula no es una de ellas.
 
 ## Requisitos no funcionales
 
 Los requisitos no funcionales (`docs/requisitos/requisitos-no-funcionales.md`) no generan módulos propios: son condiciones de calidad —seguridad, integridad, rendimiento, usabilidad, disponibilidad— que atraviesan a todos los módulos definidos arriba, no funcionalidades independientes con pantalla propia.
 
-Esto incluye específicamente **RNF-11 (Trazabilidad de operaciones)**: no se propone un módulo de "Auditoría" separado, porque ningún requisito funcional pide una pantalla dedicada para consultarla. Es una capacidad transversal —registro interno de qué administrador hizo cada operación y cuándo— que da soporte a los módulos de Alumnos, Cuotas, Pagos y Eventos e Indumentaria, no una funcionalidad propia con la que interactúe un usuario.
+Esto incluye específicamente la auditoría: la Primera Entrega la nombra como "Auditoría de operaciones relevantes" y queda cubierta por **RNF-11 (Trazabilidad de operaciones)**, sin necesidad de un módulo de "Auditoría" separado, porque ningún requisito funcional pide una pantalla dedicada para consultarla. Es una capacidad transversal —registro interno de qué administrador hizo cada operación y cuándo— que da soporte a los módulos de Alumnos, Cuotas, Pagos y Eventos e Indumentaria, no una funcionalidad propia con la que interactúe un usuario.
 
 ---
 
-**Estado:** Propuesta inicial, construida contra los requisitos, reglas de negocio y revisión de alcance vigentes. Pendiente de revisión por Silvia y Marina.
+**Estado:** Propuesta aprobada por el equipo (Silvia y Marina, issue #27), con los ajustes de redacción acordados ya incorporados.
