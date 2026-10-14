@@ -154,7 +154,11 @@ A nivel general se contemplan los perfiles:
 - Administrador / Coordinador.
 - Responsable.
 
+Una persona que sea Administrador y también Responsable ingresa con una única sesión de Administrador, que ya incluye lo que puede consultar un Responsable.
+
 El frontend podrá ocultar o deshabilitar opciones que no correspondan al perfil autenticado, pero la validación definitiva de permisos se realizará siempre en el backend.
+
+Esta sección responde a RF-11, RF-15, RF-49 a RF-52, RNF-01 y RNF-02.
 
 ---
 
@@ -178,11 +182,23 @@ No se replicará toda la base de datos en el dispositivo ni se habilitarán toda
 
 El mecanismo concreto de almacenamiento y sincronización se definirá posteriormente como una decisión técnica de implementación.
 
+Esta sección responde a RF-53 a RF-57 y RNF-10.
+
 ---
 
 ## 10. Relación entre arquitectura y módulos funcionales
 
-Los módulos funcionales se implementarán sobre una arquitectura común.
+Los módulos funcionales, definidos en `docs/modulos/propuesta-modulos.md`, se implementarán sobre una arquitectura común:
+
+1. Autenticación y Autorización.
+2. Alumnos, Responsables y Categorías.
+3. Portal del Responsable.
+4. Cuotas.
+5. Pagos y Recibos.
+6. Eventos e Indumentaria.
+7. Búsquedas, Listados, Exportación y Reportes.
+8. Dashboard.
+9. Funcionamiento sin Conexión y Sincronización.
 
 En el frontend, cada módulo tendrá las pantallas, formularios, listados y vistas que necesite.
 
