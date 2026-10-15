@@ -6,8 +6,8 @@ Tecnicatura Universitaria en Programación (UTN)
 Sistema de Gestión Rojas FC
 
 **Alumnos:** Marina Giselle Cordero, Silvia Giardini, Alex Pedro Dauria
+
 **Tutor:** Sebastián Bruselario
-**Repositorio:** <https://github.com/Marigi84/rojas-fc-gestion>
 
 **Estado: entregada para revisión del tutor.**
 
