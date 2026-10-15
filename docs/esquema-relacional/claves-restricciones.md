@@ -2,7 +2,7 @@
 
 ## Sistema de Gestión Rojas FC
 
-> **Propuesta inicial para la resolución del Issue #23:** Definir las claves primarias, foráneas y restricciones de integridad del modelo relacional para su revisión y validación por parte del equipo.
+> En este documento se definen las claves primarias, foráneas y restricciones de integridad del modelo relacional.
 
 ---
 
