@@ -62,9 +62,9 @@ Toda clave foránea es obligatoria (NOT NULL) cuando el DER muestra participaci�
 | `pago` | `dni_admin` | `administrador.dni` | Obligatoria (trazabilidad RNF-11): administrador que cobró y registró la operación. |
 | `pago` | `dni_admin_anula` | `administrador.dni` | Opcional (trazabilidad RNF-11): solo se completa si el pago es anulado. |
 | `pago` | `nombre_medio_pago` | `medio_pago.nombre` | Obligatoria: todo pago debe tener un canal de cobro válido (RN-27). |
-| `pago` | `(cuota_dni_alumno, cuota_periodo)` | `cuota(dni_alumno, periodo)` | Opcional: solo se completa si el pago corresponde al saldo de una cuota (RN-25). |
-| `pago` | `(participacion_dni_alumno, participacion_nombre_evento, participacion_anio_evento)` | `participacion(dni_alumno, nombre_evento, anio_evento)` | Opcional: solo se completa si el pago se imputa a un evento (RN-25). |
-| `pago` | `(encargo_dni_alumno, encargo_fecha_hora)` | `encargo(dni_alumno, fecha_hora)` | Opcional: solo se completa si el pago se imputa a indumentaria (RN-25). |
+| `pago` | `(dni_alumno, periodo)` | `cuota(dni_alumno, periodo)` | Condicionada: se completa solo si el pago se imputa a una cuota (RN-25). |
+| `pago` | `(dni_alumno, nombre_evento, anio_evento)` | `participacion(dni_alumno, nombre_evento, anio_evento)` | Condicionada: solo se completa si el pago se imputa a un evento (RN-25). |
+| `pago` | `(dni_alumno, fecha_hora_encargo)` | `encargo(dni_alumno, fecha_hora)` | Condicionada: se completa solo si el pago se imputa a un encargo de indumentaria (RN-25) |
 | `recibo` | `id_pago` | `pago.id_pago` | Obligatoria: todo recibo acredita formalmente un pago efectuado. |
 
 
@@ -86,7 +86,7 @@ El DNI actúa como clave primaria en `persona`, y es heredado por `alumno`, `res
 
 Las dos últimas restricciones no se resuelven con un `UNIQUE` simple sobre columnas de fecha: una fila vigente lleva su fecha en `NULL` (`fecha_baja` o `fecha_anulacion`), y en MySQL los valores `NULL` no colisionan en un índice único, por lo que dos
 registros vigentes pasarían sin impedimento. Requieren una columna generada de vigencia (`vigente`) que tome valor `1` mientras el registro esté activo/vigente y `NULL` cuando esté cerrado o anulado. Al admitir MySQL múltiples valores `NULL`, se permite
-almacenar todo el historial de bajas o anulaciones, pero al ser el valor `1` un valor escalar, el índice `UNIQUE` bloquea la coexistencia de dos registros vigentes para un mismo alumno o cuota. Su definición concreta queda para el diseño detallado (#24).
+almacenar todo el historial de bajas o anulaciones, pero al ser el valor `1` un valor escalar, el índice `UNIQUE` bloquea la coexistencia de dos registros vigentes para un mismo alumno o cuota. Su definición concreta queda para el diseño detallado.
 
 ---
 
@@ -95,14 +95,14 @@ almacenar todo el historial de bajas o anulaciones, pero al ser el valor `1` un 
 | Regla | Descripción de la regla | Mecanismo de control |
 |---|---|---|
 | RN-01 | Una persona se registra una sola vez en el sistema | Clave primaria (`PK`) en `persona.dni` para evitar duplicados en la base. |
-| RN-02 | Toda persona registrada debe tener al menos un rol asignado | Capa de servicios en el alta; en la base de datos, `TRIGGER` en `DELETE` sobre las tablas de roles para impedir dejar a una persona sin ningún rol. |
-| RN-03 | Incompatibilidad: un alumno activo no puede ser responsable | `TRIGGER` en `responsable` y en `permanencia` (o validación de servicios) que cruza las tablas y bloquea asignar el rol si posee una permanencia activa. |
+| RN-02 | Toda persona registrada debe tener al menos un rol asignado | Capa de servicios en el alta; en la base de datos, `TRIGGER AFTER DELETE` sobre `alumno`, `responsable` y `administrador` que, al eliminarse el último rol de una persona, elimina también su registro en `persona`. |
+| RN-03 | Incompatibilidad: un alumno activo no puede ser responsable | `TRIGGER` en `responsable_alumno` y en `permanencia` (o validación de servicios) que cruza las tablas y bloquea asignar el rol si posee una permanencia activa. |
 | RN-04 | Todo alumno debe contar con DNI | Clave primaria obligatoria (`PK` `NOT NULL`) en `alumno.dni`. |
 | RN-05 | Todo alumno debe tener al menos un responsable a cargo | Capa de servicios en el alta; en la base de datos, `TRIGGER` en `DELETE` sobre `responsable_alumno` que impide desvincular al último tutor del alumno (RF-10). |
 | RN-06 | La reincorporación conserva el historial anterior | Clave foránea `(FK)` de `permanencia` hacia `alumno` con `ON DELETE RESTRICT`, insertando una nueva fila por cada reingreso. |
 | RN-07 | Un alumno no puede tener dos permanencias activas al mismo tiempo | Restricción de unicidad (`UNIQUE`) sobre `(dni_alumno, vigente)`, donde `vigente` vale `1` si está activo y `NULL` si está dado de baja: admite múltiples bajas históricas pero solo una permanencia activa por alumno. |
 | RN-08 | La fecha de baja no puede ser anterior a la de alta | Restricción `CHECK (fecha_baja IS NULL OR fecha_baja >= fecha_alta)` en la tabla `permanencia`. |
-| RN-09 | La baja lógica no elimina información ni historial | Integridad referencial con `ON DELETE RESTRICT`; la baja se asienta actualizando `fecha_baja`, sin borrado físico. |
+| RN-09 | La baja lógica no elimina información ni historial | Integridad referencial con `ON DELETE RESTRICT`; la baja se asienta actualizando `fecha_baja`, sin borrado físico. Un `TRIGGER BEFORE DELETE` sobre permanencia rechaza la eliminación de una fila de permanencia, de modo que se conserva el historial completo de períodos del alumno. |
 | RN-10 | Igual jerarquía entre todos los responsables de un alumno | Por diseño estructural: la tabla `responsable_alumno` no define columna de rango o prioridad, tratando a todos por igual. |
 | RN-11 | Un responsable puede estar a cargo de múltiples alumnos | Clave primaria compuesta (`PK`) en `responsable_alumno(dni_responsable, dni_alumno)`. |
 | RN-12 | El vínculo de parentesco o tutoría es obligatorio | Restricción `NOT NULL` sobre la columna `vinculo` en `responsable_alumno`. |
@@ -118,16 +118,16 @@ almacenar todo el historial de bajas o anulaciones, pero al ser el valor `1` un 
 | RN-22 | El importe, la fecha de vencimiento y el porcentaje de interés de un período no pueden modificarse una vez generadas sus cuotas | `TRIGGER` en `UPDATE` sobre `periodo` con cláusula `EXISTS` sobre `cuota`, que bloquea cambios en esos tres atributos. |
 | RN-23 | Condición de moroso: alumno con cuota vencida e impaga | Vista calculada (`alumno.moroso`) que evalúa la existencia de cuotas vencidas impagas asociadas al alumno. |
 | RN-24 | La condición de morosidad no provoca la baja automática | Regla de proceso: el estado del alumno no se deriva de la vista de morosidad ni cierra la permanencia. |
-| RN-25 | Cada pago se imputa exactamente a una única obligación | Restricción `CHECK` sobre las columnas de `FK` en `pago`: exige que exactamente un grupo de claves foráneas esté completo y los demás en `NULL`. |
+| RN-25 | Cada pago se imputa exactamente a una única obligación | Restricción CHECK: dni_alumno es obligatorio y, de los tres discriminadores periodo, nombre_evento y fecha_hora_encargo, exactamente uno se informa y los otros dos quedan en NULL, de modo que el pago se impute a una sola obligación. Otro CHECK exige que nombre_evento y anio_evento se informen juntos o ninguno de los dos. |
 | RN-26 | Cada pago posee numeración unívoca asignada por el sistema | Clave primaria artificial `(PK)` en `pago.id_pago`, con un valor que asigna el sistema.  |
 | RN-27 | Solo se admiten pagos en efectivo o transferencia | Clave foránea (`FK`) de `pago` hacia `medio_pago`, restringiendo los valores al dominio habilitado. |
 | RN-28 | El pago de una cuota debe cubrir la totalidad de la misma | `TRIGGER` en `INSERT` sobre `pago` que valida que el monto pagado sea exactamente igual al total adeudado de la cuota evaluado a la fecha del pago. |
-| RN-29 | Una cuota admite como máximo un pago vigente activo | Restricción de unicidad (`UNIQUE`) sobre `(cuota_dni_alumno, cuota_periodo, vigente)`, donde `vigente` vale `1` si está activo y `NULL` si está anulado: admite múltiples pagos anulados pero a lo sumo un pago vigente. |
-| RN-30 | Los pagos erróneos se anulan, nunca se eliminan físicamente | `TRIGGER BEFORE DELETE` sobre `pago` que rechaza cualquier eliminación física. La baja es lógica registrando anulación (`UPDATE`). |
+| RN-29 | Una cuota admite como máximo un pago vigente activo | Restricción de unicidad (`UNIQUE`) sobre `(dni_alumno, periodo, vigente)`, donde vigente vale 1 cuando el pago está confirmado, no está anulado y corresponde a una cuota, y NULL en cualquier otro caso. Si el pago se imputa a una participación o a un encargo, vigente es NULL, por lo que la restricción no limita los pagos parciales de eventos e indumentaria (RN-41). |
+| RN-30 | Los pagos erróneos se anulan, nunca se eliminan físicamente | `TRIGGER BEFORE DELETE` sobre `pago` que rechaza cualquier eliminación física. La baja es lógica registrando anulación (`UPDATE`), y un `TRIGGER BEFORE UPDATE` sobre pago impide modificar la fecha y el monto una vez registrado el pago. |
 | RN-31 | Toda anulación exige registrar fecha y motivo | Restricción `CHECK`: exige que `fecha_anulacion`, `motivo` y `dni_admin_anula` estén todos definidos o los tres en `NULL` (RNF-11). |
 | RN-32 | Los pagos anulados no computan en recaudación ni saldos | Filtro en vistas y consultas contables que descarta filas con `fecha_anulacion IS NOT NULL`. |
-| RN-33 | Todo pago confirmado genera automáticamente su recibo | `TRIGGER` o servicio transaccional que inserta la fila correspondiente en `recibo` cuando el pago queda confirmado (RF-29, RF-57). |
-| RN-34 | Cada recibo cuenta con un número propio | Clave primaria artificial `(PK)` en `recibo.numero_recibo`.|
+| RN-33 | Todo pago confirmado genera automáticamente su recibo | El servicio transaccional inserta el recibo junto con el pago, y un `TRIGGER BEFORE INSERT` sobre recibo rechaza la inserción si el pago no está confirmado(RF-29). La tabla registra el resultado de la sincronización en `estado_sincronizacion`, con los valores confirmado y requiere_revision (RF-54 a RF-57). Solo los pagos confirmados generan recibo, por lo que un pago que requiere revisión queda sin comprobante hasta su validación. |
+| RN-34 | Cada recibo cuenta con un número propio | Clave primaria artificial `(PK)` en `recibo.numero_recibo`. |
 | RN-35 | El recibo de un pago parcial no extingue la obligación | Lógica de cálculo en vista: el recibo acredita solo el cobro ingresado y mantiene el saldo adeudado por la diferencia. |
 | RN-36 | Los recibos emitidos no pueden borrarse | `TRIGGER BEFORE DELETE` sobre `recibo` que rechaza cualquier eliminación física en la base de datos. |
 | RN-37 | El recibo de un pago anulado debe reflejar el estado anulado | Vista calculada (`recibo.anulado`) que deriva el estado leyendo la anulación del pago referenciado. |
@@ -147,28 +147,21 @@ Las reglas exigen que toda persona tenga al menos un rol, y que todo alumno teng
 inserción en una base de datos relacional son secuenciales (primero se crea la persona y luego sus perfiles y asociaciones) y que
 MySQL no admite restricciones diferidas, un trigger no podría esperar al cierre de la transacción para comprobar la existencia cruzada:
 en el INSERT la fila que falta todavía no existe y la comprobación fallaría siempre. Por eso la integridad de estas altas se garantiza de
-forma atómica en la capa de servicios del backend, dentro de una misma transacción. Complementariamente, en la base de datos se restringe el borrado
-para impedir que un alumno quede huérfano de responsable o una persona sin roles.
+forma atómica en la capa de servicios del backend, dentro de una misma transacción. Complementariamente, en la base de datos se restringe 
+el borrado para impedir que un alumno quede sin responsable, y al eliminarse el último rol de una persona se elimina también la persona.
 
 ### Pago asignado a una única obligación (RN-25)
-Un pago solo puede saldar una de tres obligaciones: una cuota mensual, una inscripción a evento o un encargo de indumentaria. Para garantizar esto, la tabla `pago` contendrá las claves foráneas correspondientes a cada concepto y una **restricción de validación (`CHECK`)** que obliga a que
-**exactamente una** de las opciones esté completada y las demás permanezcan vacías (`NULL`).
+Un pago solo puede saldar una de tres obligaciones: una cuota mensual, una participación en un evento o un encargo de indumentaria. 
+Para garantizar esto, la tabla pago contiene una única columna dni_alumno, común a las tres alternativas porque toda obligación pertenece a un mismo alumno, 
+y tres claves foráneas compuestas que la completan según el tipo de obligación: (dni_alumno, periodo) hacia cuota, (dni_alumno, nombre_evento, anio_evento) hacia
+participacion y (dni_alumno, fecha_hora_encargo) hacia encargo. Una restricción de validación (CHECK) obliga a que exactamente uno de los tres discriminadores esté
+informado y los demás permanezcan vacíos (NULL).
+
+Esta solución evita repetir el DNI del alumno en cada alternativa y, al mismo tiempo, permite identificar al alumno del pago sin agregar una clave foránea directa hacia alumno, de forma coherente con el modelo conceptual, donde la relación entre Alumno y Pago no se representa por obtenerse a través de la obligación a la que el pago se aplica.
 
 ### Desvinculación de responsables y ciclo de vida de la persona (RF-10 y RN-02)
 Todo responsable se registra siempre vinculado a un alumno (RF-06). Al desvincular a un responsable de un alumno (RF-10), 
 la capa de negocio conserva el registro del adulto únicamente si continúa a cargo de algún otro alumno. Si se desvincula
-de su último alumno y no posee otro rol en el sistema (alumno o administrador), la capa de servicios **elimina su registro** 
-tanto de `responsable` como de `persona` en la misma transacción, evitando que el trigger de RN-02 bloquee la operación por dejar 
-a una persona sin roles. Si en cambio la persona cumple además otro rol activo, solo se elimina su fila en `responsable`.
+de su último alumno, la capa de servicios elimina su registro de responsable, y el trigger de RN-02 elimina también su registro en persona.
+Si la persona cumple otro rol, solo se elimina su fila en responsable.
 
----
-
-## 7. Criterio de finalización
-
-- [x] Clave primaria de cada tabla definida y justificada (14 tablas).
-- [x] Criterio de claves naturales vs. artificiales fundamentado.
-- [x] Evitado el uso indiscriminado de identificadores `id` (solo los requeridos por RN-26 y RN-34).
-- [x] Claves foráneas definidas y justificadas (23), coherentes con la participación de cada relación en el DER.
-- [x] Restricciones de unicidad identificadas (DNI, permanencias y cuotas).
-- [x] Trazabilidad completa de las 43 Reglas de Negocio a sus mecanismos de resolución.
-- [x] Documentada la justificación de cada decisión arquitectónica y técnica.
