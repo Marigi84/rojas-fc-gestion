@@ -146,7 +146,7 @@ CREATE TABLE pago (
   id_pago             INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   fecha               DATE          NOT NULL,
   monto               DECIMAL(10,2) NOT NULL,
-  medio_pago          VARCHAR(20)   NOT NULL,
+  nombre_medio_pago   VARCHAR(20)   NOT NULL,
   dni_admin           INT UNSIGNED  NOT NULL,
   dni_alumno          INT UNSIGNED  NOT NULL,
   periodo             DATE          NULL,
@@ -156,14 +156,14 @@ CREATE TABLE pago (
   estado_sincronizacion ENUM('confirmado', 'requiere_revision')
                         NOT NULL DEFAULT 'confirmado',
   fecha_anulacion     DATE          NULL,
-  motivo_anulacion    VARCHAR(200)  NULL,
+  motivo              VARCHAR(200)  NULL,
   dni_admin_anula     INT UNSIGNED  NULL,
-  vigente_cuota       TINYINT GENERATED ALWAYS AS
+  vigente             TINYINT GENERATED ALWAYS AS
     (IF(periodo IS NOT NULL AND fecha_anulacion IS NULL
         AND estado_sincronizacion = 'confirmado', 1, NULL)) STORED,
   PRIMARY KEY (id_pago),
-  UNIQUE (dni_alumno, periodo, vigente_cuota),
-  FOREIGN KEY (medio_pago)      REFERENCES medio_pago (nombre),
+  UNIQUE (dni_alumno, periodo, vigente),
+  FOREIGN KEY (nombre_medio_pago) REFERENCES medio_pago (nombre),
   FOREIGN KEY (dni_admin)       REFERENCES administrador (dni),
   FOREIGN KEY (dni_admin_anula) REFERENCES administrador (dni),
   FOREIGN KEY (dni_alumno, periodo) REFERENCES cuota (dni_alumno, periodo),
@@ -175,7 +175,7 @@ CREATE TABLE pago (
   CHECK ((nombre_evento IS NULL) = (anio_evento IS NULL)),
   CHECK ((periodo IS NOT NULL) + (nombre_evento IS NOT NULL)
          + (fecha_hora_encargo IS NOT NULL) = 1),
-  CHECK ((fecha_anulacion IS NULL) = (motivo_anulacion IS NULL)
+  CHECK ((fecha_anulacion IS NULL) = (motivo IS NULL)
      AND (fecha_anulacion IS NULL) = (dni_admin_anula IS NULL))
 );
 
@@ -190,7 +190,7 @@ CREATE TABLE recibo (
 
 -- =====================================================================
 -- 6. Triggers: operaciones no permitidas
---    (RN-05, RN-22, RN-30, RN-36, RN-39, RF-10)
+--    (RN-05, RN-09, RN-22, RN-30, RN-36, RN-39, RF-10)
 -- =====================================================================
 DELIMITER //
 
@@ -202,11 +202,15 @@ CREATE TRIGGER recibo_no_borrar BEFORE DELETE ON recibo
 FOR EACH ROW
   SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Los recibos no se eliminan';//
 
+CREATE TRIGGER permanencia_no_borrar BEFORE DELETE ON permanencia
+FOR EACH ROW
+  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Las permanencias no se eliminan, se registra la baja';//
+
 CREATE TRIGGER pago_solo_anular BEFORE UPDATE ON pago
 FOR EACH ROW
 BEGIN
   IF NOT (NEW.fecha <=> OLD.fecha AND NEW.monto <=> OLD.monto
-      AND NEW.medio_pago <=> OLD.medio_pago AND NEW.dni_admin <=> OLD.dni_admin
+      AND NEW.nombre_medio_pago <=> OLD.nombre_medio_pago AND NEW.dni_admin <=> OLD.dni_admin
       AND NEW.dni_alumno <=> OLD.dni_alumno AND NEW.periodo <=> OLD.periodo
       AND NEW.nombre_evento <=> OLD.nombre_evento
       AND NEW.anio_evento <=> OLD.anio_evento
@@ -315,7 +319,36 @@ END;//
 DELIMITER ;
 
 -- =====================================================================
--- 8. Vistas: datos derivados
+-- 8. Triggers: persona sin rol (RN-02, RF-10)
+--    Al eliminar el último rol de una persona, se elimina también la persona.
+-- =====================================================================
+DELIMITER //
+
+CREATE PROCEDURE eliminar_persona_sin_rol (IN p_dni INT UNSIGNED)
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM alumno        WHERE dni = p_dni)
+     AND NOT EXISTS (SELECT 1 FROM responsable   WHERE dni = p_dni)
+     AND NOT EXISTS (SELECT 1 FROM administrador WHERE dni = p_dni) THEN
+    DELETE FROM persona WHERE dni = p_dni;
+  END IF;
+END;//
+
+CREATE TRIGGER alumno_eliminar_persona AFTER DELETE ON alumno
+FOR EACH ROW
+  CALL eliminar_persona_sin_rol(OLD.dni);//
+
+CREATE TRIGGER responsable_eliminar_persona AFTER DELETE ON responsable
+FOR EACH ROW
+  CALL eliminar_persona_sin_rol(OLD.dni);//
+
+CREATE TRIGGER administrador_eliminar_persona AFTER DELETE ON administrador
+FOR EACH ROW
+  CALL eliminar_persona_sin_rol(OLD.dni);//
+
+DELIMITER ;
+
+-- =====================================================================
+-- 9. Vistas: datos derivados
 --    (RN-13, RN-19, RN-20, RN-23, RN-24, RN-32, RN-37, RN-42)
 -- =====================================================================
 CREATE VIEW vista_cuota AS
@@ -334,7 +367,7 @@ FROM cuota c
 JOIN periodo p ON p.periodo = c.periodo
 LEFT JOIN pago pg ON pg.dni_alumno = c.dni_alumno
                  AND pg.periodo = c.periodo
-                 AND pg.vigente_cuota = 1;
+                 AND pg.vigente = 1;
 
 CREATE VIEW vista_participacion AS
 SELECT pa.dni_alumno, pa.nombre_evento, pa.anio_evento, e.importe,
