@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,19 +22,23 @@ public class HealthController {
   }
 
   @GetMapping
-  public Map<String, Object> health() {
+  public ResponseEntity<Map<String, Object>> health() {
+    boolean databaseOk = checkDatabase();
     Map<String, Object> body = new LinkedHashMap<>();
-    body.put("status", "ok");
+    body.put("status", databaseOk ? "ok" : "error");
     body.put("timestamp", Instant.now().toString());
-    body.put("database", checkDatabase());
-    return body;
+    body.put("database", databaseOk ? "ok" : "error");
+
+    return databaseOk
+        ? ResponseEntity.ok(body)
+        : ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);
   }
 
-  private String checkDatabase() {
+  private boolean checkDatabase() {
     try (Connection connection = dataSource.getConnection()) {
-      return connection.isValid(2) ? "ok" : "sin respuesta";
+      return connection.isValid(2);
     } catch (Exception e) {
-      return "error: " + e.getMessage();
+      return false;
     }
   }
 }
