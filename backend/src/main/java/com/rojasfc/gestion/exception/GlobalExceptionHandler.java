@@ -36,6 +36,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return super.handleExceptionInternal(ex, apiError, headers, statusCode, request);
   }
 
+  @ExceptionHandler(CredencialesInvalidasException.class)
+  public ResponseEntity<ApiError> handleCredencialesInvalidas(
+      CredencialesInvalidasException ex, HttpServletRequest request) {
+    return build(HttpStatus.UNAUTHORIZED, "Credenciales invalidas", ex.getMessage(),
+        request.getRequestURI());
+  }
+
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ApiError> handleIllegalArgument(
       IllegalArgumentException ex, HttpServletRequest request) {
