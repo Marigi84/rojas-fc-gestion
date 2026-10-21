@@ -28,11 +28,12 @@ public class Administrador implements UsuarioConContrasena {
   protected Administrador() {
   }
 
-  public Administrador(Long dni, String email, String contrasenaHash) {
+  public Administrador(Long dni, String email, String contrasenaHash,
+      boolean contrasenaTemporal) {
     this.dni = dni;
     this.email = email;
     this.contrasenaHash = contrasenaHash;
-    this.contrasenaTemporal = true;
+    this.contrasenaTemporal = contrasenaTemporal;
   }
 
   public Long getDni() {

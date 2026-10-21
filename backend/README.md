@@ -37,7 +37,6 @@ La conexión a MySQL se toma de variables de entorno, nunca de código:
 | `DB_PASSWORD` | — (obligatoria) | Contraseña de MySQL |
 | `JWT_SECRET` | — (obligatoria) | Clave para firmar los tokens, de al menos 32 caracteres |
 | `JWT_DURACION_MINUTOS` | `480` | Duración de la sesión |
-| `ADMIN_INICIAL_DNI`, `ADMIN_INICIAL_NOMBRE`, `ADMIN_INICIAL_APELLIDO`, `ADMIN_INICIAL_EMAIL`, `ADMIN_INICIAL_CONTRASENA` | — | Primer administrador (ver "Autenticación") |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origen permitido para el frontend |
 | `SERVER_PORT` | `8080` | Puerto del backend |
 
@@ -74,28 +73,28 @@ El ingreso usa DNI y contraseña y devuelve un JWT que el frontend envía en el 
 
 | Método y ruta | Acceso | Uso |
 |---|---|---|
+| `GET /api/configuracion-inicial` | público | Indica si el sistema ya tiene administrador (`{ "configurado": true/false }`). |
+| `POST /api/configuracion-inicial` | público, solo sin administradores | Registra el primer administrador y devuelve su sesión iniciada. Después responde 409. |
 | `POST /api/auth/login` | público | Ingreso con `{ "dni", "contrasena" }`. Devuelve el token, el rol y si la contraseña es provisoria. |
 | `PUT /api/auth/contrasena` | autenticado | Cambio de contraseña con `{ "actual", "nueva" }` (mínimo 8 caracteres). Devuelve un token nuevo. |
 
 Reglas de acceso (`security/SecurityConfig.java`):
 
-- `/api/health` y `/api/auth/login` son públicas.
+- `/api/health`, `/api/auth/login` y `/api/configuracion-inicial` son públicas.
 - `/api/portal/**` es para el Responsable (y el Administrador).
 - Todo lo demás es solo para el Administrador.
 - Con la contraseña provisoria solo se puede cambiar la contraseña (RNF-01). El resto responde 403 hasta que se cambie.
 - Una persona que es Administrador y Responsable ingresa como Administrador, con la contraseña de administrador.
 
-**Primer administrador.** Si la tabla `administrador` está vacía y están definidas las variables `ADMIN_INICIAL_*`, el backend lo crea al arrancar, con la contraseña como provisoria. Por ejemplo, en PowerShell:
+**Primer administrador (puesta en marcha).** Con la base recién instalada no hay administradores. La primera vez que se abre la aplicación, el frontend muestra la configuración inicial en lugar del ingreso: se cargan DNI, nombre, apellido, correo y contraseña, y queda creado el primer administrador. Conviene hacerlo apenas se instala, porque hasta ese momento cualquiera que abra la aplicación podría hacerlo. Los demás administradores se registran desde el sistema (RF-51).
 
-```powershell
-$env:ADMIN_INICIAL_DNI = "30111222"
-$env:ADMIN_INICIAL_NOMBRE = "Nombre"
-$env:ADMIN_INICIAL_APELLIDO = "Apellido"
-$env:ADMIN_INICIAL_EMAIL = "admin@ejemplo.com"
-$env:ADMIN_INICIAL_CONTRASENA = "una-provisoria"
+- Si algo falla al guardar, no queda nada a medias y se puede volver a intentar.
+- Si el DNI ya estaba cargado (por ejemplo, como responsable), se reutiliza esa persona con su nombre y apellido.
+- Para volver a empezar (por ejemplo, si se olvidó la contraseña antes de tener la recuperación por correo), se borra el administrador en MySQL y la configuración inicial vuelve a aparecer:
+
+```sql
+DELETE FROM administrador WHERE dni = <dni>;
 ```
-
-Después de crearlo, esas variables ya no hacen falta.
 
 ## Empaquetar
 

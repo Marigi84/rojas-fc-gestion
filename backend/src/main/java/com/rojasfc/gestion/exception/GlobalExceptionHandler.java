@@ -43,6 +43,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         request.getRequestURI());
   }
 
+  @ExceptionHandler(SistemaYaConfiguradoException.class)
+  public ResponseEntity<ApiError> handleSistemaYaConfigurado(
+      SistemaYaConfiguradoException ex, HttpServletRequest request) {
+    return build(HttpStatus.CONFLICT, "Sistema ya configurado", ex.getMessage(),
+        request.getRequestURI());
+  }
+
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ApiError> handleIllegalArgument(
       IllegalArgumentException ex, HttpServletRequest request) {
