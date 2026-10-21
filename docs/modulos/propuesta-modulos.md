@@ -14,7 +14,7 @@ En este documento, **Administrador** designa al actor "Administrador / Coordinad
 
 ### Alcance de esta propuesta
 
-Esta etapa define únicamente la estructura funcional del sistema: qué módulos existen, de qué se encarga cada uno y qué requisitos funcionales cubre. **No se definen tablas, claves, entidades ni atributos** — esas decisiones corresponden al modelado de entidades y relaciones y al diseño del esquema relacional, que siguen a esta propuesta.
+Esta etapa define únicamente la estructura funcional del sistema: qué módulos existen, de qué se encarga cada uno, qué requisitos funcionales cubre y con qué prioridad se desarrolla. **No se definen tablas, claves, entidades ni atributos** — esas decisiones corresponden al modelado de entidades y relaciones y al diseño del esquema relacional, que siguen a esta propuesta.
 
 ---
 
@@ -23,6 +23,8 @@ Esta etapa define únicamente la estructura funcional del sistema: qué módulos
 **Responsabilidad principal:** gestionar el acceso al sistema para los dos tipos de usuario —Administrador y Responsable— y restringir qué funcionalidades ve cada uno una vez autenticado. Se agrupa en un mismo módulo el login y la recuperación/restablecimiento de contraseña de ambos actores, porque es el mismo mecanismo de acceso aplicado a dos roles distintos, no dos mecanismos separados.
 
 **Requisitos funcionales cubiertos:** RF-11, RF-15, RF-49, RF-50, RF-51, RF-52.
+
+**Prioridad:** Alta (Etapa 3). Sin autenticación no se accede a ningún otro módulo (RF-52).
 
 ---
 
@@ -36,6 +38,8 @@ La categoría del alumno se determina según su año de nacimiento (RF-16, RN-13
 
 **Requisitos funcionales cubiertos:** RF-01, RF-02, RF-03, RF-04, RF-05, RF-06, RF-07, RF-08, RF-09, RF-10, RF-16.
 
+**Prioridad:** Alta (Etapa 3). Funcionalidad central del sistema.
+
 ---
 
 ## 3. Portal del Responsable
@@ -43,6 +47,8 @@ La categoría del alumno se determina según su año de nacimiento (RF-16, RN-13
 **Responsabilidad principal:** una vez autenticado, permitir a un responsable consultar —solo lectura— los alumnos que tiene a su cargo, su situación administrativa (cuotas e historial de pagos) y sus recibos.
 
 **Requisitos funcionales cubiertos:** RF-12, RF-13, RF-14.
+
+**Prioridad:** Baja (Etapa 5). Consulta información que generan otros módulos.
 
 > El login y el restablecimiento de contraseña del responsable (RF-11, RF-15) quedan en el módulo de Autenticación y Autorización, no en este, porque son el mismo mecanismo de acceso que usa el Administrador — separar "cómo entro" de "qué puedo ver una vez adentro" evita mezclar responsabilidades.
 
@@ -54,6 +60,8 @@ La categoría del alumno se determina según su año de nacimiento (RF-16, RN-13
 
 **Requisitos funcionales cubiertos:** RF-17, RF-18, RF-19, RF-20, RF-21, RF-22, RF-23.
 
+**Prioridad:** Alta (Etapa 4). Funcionalidad central del sistema.
+
 ---
 
 ## 5. Pagos y Recibos
@@ -64,6 +72,8 @@ Se agrupan Pagos y Recibos en un mismo módulo porque todo pago confirmado gener
 
 **Requisitos funcionales cubiertos:** RF-24, RF-25, RF-26, RF-27, RF-28, RF-29, RF-30, RF-31, RF-32, RF-33.
 
+**Prioridad:** Alta (Etapa 4). Funcionalidad central del sistema.
+
 ---
 
 ## 6. Eventos e Indumentaria
@@ -72,6 +82,8 @@ Se agrupan Pagos y Recibos en un mismo módulo porque todo pago confirmado gener
 
 **Requisitos funcionales cubiertos:** RF-34, RF-35, RF-36, RF-37.
 
+**Prioridad:** Media (Etapa 4). Cobros que complementan a la cuota mensual.
+
 ---
 
 ## 7. Búsquedas, Listados, Exportación y Reportes
@@ -79,6 +91,8 @@ Se agrupan Pagos y Recibos en un mismo módulo porque todo pago confirmado gener
 **Responsabilidad principal:** búsqueda y filtrado de alumnos; listado paginado; exportación a Excel de listados de alumnos y de participaciones/encargos; y consultas por rango de fechas de recaudación, deuda pendiente y altas/bajas.
 
 **Requisitos funcionales cubiertos:** RF-38, RF-39, RF-40, RF-41, RF-42, RF-43, RF-44.
+
+**Prioridad:** Media. La búsqueda y el listado de alumnos (RF-38, RF-39) se desarrollan en la Etapa 3, junto con la gestión de alumnos; la exportación y los reportes (RF-40 a RF-44), en la Etapa 5.
 
 ---
 
@@ -90,6 +104,8 @@ Se mantiene separado del módulo de Búsquedas, Listados, Exportación y Reporte
 
 **Requisitos funcionales cubiertos:** RF-45, RF-46, RF-47, RF-48.
 
+**Prioridad:** Baja (Etapa 5). Muestra indicadores calculados con datos de otros módulos.
+
 ---
 
 ## 9. Funcionamiento sin Conexión y Sincronización
@@ -97,6 +113,30 @@ Se mantiene separado del módulo de Búsquedas, Listados, Exportación y Reporte
 **Responsabilidad principal:** permitir la consulta de información básica y el registro provisional de pagos durante una pérdida de conectividad, y sincronizar esas operaciones con el sistema central al restablecerse la conexión, informando el resultado y emitiendo el recibo correspondiente una vez validada la sincronización.
 
 **Requisitos funcionales cubiertos:** RF-53, RF-54, RF-55, RF-56, RF-57.
+
+**Prioridad:** Baja (Etapa 5). Complementa el registro de pagos para los cortes de conexión.
+
+---
+
+## Prioridad
+
+La prioridad indica el orden de desarrollo y qué se protege primero si hay desvíos de tiempo. Se toma del plan de trabajo de la Primera Entrega aprobada: la sección 6.7 establece que ante dificultades *"se priorizarán las funcionalidades centrales relacionadas con la gestión de alumnos, responsables, cuotas y pagos"*, y las secciones 6.3 a 6.5 ubican cada funcionalidad en una etapa.
+
+- **Alta:** las funcionalidades centrales de la sección 6.7 y la autenticación, sin la cual no se accede a ninguna.
+- **Media:** complementan al núcleo y se desarrollan junto con él o inmediatamente después.
+- **Baja:** consultan o complementan información de otros módulos.
+
+| Módulo | Prioridad | Etapa del plan |
+|---|---|---|
+| 1. Autenticación y Autorización | Alta | 3 |
+| 2. Alumnos, Responsables y Categorías | Alta | 3 |
+| 4. Cuotas | Alta | 4 |
+| 5. Pagos y Recibos | Alta | 4 |
+| 6. Eventos e Indumentaria | Media | 4 |
+| 7. Búsquedas, Listados, Exportación y Reportes | Media | 3 (búsqueda y listado) y 5 (exportación y reportes) |
+| 3. Portal del Responsable | Baja | 5 |
+| 8. Dashboard | Baja | 5 |
+| 9. Funcionamiento sin Conexión y Sincronización | Baja | 5 |
 
 ---
 
