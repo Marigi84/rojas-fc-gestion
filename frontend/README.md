@@ -75,13 +75,14 @@ frontend/
 ├── src/
 │   ├── components/      → componentes reutilizables
 │   │   ├── layout/      → marco común de las pantallas (Layout)
-│   │   └── ui/          → componentes de interfaz genéricos
+│   │   └── ui/          → componentes de interfaz genéricos (Boton, Campo, Tarjeta, Tabla)
 │   ├── pages/           → una pantalla por módulo
 │   ├── routes/          → definición de rutas y navegación
 │   ├── services/        → comunicación con la API REST
+│   ├── assets/          → imágenes propias (escudo del club)
 │   ├── App.tsx          → componente raíz (monta el router)
 │   ├── main.tsx         → punto de entrada de la aplicación
-│   └── index.css        → estilos globales
+│   └── index.css        → Tailwind, paleta y tipografía
 ├── .env.example         → variables de entorno de ejemplo
 ├── eslint.config.js     → configuración de ESLint
 ├── .prettierrc.json     → configuración de Prettier
@@ -114,6 +115,29 @@ Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 define la URL base, adjunta el token JWT cuando exista y unifica el manejo de
 errores. Los servicios de cada módulo deben usar este cliente en lugar de
 llamar a `fetch` directamente.
+
+## Estilos
+
+Los estilos se escriben con **Tailwind CSS**, con clases directamente en cada
+componente. La paleta y la tipografía están definidas en `src/index.css`
+(bloque `@theme`) y generan sus propias clases:
+
+| Token                                                  | Uso                                            | Ejemplo de clase    |
+| ------------------------------------------------------ | ---------------------------------------------- | ------------------- |
+| `verde`                                                | acción principal, sección activa               | `bg-verde`          |
+| `verde-oscuro`                                         | texto verde sobre fondo claro                  | `text-verde-oscuro` |
+| `lima`                                                 | detalles (línea del encabezado, foco)          | `border-lima`       |
+| `rojo`                                                 | errores, deudas y acciones de baja o anulación | `text-rojo`         |
+| `fondo`, `superficie`, `borde`, `texto`, `texto-suave` | base de la interfaz                            | `bg-superficie`     |
+
+La letra es **Barlow** (textos) y **Barlow Semi Condensed** (títulos), instaladas
+con `@fontsource` para que funcionen sin conexión.
+
+Antes de crear un estilo nuevo, conviene reutilizar los componentes de
+`src/components/ui/`: `Boton` (variantes principal, secundario y peligro),
+`Campo` (etiqueta, campo y error), `Tarjeta` y `Tabla` (con mensaje cuando no
+hay filas). No se usan colores sueltos: si hace falta uno nuevo, se agrega a la
+paleta.
 
 ## Calidad de código
 
