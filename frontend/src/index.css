@@ -1,0 +1,93 @@
+:root {
+  --color-texto: #1f2937;
+  --color-texto-suave: #4b5563;
+  --color-fondo: #f3f4f6;
+  --color-superficie: #ffffff;
+  --color-borde: #e5e7eb;
+  --color-primario: #1d4ed8;
+  --color-primario-suave: #dbeafe;
+
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* --- Estructura general de la aplicación --- */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* El encabezado se organiza en dos filas: marca e "Iniciar sesión" arriba,
+   y el menú de módulos debajo ocupando todo el ancho. Así se mantiene legible
+   tanto en pantallas anchas como angostas. */
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 12px 24px;
+  background-color: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.app-marca {
+  order: 1;
+  font-weight: 600;
+}
+
+.app-sesion {
+  order: 2;
+  margin-left: auto;
+}
+
+.app-nav {
+  order: 3;
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-nav a {
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--color-texto-suave);
+}
+
+.app-nav a.activo {
+  background-color: var(--color-primario-suave);
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+}

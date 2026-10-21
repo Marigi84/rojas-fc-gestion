@@ -1,0 +1,25 @@
+// Rutas de la aplicación. Cada ruta corresponde a uno de los 9 módulos
+// definidos en docs/modulos/propuesta-modulos.md.
+export const PATHS = {
+  login: '/login',
+  dashboard: '/',
+  alumnos: '/alumnos',
+  portal: '/portal',
+  cuotas: '/cuotas',
+  pagos: '/pagos',
+  eventos: '/eventos',
+  reportes: '/reportes',
+  sinConexion: '/sin-conexion',
+} as const
+
+// Entradas del menú de navegación principal, en el mismo orden que los módulos.
+export const MODULOS = [
+  { ruta: PATHS.dashboard, etiqueta: 'Dashboard' },
+  { ruta: PATHS.alumnos, etiqueta: 'Alumnos' },
+  { ruta: PATHS.portal, etiqueta: 'Portal del Responsable' },
+  { ruta: PATHS.cuotas, etiqueta: 'Cuotas' },
+  { ruta: PATHS.pagos, etiqueta: 'Pagos y Recibos' },
+  { ruta: PATHS.eventos, etiqueta: 'Eventos e Indumentaria' },
+  { ruta: PATHS.reportes, etiqueta: 'Reportes' },
+  { ruta: PATHS.sinConexion, etiqueta: 'Sin Conexión' },
+]
