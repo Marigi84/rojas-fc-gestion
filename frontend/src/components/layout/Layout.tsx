@@ -4,17 +4,21 @@ import { MODULOS, PATHS } from '../../routes/paths'
 
 // Marco común de las pantallas internas: encabezado con el escudo, menú de
 // módulos y el lugar donde se renderiza cada página. La línea lima debajo del
-// encabezado retoma el color del borde del escudo.
+// encabezado retoma el verde de la ropa del club.
 export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b-3 border-lima bg-superficie">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
-          <img src={escudo} alt="Escudo de Rojas FC" className="size-11" />
-          <span className="font-display text-xl font-bold">Rojas FC</span>
+          <img
+            src={escudo}
+            alt="Escudo de Rojas FC"
+            className="size-14 sm:size-16"
+          />
+          <span className="font-display text-2xl font-bold">Rojas FC</span>
           <NavLink
             to={PATHS.login}
-            className="ml-auto font-medium text-verde-oscuro hover:underline"
+            className="ml-auto rounded-lg border border-verde bg-verde px-4 py-2 font-semibold text-white transition-colors hover:bg-verde-oscuro focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-lima"
           >
             Iniciar sesión
           </NavLink>
