@@ -55,7 +55,7 @@ Cuota, Evento, Participación, Encargo, Pago, Medio de pago y Recibo.
 **Esquema relacional**: [schema.sql](../database/schema.sql) — 14 tablas. Las claves y restricciones de integridad están en
 [claves-restricciones.md](esquema-relacional/claves-restricciones.md).
 
-**Índices**: criterios de indexación y rendimiento de las consultas principales
+**Índices**: Criterios de indexación y rendimiento de las consultas principales
 (`docs/esquema-relacional/indices.md`).
 
 ## 5. Coherencia
