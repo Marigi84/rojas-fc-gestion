@@ -8,7 +8,7 @@ interface PropsPaginaBase {
 export function PagePlaceholder({ titulo }: PropsPaginaBase) {
   return (
     <section>
-      <h1>{titulo}</h1>
+      <h1 className="text-3xl font-bold">{titulo}</h1>
     </section>
   )
 }
