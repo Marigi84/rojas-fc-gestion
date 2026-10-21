@@ -30,15 +30,14 @@ Esta modalidad dificulta la búsqueda y relación de la información, aumenta la
 
 Se propone desarrollar una aplicación web de gestión que permita centralizar la información administrativa de Rojas FC y automatizar parte de los procesos que actualmente requieren registro, búsqueda y control manual.
 
-El sistema permitirá gestionar alumnos, responsables, categorías, preinscripciones, cuotas, pagos, recibos, eventos y otros conceptos de cobro desde una plataforma centralizada.
+El sistema permitirá gestionar alumnos, responsables, categorías, cuotas, pagos, recibos, eventos y otros conceptos de cobro desde una plataforma centralizada.
 
 Entre las principales funcionalidades previstas se encuentran:
 
 - Gestión de alumnos y responsables.
 - Organización de alumnos por categorías según año de nacimiento.
-- Formulario propio de preinscripción y posterior validación.
 - Generación automática de cuotas.
-- Configuración de importes, vencimientos e intereses.
+- Configuración de importes, vencimiento e intereses.
 - Seguimiento de cuotas pagadas, pendientes y vencidas.
 - Registro de pagos en efectivo y transferencia.
 - Generación y conservación de recibos digitales.
@@ -73,6 +72,7 @@ Se consideran posibles evoluciones posteriores:
 - Procesamiento de pagos online mediante pasarelas de pago.
 - Integración completa mediante WhatsApp Business API.
 - Gestión avanzada del ciclo de pedidos de indumentaria.
+- Formulario de preinscripción en línea y su validación.
 
 La arquitectura se diseñará procurando permitir futuras ampliaciones sin incorporar al Trabajo Final complejidad que no resulte necesaria para resolver la problemática actual.
 
@@ -155,7 +155,6 @@ El proyecto se desarrollará de manera incremental, tomando como referencia las 
 - Gestión de responsables.
 - Gestión de alumnos.
 - Gestión de categorías.
-- Preinscripción y validación.
 - Búsquedas y filtros.
 - Integración progresiva entre base de datos, backend y frontend.
 
@@ -240,6 +239,11 @@ rojas-fc-gestion/
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
 - [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md) — Ajustes sobre el alcance de la Primera Entrega.
 - [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
+- `docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md` — Módulos, modelo de datos y arquitectura. **En revisión.**
+- [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
+- [`docs/entidades-relaciones-cardinalidad/`](docs/entidades-relaciones-cardinalidad/) — Modelo conceptual y DER.
+- [`docs/esquema-relacional/claves-restricciones.md`](docs/esquema-relacional/claves-restricciones.md) — Claves y restricciones del esquema relacional.
+- [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
 
 ## Estado del proyecto
 
