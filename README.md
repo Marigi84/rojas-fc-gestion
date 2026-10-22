@@ -231,6 +231,22 @@ rojas-fc-gestion/
 - `database/`: scripts, esquemas y recursos relacionados con MySQL.
 - `docs/`: documentación, diagramas, informes y entregas del proyecto.
 
+## Instalación
+
+### Requisitos
+
+- **Java 17** y **Maven 3.9+** para el backend.
+- **Node.js 20.19+** y **npm** para el frontend.
+- **MySQL 8** para la base de datos.
+
+### Puesta en marcha
+
+1. **Base de datos:** crear la base `rojasfc` y aplicar [`database/schema.sql`](database/schema.sql).
+2. **Backend:** seguir [`backend/README.md`](backend/README.md) para configurar las variables de entorno y ejecutar `mvn spring-boot:run`.
+3. **Frontend:** seguir [`frontend/README.md`](frontend/README.md) para instalar las dependencias (`npm install`) y ejecutar `npm run dev`.
+
+El backend queda disponible en `http://localhost:8080` y el frontend en `http://localhost:5173`.
+
 ## Documentación de las entregas
 
 - [`docs/1ra Entrega - Propuesta de Proyecto.md`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.md) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
@@ -243,8 +259,10 @@ rojas-fc-gestion/
 - [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
 - [`docs/entidades-relaciones-cardinalidad/`](docs/entidades-relaciones-cardinalidad/) — Modelo conceptual y DER.
 - [`docs/esquema-relacional/claves-restricciones.md`](docs/esquema-relacional/claves-restricciones.md) — Claves y restricciones del esquema relacional.
+- [`docs/esquema-relacional/indices.md`](docs/esquema-relacional/indices.md) — Índices del esquema relacional.
+- [`docs/esquema-relacional/diagrama-relacional.md`](docs/esquema-relacional/diagrama-relacional.md) — Diagrama del esquema relacional.
 - [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
 
 ## Estado del proyecto
 
-🟡 **En desarrollo — Segunda etapa: diseño del modelo de datos y módulos.**
+🟡 **Segunda Entrega presentada. En desarrollo: Etapa 3, núcleo funcional.**
