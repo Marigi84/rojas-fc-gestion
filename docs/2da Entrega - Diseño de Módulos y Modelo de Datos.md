@@ -50,7 +50,7 @@ La prioridad de desarrollo es:
 - **Media:** Eventos e Indumentaria; Búsquedas, Listados, Exportación y Reportes.
 - **Baja:** Portal del Responsable; Dashboard; Funcionamiento sin Conexión y Sincronización.
 
-Detalle y requisitos cubiertos en [propuesta-modulos.md](modulos/propuesta-modulos.md).
+El detalle de cada módulo, sus requisitos y su prioridad están en [propuesta-modulos.md](modulos/propuesta-modulos.md).
 
 ## 4. Modelo de datos
 
