@@ -35,6 +35,9 @@ public class AuthService {
   private final PersonaRepository personas;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
+  // Hash contra el que se compara cuando el DNI no existe, para que el login
+  // tarde lo mismo y el tiempo de respuesta no revele que DNI estan registrados.
+  private final String hashFicticio;
 
   public AuthService(AdministradorRepository administradores, ResponsableRepository responsables,
       PersonaRepository personas, PasswordEncoder passwordEncoder, JwtService jwtService) {
@@ -43,13 +46,14 @@ public class AuthService {
     this.personas = personas;
     this.passwordEncoder = passwordEncoder;
     this.jwtService = jwtService;
+    this.hashFicticio = passwordEncoder.encode("contrasena-ficticia");
   }
 
   @Transactional(readOnly = true)
   public LoginResponse ingresar(LoginRequest pedido) {
-    UsuarioConRol usuario = buscar(pedido.dni())
-        .orElseThrow(() -> new CredencialesInvalidasException(CREDENCIALES_INVALIDAS));
-    if (!passwordEncoder.matches(pedido.contrasena(), usuario.datos().getContrasenaHash())) {
+    UsuarioConRol usuario = buscar(pedido.dni()).orElse(null);
+    String hash = usuario != null ? usuario.datos().getContrasenaHash() : hashFicticio;
+    if (!passwordEncoder.matches(pedido.contrasena(), hash) || usuario == null) {
       throw new CredencialesInvalidasException(CREDENCIALES_INVALIDAS);
     }
     return respuesta(pedido.dni(), usuario);
