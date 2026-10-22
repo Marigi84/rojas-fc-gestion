@@ -1,0 +1,167 @@
+@startuml
+!pragma layout smetana
+title Esquema relacional — Sistema de Gestión Rojas FC
+hide circle
+skinparam linetype ortho
+skinparam defaultFontSize 12
+
+entity "persona" as persona {
+  * **dni** : int unsigned <<PK>>
+  --
+  * nombre : varchar(60)
+  * apellido : varchar(60)
+  ..
+  INDEX idx_persona_apellido_nombre (apellido, nombre)
+  INDEX idx_persona_nombre (nombre)
+}
+
+entity "alumno" as alumno {
+  * **dni** : int unsigned <<PK, FK>>
+  --
+  * fecha_nacimiento : date
+  * direccion : varchar(120)
+  ..
+  INDEX idx_alumno_categoria (year(fecha_nacimiento))
+}
+
+entity "responsable" as responsable {
+  * **dni** : int unsigned <<PK, FK>>
+  --
+  * telefono : varchar(20)
+  * contrasena_hash : varchar(255)
+  * contrasena_temporal : tinyint(1)
+}
+
+entity "administrador" as administrador {
+  * **dni** : int unsigned <<PK, FK>>
+  --
+  * email : varchar(120)
+  * contrasena_hash : varchar(255)
+  * contrasena_temporal : tinyint(1)
+  ..
+  UNIQUE (email)
+}
+
+entity "responsable_alumno" as responsable_alumno {
+  * **dni_responsable** : int unsigned <<PK, FK>>
+  * **dni_alumno** : int unsigned <<PK, FK>>
+  --
+  * vinculo : enum('madre','padre','tutor','otro')
+}
+
+entity "permanencia" as permanencia {
+  * **dni_alumno** : int unsigned <<PK, FK>>
+  * **fecha_alta** : date <<PK>>
+  --
+  fecha_baja : date
+  * dni_admin_alta : int unsigned <<FK>>
+  dni_admin_baja : int unsigned <<FK>>
+  vigente : tinyint <<generada>>
+  ..
+  UNIQUE (dni_alumno, vigente)
+  INDEX idx_permanencia_fecha_alta (fecha_alta)
+  INDEX idx_permanencia_fecha_baja (fecha_baja)
+}
+
+entity "periodo" as periodo {
+  * **periodo** : date <<PK>>
+  --
+  * importe : decimal(10,2)
+  * fecha_vencimiento : date
+  * porcentaje_interes : decimal(5,2)
+  * dni_admin : int unsigned <<FK>>
+  * fecha_configuracion : date
+}
+
+entity "cuota" as cuota {
+  * **dni_alumno** : int unsigned <<PK, FK>>
+  * **periodo** : date <<PK, FK>>
+  --
+  * fecha_generacion : date
+}
+
+entity "evento" as evento {
+  * **nombre** : varchar(80) <<PK>>
+  * **anio** : year <<PK>>
+  --
+  * importe : decimal(10,2)
+  * dni_admin : int unsigned <<FK>>
+  * fecha_registro : date
+}
+
+entity "participacion" as participacion {
+  * **dni_alumno** : int unsigned <<PK, FK>>
+  * **nombre_evento** : varchar(80) <<PK, FK>>
+  * **anio_evento** : year <<PK, FK>>
+  --
+  * fecha_inscripcion : date
+}
+
+entity "encargo" as encargo {
+  * **dni_alumno** : int unsigned <<PK, FK>>
+  * **fecha_hora** : datetime <<PK>>
+  --
+  * monto : decimal(10,2)
+  descripcion : varchar(200)
+  * dni_admin : int unsigned <<FK>>
+}
+
+entity "medio_pago" as medio_pago {
+  * **nombre** : varchar(20) <<PK>>
+}
+
+entity "pago" as pago {
+  * **id_pago** : int unsigned <<PK, auto>>
+  --
+  * fecha : date
+  * monto : decimal(10,2)
+  * nombre_medio_pago : varchar(20) <<FK>>
+  * dni_admin : int unsigned <<FK>>
+  * dni_alumno : int unsigned <<FK>>
+  periodo : date <<FK>>
+  nombre_evento : varchar(80) <<FK>>
+  anio_evento : year <<FK>>
+  fecha_hora_encargo : datetime <<FK>>
+  * estado_sincronizacion : enum('confirmado','requiere_revision')
+  fecha_anulacion : date
+  motivo : varchar(200)
+  dni_admin_anula : int unsigned <<FK>>
+  vigente : tinyint <<generada>>
+  ..
+  UNIQUE (dni_alumno, periodo, vigente)
+  INDEX idx_pago_fecha (fecha)
+}
+
+entity "recibo" as recibo {
+  * **numero_recibo** : int unsigned <<PK, auto>>
+  --
+  * id_pago : int unsigned <<FK>>
+  * fecha_emision : date
+  ..
+  UNIQUE (id_pago)
+}
+
+persona ||--o| administrador : dni
+persona ||--o| alumno : dni
+alumno ||--o{ cuota : dni_alumno
+periodo ||--o{ cuota : periodo
+alumno ||--o{ encargo : dni_alumno
+administrador ||--o{ encargo : dni_admin
+administrador ||--o{ evento : dni_admin
+medio_pago ||--o{ pago : nombre_medio_pago
+administrador ||--o{ pago : dni_admin
+administrador |o--o{ pago : dni_admin_anula
+cuota |o--o{ pago : dni_alumno, periodo
+participacion |o--o{ pago : dni_alumno, nombre_evento, anio_evento
+encargo |o--o{ pago : dni_alumno, fecha_hora_encargo
+alumno ||--o{ participacion : dni_alumno
+evento ||--o{ participacion : nombre_evento, anio_evento
+administrador ||--o{ periodo : dni_admin
+alumno ||--o{ permanencia : dni_alumno
+administrador ||--o{ permanencia : dni_admin_alta
+administrador |o--o{ permanencia : dni_admin_baja
+pago ||--o| recibo : id_pago
+persona ||--o| responsable : dni
+responsable ||--o{ responsable_alumno : dni_responsable
+alumno ||--o{ responsable_alumno : dni_alumno
+@enduml

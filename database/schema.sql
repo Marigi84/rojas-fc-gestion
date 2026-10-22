@@ -407,3 +407,27 @@ SELECT r.numero_recibo, r.id_pago, r.fecha_emision,
        pg.fecha_anulacion IS NOT NULL AS anulado
 FROM recibo r
 JOIN pago pg ON pg.id_pago = r.id_pago;
+
+-- =====================================================================
+-- 10. Índices (RF-38, RF-39, RF-42, RF-44, RF-46, RF-48, RNF-06, RNF-07)
+--     MySQL ya crea un índice por cada clave primaria, UNIQUE y clave
+--     foránea; acá solo se agregan los que esas claves no cubren.
+--     Justificación: docs/esquema-relacional/indices.md
+-- =====================================================================
+
+-- Búsqueda por apellido y orden del listado paginado de alumnos (RF-38, RF-39)
+CREATE INDEX idx_persona_apellido_nombre ON persona (apellido, nombre);
+
+-- Búsqueda por nombre (RF-38)
+CREATE INDEX idx_persona_nombre ON persona (nombre);
+
+-- Filtro y agrupación por categoría (RF-38, RF-46). Usa la misma expresión
+-- que vista_alumno.categoria, así el filtro sobre la vista usa el índice.
+CREATE INDEX idx_alumno_categoria ON alumno ((YEAR(fecha_nacimiento)));
+
+-- Recaudación entre fechas y del mes en curso (RF-42, RF-48)
+CREATE INDEX idx_pago_fecha ON pago (fecha);
+
+-- Altas y bajas entre fechas (RF-44)
+CREATE INDEX idx_permanencia_fecha_alta ON permanencia (fecha_alta);
+CREATE INDEX idx_permanencia_fecha_baja ON permanencia (fecha_baja);
