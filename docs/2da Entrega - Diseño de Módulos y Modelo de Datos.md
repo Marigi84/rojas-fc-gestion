@@ -44,6 +44,12 @@ El sistema se organiza en **9 módulos**, que cubren la totalidad de los 57 requ
 8. Dashboard.
 9. Funcionamiento sin Conexión y Sincronización.
 
+La prioridad de desarrollo es:
+
+- **Alta:** Autenticación y Autorización; Alumnos, Responsables y Categorías; Cuotas; Pagos y Recibos.
+- **Media:** Eventos e Indumentaria; Búsquedas, Listados, Exportación y Reportes.
+- **Baja:** Portal del Responsable; Dashboard; Funcionamiento sin Conexión y Sincronización.
+
 Detalle y requisitos cubiertos en [propuesta-modulos.md](modulos/propuesta-modulos.md).
 
 ## 4. Modelo de datos
@@ -55,8 +61,11 @@ Cuota, Evento, Participación, Encargo, Pago, Medio de pago y Recibo.
 **Esquema relacional**: [schema.sql](../database/schema.sql) — 14 tablas. Las claves y restricciones de integridad están en
 [claves-restricciones.md](esquema-relacional/claves-restricciones.md).
 
-**Índices**: Criterios de indexación y rendimiento de las consultas principales
-(`docs/esquema-relacional/indices.md`).
+**Índices**: [indices.md](esquema-relacional/indices.md) — criterios de indexación y rendimiento
+de las consultas principales.
+
+**Diagrama del esquema relacional**: [diagrama-relacional.md](esquema-relacional/diagrama-relacional.md)
+— tablas, campos, tipos de datos, claves primarias y foráneas, relaciones e índices.
 
 ## 5. Coherencia
 
@@ -83,4 +92,6 @@ RNF-11 en las claves de trazabilidad del administrador).
 - Modelo conceptual y DER: [entidades-relaciones-cardinalidad/](entidades-relaciones-cardinalidad/)
 - Esquema relacional: [schema.sql](../database/schema.sql)
 - Claves y restricciones: [claves-restricciones.md](esquema-relacional/claves-restricciones.md)
+- Índices: [indices.md](esquema-relacional/indices.md)
+- Diagrama del esquema relacional: [diagrama-relacional.md](esquema-relacional/diagrama-relacional.md)
 - Arquitectura: [arquitectura-inicial.md](arquitectura/arquitectura-inicial.md)
