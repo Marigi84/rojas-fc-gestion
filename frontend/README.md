@@ -75,12 +75,13 @@ frontend/
 ├── src/
 │   ├── components/      → componentes reutilizables
 │   │   ├── layout/      → marco común de las pantallas (Layout)
-│   │   └── ui/          → componentes de interfaz genéricos (Boton, Campo, Tarjeta, Tabla)
+│   │   └── ui/          → componentes de interfaz genéricos (Boton, Campo, Selector, Aviso, Tarjeta, Tabla)
 │   ├── pages/           → una pantalla por módulo
 │   ├── routes/          → definición de rutas y navegación
-│   ├── services/        → comunicación con la API REST
+│   ├── services/        → comunicación con la API REST y cliente de TanStack Query
+│   ├── utils/           → funciones auxiliares (fechas, mensajes de error)
 │   ├── assets/          → imágenes propias (escudo del club)
-│   ├── App.tsx          → componente raíz (monta el router)
+│   ├── App.tsx          → componente raíz (TanStack Query y router)
 │   ├── main.tsx         → punto de entrada de la aplicación
 │   └── index.css        → Tailwind, paleta y tipografía
 ├── .env.example         → variables de entorno de ejemplo
@@ -107,6 +108,14 @@ La navegación base incluye las secciones de los 9 módulos del sistema
 | `/sin-conexion` | 9. Funcionamiento sin Conexión y Sincronización |
 | `/login`        | 1. Autenticación y Autorización                 |
 
+Dentro del Módulo 2 están además las pantallas de alumnos:
+
+| Ruta                   | Pantalla                                |
+| ---------------------- | --------------------------------------- |
+| `/alumnos/nuevo`       | Alta de un alumno con sus responsables  |
+| `/alumnos/:dni`        | Detalle, historial, baja y reactivación |
+| `/alumnos/:dni/editar` | Modificación de los datos del alumno    |
+
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 
 ## Servicio de comunicación con la API
@@ -115,6 +124,10 @@ Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 define la URL base, adjunta el token JWT cuando exista y unifica el manejo de
 errores. Los servicios de cada módulo deben usar este cliente en lugar de
 llamar a `fetch` directamente.
+
+Los datos del servidor se manejan con **TanStack Query**
+(`src/services/queryClient.ts`): `useQuery` para consultar y `useMutation` para
+registrar o modificar. Los errores 4xx no se reintentan.
 
 ## Estilos
 
@@ -135,8 +148,9 @@ con `@fontsource` para que funcionen sin conexión.
 
 Antes de crear un estilo nuevo, conviene reutilizar los componentes de
 `src/components/ui/`: `Boton` (variantes principal, secundario y peligro),
-`Campo` (etiqueta, campo y error), `Tarjeta` y `Tabla` (con mensaje cuando no
-hay filas). No se usan colores sueltos: si hace falta uno nuevo, se agrega a la
+`Campo` (etiqueta, campo y error; gris si es de solo lectura), `Selector`
+(lista desplegable con el mismo aspecto que `Campo`), `Aviso` (errores de la API
+y avisos), `Tarjeta` y `Tabla` (con mensaje cuando no hay filas). No se usan colores sueltos: si hace falta uno nuevo, se agrega a la
 paleta.
 
 ## Calidad de código

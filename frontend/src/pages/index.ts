@@ -1,3 +1,6 @@
+export { AlumnoAltaPage } from './AlumnoAltaPage'
+export { AlumnoDetallePage } from './AlumnoDetallePage'
+export { AlumnoEdicionPage } from './AlumnoEdicionPage'
 export { AlumnosPage } from './AlumnosPage'
 export { CuotasPage } from './CuotasPage'
 export { DashboardPage } from './DashboardPage'
