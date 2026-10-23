@@ -30,15 +30,14 @@ Esta modalidad dificulta la búsqueda y relación de la información, aumenta la
 
 Se propone desarrollar una aplicación web de gestión que permita centralizar la información administrativa de Rojas FC y automatizar parte de los procesos que actualmente requieren registro, búsqueda y control manual.
 
-El sistema permitirá gestionar alumnos, responsables, categorías, preinscripciones, cuotas, pagos, recibos, eventos y otros conceptos de cobro desde una plataforma centralizada.
+El sistema permitirá gestionar alumnos, responsables, categorías, cuotas, pagos, recibos, eventos y otros conceptos de cobro desde una plataforma centralizada.
 
 Entre las principales funcionalidades previstas se encuentran:
 
 - Gestión de alumnos y responsables.
 - Organización de alumnos por categorías según año de nacimiento.
-- Formulario propio de preinscripción y posterior validación.
 - Generación automática de cuotas.
-- Configuración de importes, vencimientos e intereses.
+- Configuración de importes, vencimiento e intereses.
 - Seguimiento de cuotas pagadas, pendientes y vencidas.
 - Registro de pagos en efectivo y transferencia.
 - Generación y conservación de recibos digitales.
@@ -73,6 +72,7 @@ Se consideran posibles evoluciones posteriores:
 - Procesamiento de pagos online mediante pasarelas de pago.
 - Integración completa mediante WhatsApp Business API.
 - Gestión avanzada del ciclo de pedidos de indumentaria.
+- Formulario de preinscripción en línea y su validación.
 
 La arquitectura se diseñará procurando permitir futuras ampliaciones sin incorporar al Trabajo Final complejidad que no resulte necesaria para resolver la problemática actual.
 
@@ -155,7 +155,6 @@ El proyecto se desarrollará de manera incremental, tomando como referencia las 
 - Gestión de responsables.
 - Gestión de alumnos.
 - Gestión de categorías.
-- Preinscripción y validación.
 - Búsquedas y filtros.
 - Integración progresiva entre base de datos, backend y frontend.
 
@@ -232,6 +231,22 @@ rojas-fc-gestion/
 - `database/`: scripts, esquemas y recursos relacionados con MySQL.
 - `docs/`: documentación, diagramas, informes y entregas del proyecto.
 
+## Instalación
+
+### Requisitos
+
+- **Java 17** y **Maven 3.9+** para el backend.
+- **Node.js 20.19+** y **npm** para el frontend.
+- **MySQL 8** para la base de datos.
+
+### Puesta en marcha
+
+1. **Base de datos:** crear la base `rojasfc` y aplicar [`database/schema.sql`](database/schema.sql).
+2. **Backend:** seguir [`backend/README.md`](backend/README.md) para configurar las variables de entorno y ejecutar `mvn spring-boot:run`.
+3. **Frontend:** seguir [`frontend/README.md`](frontend/README.md) para instalar las dependencias (`npm install`) y ejecutar `npm run dev`.
+
+El backend queda disponible en `http://localhost:8080` y el frontend en `http://localhost:5173`.
+
 ## Documentación de las entregas
 
 - [`docs/1ra Entrega - Propuesta de Proyecto.md`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.md) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
@@ -240,7 +255,14 @@ rojas-fc-gestion/
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
 - [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md) — Ajustes sobre el alcance de la Primera Entrega.
 - [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
+- `docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md` — Módulos, modelo de datos y arquitectura. **En revisión.**
+- [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
+- [`docs/entidades-relaciones-cardinalidad/`](docs/entidades-relaciones-cardinalidad/) — Modelo conceptual y DER.
+- [`docs/esquema-relacional/claves-restricciones.md`](docs/esquema-relacional/claves-restricciones.md) — Claves y restricciones del esquema relacional.
+- [`docs/esquema-relacional/indices.md`](docs/esquema-relacional/indices.md) — Índices del esquema relacional.
+- [`docs/esquema-relacional/diagrama-relacional.md`](docs/esquema-relacional/diagrama-relacional.md) — Diagrama del esquema relacional.
+- [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
 
 ## Estado del proyecto
 
-🟡 **En desarrollo — Segunda etapa: diseño del modelo de datos y módulos.**
+🟡 **Segunda Entrega presentada. En desarrollo: Etapa 3, núcleo funcional.**
