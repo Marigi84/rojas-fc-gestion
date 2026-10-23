@@ -4,6 +4,7 @@ export const PATHS = {
   login: '/login',
   dashboard: '/',
   alumnos: '/alumnos',
+  alumnoNuevo: '/alumnos/nuevo',
   portal: '/portal',
   cuotas: '/cuotas',
   pagos: '/pagos',
@@ -11,6 +12,11 @@ export const PATHS = {
   reportes: '/reportes',
   sinConexion: '/sin-conexion',
 } as const
+
+// Rutas con parámetros del Módulo 2.
+export const rutaAlumno = (dni: number | string) => `/alumnos/${dni}`
+export const rutaEditarAlumno = (dni: number | string) =>
+  `/alumnos/${dni}/editar`
 
 // Entradas del menú de navegación principal, en el mismo orden que los módulos.
 export const MODULOS = [

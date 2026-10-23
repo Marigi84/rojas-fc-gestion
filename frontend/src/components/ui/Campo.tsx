@@ -7,6 +7,7 @@ interface PropsCampo extends InputHTMLAttributes<HTMLInputElement> {
 
 // Campo de formulario con su etiqueta y, si corresponde, el mensaje de error
 // debajo. El error se asocia al campo para que lo lean los lectores de pantalla.
+// Los campos de solo lectura se ven grises, para que no parezcan editables.
 export function Campo({
   etiqueta,
   error,
@@ -27,7 +28,7 @@ export function Campo({
         id={idCampo}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? idError : undefined}
-        className={`w-full rounded-lg border bg-superficie px-3 py-2 outline-none focus:ring-3 ${
+        className={`w-full rounded-lg border bg-superficie px-3 py-2 outline-none read-only:bg-fondo read-only:text-texto-suave focus:ring-3 ${
           error
             ? 'border-rojo focus:ring-rojo-suave'
             : 'border-borde focus:border-verde focus:ring-lima-suave'
