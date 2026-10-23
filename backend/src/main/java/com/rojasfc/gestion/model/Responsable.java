@@ -28,6 +28,14 @@ public class Responsable implements UsuarioConContrasena {
   protected Responsable() {
   }
 
+  public Responsable(Long dni, String telefono, String contrasenaHash,
+      boolean contrasenaTemporal) {
+    this.dni = dni;
+    this.telefono = telefono;
+    this.contrasenaHash = contrasenaHash;
+    this.contrasenaTemporal = contrasenaTemporal;
+  }
+
   public Long getDni() {
     return dni;
   }
