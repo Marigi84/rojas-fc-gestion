@@ -75,6 +75,8 @@ export function AlumnoAltaPage() {
   const cliente = useQueryClient()
   // Clave de cada fila de responsable; la primera fila usa 0.
   const siguienteClave = useRef(1)
+  // DNI del alumno tal como está escrito ahora, para descartar búsquedas viejas.
+  const dniAlumnoActual = useRef('')
 
   const [alumno, setAlumno] = useState<DatosAlumno>({
     dni: '',
@@ -106,17 +108,29 @@ export function AlumnoAltaPage() {
   })
 
   function cambiarAlumno(campo: keyof DatosAlumno, valor: string) {
-    setAlumno((actual) => ({ ...actual, [campo]: valor }))
-    if (campo === 'dni') {
-      setPersonaAlumno(null)
-      setAlumnoExistente(false)
+    if (campo !== 'dni') {
+      setAlumno((actual) => ({ ...actual, [campo]: valor }))
+      return
     }
+    dniAlumnoActual.current = valor
+    // Si el nombre venía de otra persona registrada, no se arrastra al DNI nuevo.
+    const veniaDeOtraPersona = personaAlumno !== null
+    setAlumno((actual) => ({
+      ...actual,
+      dni: valor,
+      ...(veniaDeOtraPersona ? { nombre: '', apellido: '' } : {}),
+    }))
+    setPersonaAlumno(null)
+    setAlumnoExistente(false)
   }
 
   async function revisarDniAlumno() {
     setErrorBusqueda(null)
+    const dni = alumno.dni
     try {
-      const persona = await buscarPersona(alumno.dni)
+      const persona = await buscarPersona(dni)
+      // Si el DNI cambió mientras se buscaba, la respuesta ya no corresponde.
+      if (dniAlumnoActual.current !== dni) return
       if (persona?.alumno) {
         setAlumnoExistente(true)
         return
@@ -142,19 +156,40 @@ export function AlumnoAltaPage() {
     )
   }
 
+  function cambiarDniResponsable(clave: number, dni: string) {
+    // Si el nombre venía de otra persona registrada, no se arrastra al DNI nuevo.
+    setResponsables((filas) =>
+      filas.map((fila) =>
+        fila.clave !== clave
+          ? fila
+          : {
+              ...fila,
+              dni,
+              estado: 'nueva',
+              ...(fila.estado !== 'nueva' ? { nombre: '', apellido: '' } : {}),
+            },
+      ),
+    )
+  }
+
   async function revisarDniResponsable(clave: number, dni: string) {
     setErrorBusqueda(null)
     try {
       const persona = await buscarPersona(dni)
-      cambiarFila(
-        clave,
-        persona
-          ? {
-              nombre: persona.nombre,
-              apellido: persona.apellido,
-              estado: persona.responsable ? 'responsable' : 'registrada',
-            }
-          : { estado: 'nueva' },
+      const cambios: Partial<FilaResponsable> = persona
+        ? {
+            nombre: persona.nombre,
+            apellido: persona.apellido,
+            estado: persona.responsable ? 'responsable' : 'registrada',
+          }
+        : { estado: 'nueva' }
+      // Solo se aplica si el DNI de la fila no cambió mientras se buscaba.
+      setResponsables((filas) =>
+        filas.map((fila) =>
+          fila.clave === clave && fila.dni === dni
+            ? { ...fila, ...cambios }
+            : fila,
+        ),
       )
     } catch (error) {
       setErrorBusqueda(mensajeError(error))
@@ -288,10 +323,7 @@ export function AlumnoAltaPage() {
                     required
                     value={fila.dni}
                     onChange={(e) =>
-                      cambiarFila(fila.clave, {
-                        dni: e.target.value.trim(),
-                        estado: 'nueva',
-                      })
+                      cambiarDniResponsable(fila.clave, e.target.value.trim())
                     }
                     onBlur={(e) =>
                       revisarDniResponsable(fila.clave, e.target.value.trim())
