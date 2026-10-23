@@ -11,6 +11,10 @@ La arquitectura se define con un enfoque simple, mantenible y acorde al alcance 
 ## 2. Stack tecnológico acordado
 
 - **Frontend:** React + TypeScript + Vite.
+  - **Estilos:** Tailwind CSS.
+  - **Navegación:** React Router.
+  - **Datos del servidor:** TanStack Query.
+  - **Estado global:** Zustand, cuando resulte necesario.
 - **Backend:** Java + Spring Boot.
 - **Comunicación:** API REST.
 - **Base de datos:** MySQL.
@@ -22,6 +26,8 @@ La arquitectura se define con un enfoque simple, mantenible y acorde al alcance 
   - `/database`
   - `/docs`
 
+La justificación de cada tecnología está en la sección 5 de la Primera Entrega (`docs/1ra Entrega - Propuesta de Proyecto.md`).
+
 ---
 
 ## 3. Arquitectura general
@@ -29,6 +35,8 @@ La arquitectura se define con un enfoque simple, mantenible y acorde al alcance 
 El sistema seguirá una arquitectura web cliente-servidor.
 
 El frontend será responsable de la interacción con el usuario y consumirá los servicios publicados por el backend mediante una API REST. El backend concentrará la lógica de negocio, la seguridad, las validaciones y el acceso a datos. MySQL será la base de datos relacional principal del sistema.
+
+El backend sigue una **arquitectura en capas**: controladores REST, servicios y persistencia (sección 5). Cada capa se comunica solo con la siguiente.
 
 ```mermaid
 flowchart LR
@@ -63,7 +71,7 @@ Centralizan las solicitudes HTTP al backend y el intercambio de información en 
 
 Administra los datos temporales que necesita la interfaz durante el uso de la aplicación.
 
-No se define en esta etapa una librería específica para la gestión de estado.
+Los datos que provienen del servidor se gestionan con TanStack Query. Si resulta necesario administrar estado global de la aplicación, se utilizará Zustand, como prevé la Primera Entrega.
 
 ### 4.5. Ruteo y protección de rutas
 
@@ -234,7 +242,7 @@ Este documento describe la arquitectura inicial a nivel general.
 No define todavía:
 
 - endpoints definitivos;
-- librerías específicas de gestión de estado;
+- si será necesario incorporar Zustand para el estado global;
 - estrategia física definitiva de almacenamiento offline;
 - infraestructura avanzada de despliegue;
 - detalles de implementación que dependan del esquema relacional definitivo.
