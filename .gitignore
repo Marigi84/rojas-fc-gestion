@@ -44,3 +44,5 @@ Thumbs.db
 
 *.log
 logs/
+/.atl/skill-registry.md
+/.atl/.skill-registry.cache.json

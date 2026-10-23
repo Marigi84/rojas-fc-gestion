@@ -15,7 +15,7 @@ const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api'
 
 // Clave bajo la que se guarda el JWT para las operaciones protegidas
 // (arquitectura, sección 4.2). La sesión real se implementa en la Etapa 3.
-const CLAVE_TOKEN = 'rojas_fc_token'
+const CLAVE_TOKEN = import.meta.env.VITE_API_TOKEN || 'rojas_fc_token'
 
 // Error propio para que los llamadores puedan distinguir un fallo de la API
 // de un error de programación, y leer el código HTTP.
