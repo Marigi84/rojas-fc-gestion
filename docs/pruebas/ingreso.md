@@ -4,7 +4,7 @@
 
 Este documento registra las pruebas de las pantallas de ingreso (configuración inicial, inicio de sesión, cambio de contraseña y protección de rutas) hechas con el sistema completo levantado en local: backend, frontend y base MySQL creada desde `database/schema.sql`.
 
-Cubre los requisitos RF-11, RF-49 y RF-52, y RNF-01 y RNF-02.
+Cubre los requisitos RF-11, RF-15, RF-49, RF-51 y RF-52, y RNF-01 y RNF-02.
 
 ### Cómo se prepararon
 
@@ -48,6 +48,37 @@ Los casos se recorrieron en Chromium, en escritorio (1280 px) y en celular (390 
 
 ---
 
+## Otros administradores y contraseñas de responsables
+
+Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI 20111222) y un alumno con dos responsables: Pedro (DNI 30555666), que ya había cambiado su contraseña, y Laura (DNI 30222333).
+
+**Última ejecución:** 27/10/2026, 19 de 19 casos correctos. Las pruebas unitarias del backend suman 6 casos nuevos (`AdministradorServiceTest` y `ResponsableServiceTest`).
+
+| # | Caso | Pasos | Resultado esperado | Resultado |
+| - | ---- | ----- | ------------------ | --------- |
+| 1 | Pantalla de administradores | Como Administrador, abrir "Administradores" en el menú | Lista a Marina | OK |
+| 2 | Contraseñas distintas | Registrar un administrador repitiendo otra contraseña | Avisa "Las contraseñas no coinciden." | OK |
+| 3 | Registrar administrador (RF-51) | Registrar a Ana (DNI 28111222) | Confirma el alta y la lista con "Provisoria, sin cambiar" | OK |
+| 4 | DNI que ya es administrador | Escribir de nuevo el DNI de Ana | Avisa que ya es administrador y no deja registrar | OK |
+| 5 | Correo en uso | Registrar otro DNI con el correo de Ana en mayúsculas | Avisa que el correo ya es de otro administrador | OK |
+| 6 | Persona ya registrada (RN-01) | Registrar como administradora a Laura, que es responsable | Completa su nombre y apellido y la registra | OK |
+| 7 | Restablecer: contraseñas distintas | En el detalle del alumno, "Restablecer contraseña" de Pedro, repitiendo otra | Avisa "Las contraseñas no coinciden." | OK |
+| 8 | Restablecer contraseña (RF-15) | Guardar una contraseña provisoria nueva para Pedro | Confirma que quedó provisoria | OK |
+| 9 | Contraseña anterior | Pedro ingresa con su contraseña anterior | Avisa "El DNI o la contraseña no coinciden" | OK |
+| 10 | Provisoria nueva (RNF-01) | Pedro ingresa con la provisoria nueva | Le pide cambiarla | OK |
+| 11 | Cambio | Pedro la cambia | Entra al portal | OK |
+| 12 | Pantalla de administradores y Responsable | Pedro abre `/administradores` | Lo lleva al portal | OK |
+| 13 | Rutas nuevas y Responsable (RF-52) | Con el token de Pedro, llamar a `GET /api/administradores` y a `PUT /api/responsables/{dni}/contrasena` | El backend responde 403 en las dos | OK |
+| 14 | Primer ingreso del nuevo administrador | Ana ingresa con su provisoria y la cambia | Entra al Dashboard como Administradora | OK |
+| 15 | Listado actualizado | Volver a "Administradores" | Ana figura con contraseña "Propia" | OK |
+| 16 | Responsable y Administradora | Laura ingresa con la contraseña de administradora | Ingresa como Administradora y le pide cambiar la provisoria | OK |
+| 17 | Quien no es responsable | `PUT /api/responsables/99999999/contrasena` como Administrador | Responde 404 | OK |
+| 18 | Celular | Abrir "Administradores" y el detalle del alumno con 390 px | No hay desplazamiento horizontal | OK |
+| 19 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores de JavaScript | OK |
+
+---
+
 ## Pendiente
 
-- Restablecer la contraseña de un Responsable (RF-15), registrar otro Administrador (RF-51) y recuperar la contraseña del Administrador por correo (RF-50) se prueban cuando estén hechos.
+- Recuperar la contraseña del Administrador por correo (RF-50) se prueba cuando esté hecha.
+- Al restablecer la contraseña de un responsable, si tenía una sesión abierta en otro dispositivo, sigue valiendo hasta que vence su token.
