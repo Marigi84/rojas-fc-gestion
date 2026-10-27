@@ -103,33 +103,38 @@ export function AdministradoresPage() {
     })
   }
 
+  let contenidoListado
+  if (listado.isPending) {
+    contenidoListado = (
+      <p className="text-texto-suave">Cargando administradores…</p>
+    )
+  } else if (listado.isError) {
+    contenidoListado = <Aviso tipo="error">{mensajeError(listado.error)}</Aviso>
+  } else {
+    contenidoListado = (
+      <Tabla
+        columnas={[
+          { titulo: 'Nombre', valor: (a) => `${a.apellido}, ${a.nombre}` },
+          { titulo: 'DNI', valor: (a) => a.dni, numerica: true },
+          { titulo: 'Correo', valor: (a) => a.email },
+          {
+            titulo: 'Contraseña',
+            valor: (a) =>
+              a.contrasenaTemporal ? 'Provisoria, sin cambiar' : 'Propia',
+          },
+        ]}
+        filas={listado.data}
+        claveFila={(a) => a.dni}
+        vacia="No hay administradores."
+      />
+    )
+  }
+
   return (
     <section className="space-y-6">
       <h1 className="text-3xl">Administradores</h1>
 
-      <Tarjeta titulo="Administradores del sistema">
-        {listado.isPending ? (
-          <p className="text-texto-suave">Cargando administradores…</p>
-        ) : listado.isError ? (
-          <Aviso tipo="error">{mensajeError(listado.error)}</Aviso>
-        ) : (
-          <Tabla
-            columnas={[
-              { titulo: 'Nombre', valor: (a) => `${a.apellido}, ${a.nombre}` },
-              { titulo: 'DNI', valor: (a) => a.dni, numerica: true },
-              { titulo: 'Correo', valor: (a) => a.email },
-              {
-                titulo: 'Contraseña',
-                valor: (a) =>
-                  a.contrasenaTemporal ? 'Provisoria, sin cambiar' : 'Propia',
-              },
-            ]}
-            filas={listado.data}
-            claveFila={(a) => a.dni}
-            vacia="No hay administradores."
-          />
-        )}
-      </Tarjeta>
+      <Tarjeta titulo="Administradores del sistema">{contenidoListado}</Tarjeta>
 
       <Tarjeta titulo="Registrar administrador">
         <form onSubmit={enviar} className="space-y-4">
@@ -192,17 +197,16 @@ export function AdministradoresPage() {
             La contraseña es provisoria: el nuevo administrador la cambia en su
             primer ingreso. El correo sirve para recuperar la contraseña.
           </p>
-          {yaEsAdministrador ? (
+          {yaEsAdministrador && (
             <Aviso tipo="error">
               {persona?.nombre} {persona?.apellido} ya es administrador.
             </Aviso>
-          ) : (
-            persona && (
-              <Aviso>
-                Esta persona ya está registrada en el sistema: se usan su nombre
-                y apellido.
-              </Aviso>
-            )
+          )}
+          {persona && !yaEsAdministrador && (
+            <Aviso>
+              Esta persona ya está registrada en el sistema: se usan su nombre y
+              apellido.
+            </Aviso>
           )}
           {errorBusqueda && <Aviso tipo="error">{errorBusqueda}</Aviso>}
           {alta.isError && (

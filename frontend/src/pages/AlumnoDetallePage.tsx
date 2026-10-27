@@ -67,6 +67,7 @@ export function AlumnoDetallePage() {
   const activo = alumno.estado === 'activo'
   const nombreCompleto = `${alumno.nombre} ${alumno.apellido}`
   const enCurso = baja.isPending || reactivacion.isPending
+  const aRestablecer = alumno.responsables.find((r) => r.dni === restableciendo)
 
   // Confirmación antes de cambiar el estado del alumno (RNF-13).
   function darDeBaja() {
@@ -180,20 +181,16 @@ export function AlumnoDetallePage() {
           claveFila={(r) => r.dni}
           vacia="El alumno no tiene responsables asociados."
         />
-        {alumno.responsables
-          .filter((r) => r.dni === restableciendo)
-          .map((r) => (
-            <div
-              key={r.dni}
-              className="mt-4 rounded-lg border border-borde p-4"
-            >
-              <RestablecerContrasena
-                dni={r.dni}
-                nombre={`${r.nombre} ${r.apellido}`}
-                onCerrar={() => setRestableciendo(null)}
-              />
-            </div>
-          ))}
+        {aRestablecer && (
+          <div className="mt-4 rounded-lg border border-borde p-4">
+            <RestablecerContrasena
+              key={aRestablecer.dni}
+              dni={aRestablecer.dni}
+              nombre={`${aRestablecer.nombre} ${aRestablecer.apellido}`}
+              onCerrar={() => setRestableciendo(null)}
+            />
+          </div>
+        )}
       </Tarjeta>
 
       <Tarjeta titulo="Historial en la escuela">
