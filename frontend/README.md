@@ -110,11 +110,13 @@ La navegación base incluye las secciones de los 9 módulos del sistema
 
 Del Módulo 1 están además estas pantallas:
 
-| Ruta                     | Pantalla                                               |
-| ------------------------ | ------------------------------------------------------ |
-| `/configuracion-inicial` | Alta del primer Administrador (solo si todavía no hay) |
-| `/cambiar-contrasena`    | Cambio de contraseña (obligatorio con la provisoria)   |
-| `/administradores`       | Administradores del sistema y alta de otro (RF-51)     |
+| Ruta                      | Pantalla                                               |
+| ------------------------- | ------------------------------------------------------ |
+| `/configuracion-inicial`  | Alta del primer Administrador (solo si todavía no hay) |
+| `/cambiar-contrasena`     | Cambio de contraseña (obligatorio con la provisoria)   |
+| `/administradores`        | Administradores del sistema y alta de otro (RF-51)     |
+| `/recuperar-contrasena`   | Pedido del enlace de recuperación por correo (RF-50)   |
+| `/restablecer-contrasena` | Contraseña nueva desde el enlace del correo (RF-50)    |
 
 Dentro del Módulo 2 están además las pantallas de alumnos:
 
@@ -135,7 +137,9 @@ página no la cierra. `apiClient` toma el token de ahí.
 `src/routes/RutaProtegida.tsx` decide quién entra a cada ruta (RF-52):
 
 - **Sin sesión:** lleva a `/login`. Si el sistema todavía no tiene
-  Administrador, el ingreso lleva a `/configuracion-inicial`.
+  Administrador, el ingreso lleva a `/configuracion-inicial`. La recuperación
+  de la contraseña (`/recuperar-contrasena` y `/restablecer-contrasena`) es
+  pública.
 - **Con la contraseña provisoria:** solo deja entrar a `/cambiar-contrasena`
   (RNF-01).
 - **Responsable:** solo ve el Portal del Responsable; el resto de las rutas lo
