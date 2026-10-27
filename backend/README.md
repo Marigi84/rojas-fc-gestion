@@ -107,7 +107,7 @@ Gestión de alumnos (Módulo 2). Todas las rutas son solo para el Administrador.
 | `GET /api/alumnos/{dni}` | Datos, categoría, estado, morosidad, historial de permanencias y responsables (RF-02, RF-16). |
 | `PUT /api/alumnos/{dni}` | Modificación de nombre, apellido, fecha de nacimiento y dirección (RF-03). |
 | `POST /api/alumnos/{dni}/baja` | Baja lógica: cierra la permanencia vigente con la fecha de hoy (RF-04). |
-| `POST /api/alumnos/{dni}/reactivacion` | Abre una nueva permanencia y conserva las anteriores (RF-05). |
+| `POST /api/alumnos/{dni}/reactivacion` | Abre una nueva permanencia y conserva las anteriores (RF-05). Si la baja fue hoy, la deshace. |
 | `GET /api/personas/{dni}` | Persona ya registrada y sus roles, para reutilizar sus datos en los formularios (RN-01). |
 
 Ejemplo de alta:
@@ -133,9 +133,27 @@ Ejemplo de alta:
 ```
 
 - `vinculo` admite `MADRE`, `PADRE`, `TUTOR` u `OTRO`.
-- Si el DNI de una persona ya está registrado, se reutilizan su nombre y apellido (RN-01). Si un responsable ya existe, solo se asocia: `telefono` y `contrasenaProvisoria` se piden únicamente para los responsables nuevos. La contraseña la asigna el Administrador y es provisoria (RF-11, RNF-01).
+- Si el DNI de una persona ya está registrado, se reutilizan su nombre y apellido (RN-01): `nombre` y `apellido` se piden solo para personas nuevas. Si un responsable ya existe, alcanza con su `dni` y el `vinculo`: `telefono` y `contrasenaProvisoria` se piden únicamente para quien todavía no es responsable. La contraseña la asigna el Administrador y es provisoria (RF-11, RNF-01).
+- **Reactivar el mismo día de la baja** la deshace (se toma como una baja por error) y el alumno vuelve a quedar activo en la misma permanencia, porque la clave de `permanencia` no admite dos altas el mismo día. En ese caso no queda registro de la baja anulada. Antes se controla RN-03, que el trigger de la base no cubre en esta reapertura.
 - Si el DNI ya es un alumno, no se crea otro: responde 409 con `error: "Alumno ya registrado"` si está activo, o `"Alumno inactivo"` si está dado de baja, para ofrecer la reactivación.
 - Cuando un trigger de la base rechaza la operación (por ejemplo, RN-03: un alumno activo no puede ser responsable), responde 409 con `error: "Regla de negocio"` y el mensaje del trigger.
+
+## Tests
+
+```bash
+mvn test
+```
+
+Corre los tests unitarios, que no necesitan base de datos.
+
+Las reglas que controla la base (triggers de RN-03, que un alta fallida no deje nada a medias) se prueban con tests de integración contra MySQL. Se activan con `TESTS_MYSQL=true` y usan las mismas variables `DB_*`. Crean desde `database/schema.sql` una base aparte, `rojasfc_test`, que se borra y se vuelve a crear en cada corrida, así que no tocan la base de desarrollo:
+
+```powershell
+$env:TESTS_MYSQL = "true"
+$env:DB_USERNAME = "root"
+$env:DB_PASSWORD = "tu_password"
+mvn test
+```
 
 ## Empaquetar
 

@@ -9,4 +9,6 @@ public interface ResponsableAlumnoRepository
     extends JpaRepository<ResponsableAlumno, ResponsableAlumnoId> {
 
   List<ResponsableAlumno> findByDniAlumno(Long dniAlumno);
+
+  boolean existsByDniResponsable(Long dniResponsable);
 }

@@ -67,7 +67,7 @@ public class AlumnoService {
   @Transactional
   public AlumnoDetalle registrar(AltaAlumnoRequest pedido, Long dniAdmin) {
     Long dni = pedido.dni();
-    validarResponsables(pedido);
+    // Primero si ya es alumno: ese caso se resuelve igual aunque el resto del pedido tenga errores.
     if (alumnos.existsById(dni)) {
       throw permanencias.findByDniAlumnoAndFechaBajaIsNull(dni).isPresent()
           ? new ConflictoException("Alumno ya registrado",
@@ -75,7 +75,9 @@ public class AlumnoService {
           : new ConflictoException("Alumno inactivo", "El alumno con DNI " + dni
               + " ya está registrado y está dado de baja. Se puede reactivar.");
     }
+    validarResponsables(pedido);
     if (!personas.existsById(dni)) {
+      Nombres.exigir(pedido.nombre(), pedido.apellido(), "del alumno con DNI " + dni);
       personas.saveAndFlush(new Persona(dni, pedido.nombre().trim(), pedido.apellido().trim()));
     }
     alumnos.saveAndFlush(new Alumno(dni, pedido.fechaNacimiento(), pedido.direccion().trim()));
@@ -113,7 +115,12 @@ public class AlumnoService {
     return detalle(dni);
   }
 
-  /** Reactivacion: abre una nueva permanencia y conserva las anteriores (RF-05, RN-06, RN-07). */
+  /**
+   * Reactivacion: abre una nueva permanencia y conserva las anteriores (RF-05,
+   * RN-06, RN-07). Si la baja fue hoy, se toma como una baja por error y se
+   * deshace, reabriendo esa misma permanencia: la clave (alumno, fecha de
+   * alta) no admite dos altas el mismo dia.
+   */
   @Transactional
   public AlumnoDetalle reactivar(Long dni, Long dniAdmin) {
     buscarAlumno(dni);
@@ -121,12 +128,17 @@ public class AlumnoService {
       throw new ConflictoException("Alumno activo", "El alumno con DNI " + dni + " ya está activo.");
     }
     LocalDate hoy = hoy();
-    // La clave de permanencia es (alumno, fecha de alta): no puede haber dos altas el mismo dia.
-    if (permanencias.existsByDniAlumnoAndFechaAlta(dni, hoy)) {
-      throw new ConflictoException("Alta del día", "El alumno ya tuvo un alta hoy. "
-          + "La reactivación se puede registrar a partir de mañana.");
+    Permanencia ultima = permanencias.findByDniAlumnoOrderByFechaAltaDesc(dni).get(0);
+    if (hoy.equals(ultima.getFechaBaja())) {
+      // RN-03: el trigger de la base controla solo el INSERT de permanencia, no esta reapertura.
+      if (vinculos.existsByDniResponsable(dni)) {
+        throw new ConflictoException("Regla de negocio", "Un responsable no puede ser alumno activo");
+      }
+      ultima.anularBaja();
+      permanencias.flush();
+    } else {
+      permanencias.saveAndFlush(new Permanencia(dni, hoy, dniAdmin));
     }
-    permanencias.saveAndFlush(new Permanencia(dni, hoy, dniAdmin));
     return detalle(dni);
   }
 

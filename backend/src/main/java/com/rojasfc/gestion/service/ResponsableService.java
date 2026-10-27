@@ -43,10 +43,14 @@ public class ResponsableService {
   public void asociarEnAlta(Long dniAlumno, ResponsableAltaRequest pedido) {
     Long dni = pedido.dni();
     boolean esResponsable = responsables.existsById(dni);
+    boolean personaNueva = !personas.existsById(dni);
+    if (personaNueva) {
+      Nombres.exigir(pedido.nombre(), pedido.apellido(), "del responsable con DNI " + dni);
+    }
     if (!esResponsable) {
       validarResponsableNuevo(pedido);
     }
-    if (!personas.existsById(dni)) {
+    if (personaNueva) {
       personas.saveAndFlush(new Persona(dni, pedido.nombre().trim(), pedido.apellido().trim()));
     }
     if (!esResponsable) {

@@ -60,4 +60,10 @@ public class Permanencia {
     this.fechaBaja = fecha;
     this.dniAdminBaja = dniAdmin;
   }
+
+  /** Deshace una baja (reactivacion el mismo dia de la baja). */
+  public void anularBaja() {
+    this.fechaBaja = null;
+    this.dniAdminBaja = null;
+  }
 }

@@ -13,12 +13,13 @@ import java.util.List;
 
 /**
  * Alta de un alumno con al menos un responsable (RF-01, RN-05). Los limites
- * siguen las columnas de persona y alumno (database/schema.sql).
+ * siguen las columnas de persona y alumno (database/schema.sql). Nombre y
+ * apellido se piden solo si el DNI no es una persona ya registrada (RN-01).
  */
 public record AltaAlumnoRequest(
     @NotNull @Positive @Max(4294967295L) Long dni,
-    @NotBlank @Size(max = 60) String nombre,
-    @NotBlank @Size(max = 60) String apellido,
+    @Size(max = 60) String nombre,
+    @Size(max = 60) String apellido,
     @NotNull @Past LocalDate fechaNacimiento,
     @NotBlank @Size(max = 120) String direccion,
     @NotEmpty @Valid List<ResponsableAltaRequest> responsables
