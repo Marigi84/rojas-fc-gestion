@@ -1,3 +1,4 @@
+export { AdministradoresPage } from './AdministradoresPage'
 export { AlumnoAltaPage } from './AlumnoAltaPage'
 export { AlumnoDetallePage } from './AlumnoDetallePage'
 export { AlumnoEdicionPage } from './AlumnoEdicionPage'
