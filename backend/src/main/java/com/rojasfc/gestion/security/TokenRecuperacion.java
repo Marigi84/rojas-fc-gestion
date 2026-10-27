@@ -25,7 +25,8 @@ import org.springframework.stereotype.Component;
  * - Vence a los 30 minutos.
  * - Lleva una huella de la contrasena actual: cuando la contrasena cambia, la
  *   huella deja de coincidir y el enlace no se puede volver a usar. Por eso
- *   no hace falta guardar nada en la base.
+ *   no hace falta guardar nada en la base. La huella se calcula con la clave
+ *   del token, asi que no revela nada del hash de la contrasena.
  */
 @Component
 public class TokenRecuperacion {
@@ -33,13 +34,15 @@ public class TokenRecuperacion {
   private static final String CLAIM_HUELLA = "huella";
   private static final String USO = "recuperacion-contrasena";
 
+  private final byte[] claveBytes;
   private final SecretKey clave;
   private final Duration duracion;
 
   public TokenRecuperacion(
       @Value("${app.jwt.secret}") String secreto,
       @Value("${app.recuperacion.duracion-minutos}") long duracionMinutos) {
-    this.clave = Keys.hmacShaKeyFor(derivar(secreto));
+    this.claveBytes = derivar(secreto);
+    this.clave = Keys.hmacShaKeyFor(claveBytes);
     this.duracion = Duration.ofMinutes(duracionMinutos);
   }
 
@@ -82,21 +85,20 @@ public class TokenRecuperacion {
         huella(contrasenaHash).getBytes(StandardCharsets.UTF_8));
   }
 
-  private static String huella(String contrasenaHash) {
-    try {
-      byte[] resumen = MessageDigest.getInstance("SHA-256")
-          .digest(contrasenaHash.getBytes(StandardCharsets.UTF_8));
-      return Base64.getUrlEncoder().withoutPadding().encodeToString(resumen);
-    } catch (GeneralSecurityException e) {
-      throw new IllegalStateException(e);
-    }
+  private String huella(String contrasenaHash) {
+    byte[] resumen = hmac(claveBytes, contrasenaHash);
+    return Base64.getUrlEncoder().withoutPadding().encodeToString(resumen);
   }
 
   private static byte[] derivar(String secreto) {
+    return hmac(secreto.getBytes(StandardCharsets.UTF_8), USO);
+  }
+
+  private static byte[] hmac(byte[] clave, String dato) {
     try {
       Mac mac = Mac.getInstance("HmacSHA256");
-      mac.init(new SecretKeySpec(secreto.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-      return mac.doFinal(USO.getBytes(StandardCharsets.UTF_8));
+      mac.init(new SecretKeySpec(clave, "HmacSHA256"));
+      return mac.doFinal(dato.getBytes(StandardCharsets.UTF_8));
     } catch (GeneralSecurityException e) {
       throw new IllegalStateException(e);
     }

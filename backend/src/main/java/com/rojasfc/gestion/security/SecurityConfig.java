@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * el backend, aunque el frontend oculte opciones.
  *
  * Convencion de rutas:
- * - /api/health, /api/auth/login, /api/auth/recuperacion/** y
- *   /api/configuracion-inicial: publicas (la configuracion inicial se rechaza
+ * - /api/health, /api/auth/login, /api/auth/recuperacion (y su
+ *   /nueva-contrasena) y /api/configuracion-inicial: publicas (la configuracion inicial se rechaza
  *   sola cuando ya hay un Administrador; la recuperacion exige el enlace del
  *   correo).
  * - /api/auth/contrasena: cualquier usuario autenticado, incluso con

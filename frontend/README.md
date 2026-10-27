@@ -195,5 +195,4 @@ Se recomienda ejecutar `npm run lint` y `npm run format:check` antes de cada com
 ## Pendiente para la Etapa 3
 
 - Pantallas con funcionalidad y datos.
-- Autenticación real y protección de rutas por perfil.
 - Servicios por módulo sobre `apiClient`.
