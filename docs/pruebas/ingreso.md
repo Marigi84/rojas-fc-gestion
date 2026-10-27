@@ -14,7 +14,7 @@ Cubre los requisitos RF-11, RF-49 y RF-52, y RNF-01 y RNF-02.
 
 Los casos se recorrieron en Chromium, en escritorio (1280 px) y en celular (390 px). El recorrido se automatizó con Playwright para poder repetirlo después de cada cambio.
 
-**Última ejecución:** 27/10/2026, 21 de 21 casos correctos.
+**Última ejecución:** 27/10/2026, 23 de 23 casos correctos.
 
 ---
 
@@ -42,7 +42,9 @@ Los casos se recorrieron en Chromium, en escritorio (1280 px) y en celular (390 
 | 18 | Token inválido (RNF-02) | Alterar el token guardado y abrir un alumno | El backend responde 401, se cierra la sesión y lleva al ingreso | OK |
 | 19 | Token vencido | Guardar una sesión con el token vencido y abrir la aplicación | La sesión se descarta y lleva al ingreso | OK |
 | 20 | Celular | Ingresar con 390 px de ancho | No hay desplazamiento horizontal; el usuario aparece debajo del escudo | OK |
-| 21 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores de JavaScript | OK |
+| 21 | Token inválido al cambiar la contraseña | Alterar el token guardado e intentar cambiar la contraseña | El backend responde 401, se cierra la sesión y lleva al ingreso | OK |
+| 22 | Ingreso después del rechazo | Volver a ingresar | Retoma el cambio de contraseña, que era la pantalla abierta | OK |
+| 23 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores de JavaScript | OK |
 
 ---
 

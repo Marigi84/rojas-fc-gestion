@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { PantallaAcceso } from '../components/layout/PantallaAcceso'
@@ -16,6 +16,7 @@ import { mensajeError } from '../utils/errores'
 export function LoginPage() {
   const sesion = useSesion((estado) => estado.sesion)
   const iniciar = useSesion((estado) => estado.iniciar)
+  const cliente = useQueryClient()
   // Pantalla que se quiso abrir sin sesión, para volver a ella al ingresar.
   const desde = (useLocation().state as { desde?: string } | null)?.desde
   const [dni, setDni] = useState('')
@@ -28,7 +29,11 @@ export function LoginPage() {
   })
   const ingreso = useMutation({
     mutationFn: authApi.ingresar,
-    onSuccess: iniciar,
+    onSuccess: (nueva) => {
+      // Si la sesión anterior venció, sus datos consultados no los ve este usuario.
+      cliente.clear()
+      iniciar(nueva)
+    },
   })
 
   if (sesion) {

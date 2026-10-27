@@ -59,13 +59,14 @@ export async function peticion<T>(
   })
 
   if (!respuesta.ok) {
-    // Un 401 con token fuera de /auth significa que la sesión venció o dejó de
-    // ser válida: se cierra y las rutas protegidas llevan al ingreso. En /auth
-    // un 401 es una contraseña incorrecta y la sesión sigue.
-    if (respuesta.status === 401 && token && !ruta.startsWith('/auth/')) {
+    const error = await construirError(respuesta)
+    // Un 401 con token significa que la sesión venció o dejó de ser válida: se
+    // cierra y las rutas protegidas llevan al ingreso. La excepción es una
+    // contraseña actual incorrecta al cambiarla: ahí la sesión sigue.
+    if (respuesta.status === 401 && token && !esContrasenaIncorrecta(error)) {
       useSesion.getState().cerrar()
     }
-    throw await construirError(respuesta)
+    throw error
   }
 
   // 204 (sin contenido) es la respuesta típica de un DELETE exitoso.
@@ -74,6 +75,12 @@ export async function peticion<T>(
   }
 
   return (await respuesta.json()) as T
+}
+
+// El backend marca así el rechazo de una contraseña (GlobalExceptionHandler).
+function esContrasenaIncorrecta(error: ErrorApi): boolean {
+  const cuerpo = error.detalles as Partial<ApiErrorCuerpo> | undefined
+  return cuerpo?.error === 'Credenciales invalidas'
 }
 
 async function construirError(respuesta: Response): Promise<ErrorApi> {
