@@ -1,3 +1,5 @@
+import { useSesion } from '../stores/sesion'
+
 // Forma uniforme de error que devuelve el backend (arquitectura, sección 6).
 // Coincide con el record ApiError de Spring Boot: ver
 // backend/src/main/java/com/rojasfc/gestion/exception/ApiError.java.
@@ -12,10 +14,6 @@ interface ApiErrorCuerpo {
 // URL base de la API REST. Se toma de la variable VITE_API_URL (ver .env.example)
 // y por defecto apunta al backend local de Spring Boot.
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api'
-
-// Clave bajo la que se guarda el JWT para las operaciones protegidas
-// (arquitectura, sección 4.2). La sesión real se implementa en la Etapa 3.
-const CLAVE_TOKEN = 'rojas_fc_token'
 
 // Error propio para que los llamadores puedan distinguir un fallo de la API
 // de un error de programación, y leer el código HTTP.
@@ -35,8 +33,9 @@ interface OpcionesPeticion extends Omit<RequestInit, 'body'> {
   cuerpo?: unknown
 }
 
+// El JWT sale de la sesión iniciada (src/stores/sesion.ts).
 function obtenerToken(): string | null {
-  return localStorage.getItem(CLAVE_TOKEN)
+  return useSesion.getState().sesion?.token ?? null
 }
 
 // Punto único de salida HTTP: centraliza la URL base, el envío del JWT y el
@@ -60,6 +59,12 @@ export async function peticion<T>(
   })
 
   if (!respuesta.ok) {
+    // Un 401 con token fuera de /auth significa que la sesión venció o dejó de
+    // ser válida: se cierra y las rutas protegidas llevan al ingreso. En /auth
+    // un 401 es una contraseña incorrecta y la sesión sigue.
+    if (respuesta.status === 401 && token && !ruta.startsWith('/auth/')) {
+      useSesion.getState().cerrar()
+    }
     throw await construirError(respuesta)
   }
 
