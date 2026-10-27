@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/layout/Layout'
 import {
+  AlumnoAltaPage,
+  AlumnoDetallePage,
+  AlumnoEdicionPage,
   AlumnosPage,
   CuotasPage,
   DashboardPage,
@@ -13,8 +16,9 @@ import {
 } from '../pages'
 import { PATHS } from './paths'
 
-// Mapa de navegación de la Etapa 2: una ruta por cada módulo, sin funcionalidad.
-// Los segmentos deben coincidir con los valores de PATHS (src/routes/paths.ts).
+// Mapa de navegación: una ruta por cada módulo y, debajo, las pantallas de los
+// módulos ya implementados. Los segmentos deben coincidir con los valores de
+// PATHS y las funciones de ruta de src/routes/paths.ts.
 // La protección por perfil (arquitectura, sección 4.5) se agrega en la Etapa 3,
 // junto con la autenticación real.
 export function AppRouter() {
@@ -25,6 +29,9 @@ export function AppRouter() {
         <Route element={<Layout />}>
           <Route index element={<DashboardPage />} />
           <Route path="alumnos" element={<AlumnosPage />} />
+          <Route path="alumnos/nuevo" element={<AlumnoAltaPage />} />
+          <Route path="alumnos/:dni" element={<AlumnoDetallePage />} />
+          <Route path="alumnos/:dni/editar" element={<AlumnoEdicionPage />} />
           <Route path="portal" element={<PortalResponsablePage />} />
           <Route path="cuotas" element={<CuotasPage />} />
           <Route path="pagos" element={<PagosPage />} />
