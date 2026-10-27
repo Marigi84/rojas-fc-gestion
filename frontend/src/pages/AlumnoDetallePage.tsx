@@ -7,6 +7,7 @@ import { Tarjeta } from '../components/ui/Tarjeta'
 import { PATHS, rutaEditarAlumno } from '../routes/paths'
 import {
   alumnosApi,
+  CLAVE_LISTADOS_ALUMNOS,
   claveAlumno,
   etiquetaVinculo,
   type AlumnoDetalle,
@@ -28,8 +29,10 @@ export function AlumnoDetallePage() {
     queryFn: () => alumnosApi.consultar(dni),
     enabled: dniValido,
   })
-  const actualizar = (detalle: AlumnoDetalle) =>
+  const actualizar = (detalle: AlumnoDetalle) => {
     cliente.setQueryData(claveAlumno(dni), detalle)
+    cliente.invalidateQueries({ queryKey: CLAVE_LISTADOS_ALUMNOS })
+  }
   const baja = useMutation({
     mutationFn: () => alumnosApi.darDeBaja(dni),
     onSuccess: actualizar,

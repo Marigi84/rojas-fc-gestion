@@ -1,40 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { CamposResponsable } from '../components/responsables/CamposResponsable'
+import {
+  aResponsableAlta,
+  conDniNuevo,
+  datosDePersona,
+  filaResponsableVacia,
+  type FilaResponsable,
+} from '../components/responsables/filaResponsable'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
 import { Campo } from '../components/ui/Campo'
-import { Selector } from '../components/ui/Selector'
 import { Tarjeta } from '../components/ui/Tarjeta'
 import { PATHS, rutaAlumno } from '../routes/paths'
-import { ErrorApi } from '../services/apiClient'
 import {
   alumnosApi,
+  buscarPersonaSiExiste,
+  CLAVE_LISTADOS_ALUMNOS,
   claveAlumno,
-  personasApi,
-  VINCULOS,
   type AlumnoDetalle,
   type PersonaResumen,
-  type ResponsableAlta,
-  type Vinculo,
 } from '../services/alumnos'
 import { mensajeError, tituloError } from '../utils/errores'
 import { hoyIso } from '../utils/fechas'
-
-// Situación del DNI cargado: persona nueva, persona ya registrada con otro rol
-// (se reutilizan sus datos, RN-01) o responsable existente (solo se asocia).
-type EstadoDni = 'nueva' | 'registrada' | 'responsable'
-
-interface FilaResponsable {
-  clave: number
-  dni: string
-  nombre: string
-  apellido: string
-  vinculo: Vinculo
-  telefono: string
-  contrasena: string
-  estado: EstadoDni
-}
 
 interface DatosAlumno {
   dni: string
@@ -42,31 +31,6 @@ interface DatosAlumno {
   apellido: string
   fechaNacimiento: string
   direccion: string
-}
-
-const DNI_VALIDO = /^[0-9]{1,10}$/
-
-function filaVacia(clave: number): FilaResponsable {
-  return {
-    clave,
-    dni: '',
-    nombre: '',
-    apellido: '',
-    vinculo: 'MADRE',
-    telefono: '',
-    contrasena: '',
-    estado: 'nueva',
-  }
-}
-
-async function buscarPersona(dni: string): Promise<PersonaResumen | null> {
-  if (!DNI_VALIDO.test(dni)) return null
-  try {
-    return await personasApi.buscar(Number(dni))
-  } catch (error) {
-    if (error instanceof ErrorApi && error.estado === 404) return null
-    throw error
-  }
 }
 
 // Alta de un alumno con al menos un responsable (RF-01, RF-06, RN-05).
@@ -90,12 +54,13 @@ export function AlumnoAltaPage() {
   )
   const [alumnoExistente, setAlumnoExistente] = useState(false)
   const [responsables, setResponsables] = useState<FilaResponsable[]>(() => [
-    filaVacia(0),
+    filaResponsableVacia(0),
   ])
   const [errorBusqueda, setErrorBusqueda] = useState<string | null>(null)
 
   const alAbrirDetalle = (detalle: AlumnoDetalle) => {
     cliente.setQueryData(claveAlumno(detalle.dni), detalle)
+    cliente.invalidateQueries({ queryKey: CLAVE_LISTADOS_ALUMNOS })
     navegar(rutaAlumno(detalle.dni))
   }
   const alta = useMutation({
@@ -122,13 +87,17 @@ export function AlumnoAltaPage() {
     }))
     setPersonaAlumno(null)
     setAlumnoExistente(false)
+    setErrorBusqueda(null)
+    // El error anterior (y su botón "Reactivar") correspondía al DNI viejo.
+    alta.reset()
+    reactivacion.reset()
   }
 
   async function revisarDniAlumno() {
     setErrorBusqueda(null)
     const dni = alumno.dni
     try {
-      const persona = await buscarPersona(dni)
+      const persona = await buscarPersonaSiExiste(dni)
       // Si el DNI cambió mientras se buscaba, la respuesta ya no corresponde.
       if (dniAlumnoActual.current !== dni) return
       if (persona?.alumno) {
@@ -157,17 +126,10 @@ export function AlumnoAltaPage() {
   }
 
   function cambiarDniResponsable(clave: number, dni: string) {
-    // Si el nombre venía de otra persona registrada, no se arrastra al DNI nuevo.
+    setErrorBusqueda(null)
     setResponsables((filas) =>
       filas.map((fila) =>
-        fila.clave !== clave
-          ? fila
-          : {
-              ...fila,
-              dni,
-              estado: 'nueva',
-              ...(fila.estado !== 'nueva' ? { nombre: '', apellido: '' } : {}),
-            },
+        fila.clave === clave ? conDniNuevo(fila, dni) : fila,
       ),
     )
   }
@@ -175,14 +137,7 @@ export function AlumnoAltaPage() {
   async function revisarDniResponsable(clave: number, dni: string) {
     setErrorBusqueda(null)
     try {
-      const persona = await buscarPersona(dni)
-      const cambios: Partial<FilaResponsable> = persona
-        ? {
-            nombre: persona.nombre,
-            apellido: persona.apellido,
-            estado: persona.responsable ? 'responsable' : 'registrada',
-          }
-        : { estado: 'nueva' }
+      const cambios = datosDePersona(await buscarPersonaSiExiste(dni))
       // Solo se aplica si el DNI de la fila no cambió mientras se buscaba.
       setResponsables((filas) =>
         filas.map((fila) =>
@@ -196,6 +151,15 @@ export function AlumnoAltaPage() {
     }
   }
 
+  function agregarResponsable() {
+    const clave = siguienteClave.current++
+    setResponsables((filas) => [...filas, filaResponsableVacia(clave)])
+  }
+
+  function quitarResponsable(clave: number) {
+    setResponsables((filas) => filas.filter((fila) => fila.clave !== clave))
+  }
+
   function enviar(evento: FormEvent) {
     evento.preventDefault()
     alta.mutate({
@@ -204,22 +168,7 @@ export function AlumnoAltaPage() {
       apellido: alumno.apellido,
       fechaNacimiento: alumno.fechaNacimiento,
       direccion: alumno.direccion,
-      responsables: responsables.map((fila): ResponsableAlta => {
-        const base = {
-          dni: Number(fila.dni),
-          nombre: fila.nombre,
-          apellido: fila.apellido,
-          vinculo: fila.vinculo,
-        }
-        // Teléfono y contraseña solo para quien todavía no es responsable.
-        return fila.estado === 'responsable'
-          ? base
-          : {
-              ...base,
-              telefono: fila.telefono,
-              contrasenaProvisoria: fila.contrasena,
-            }
-      }),
+      responsables: responsables.map(aResponsableAlta),
     })
   }
 
@@ -307,115 +256,25 @@ export function AlumnoAltaPage() {
           </p>
           <div className="space-y-4">
             {responsables.map((fila, indice) => (
-              <fieldset
+              <CamposResponsable
                 key={fila.clave}
-                className="rounded-lg border border-borde p-4"
-              >
-                <legend className="px-1 font-semibold">
-                  Responsable {indice + 1}
-                </legend>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Campo
-                    etiqueta="DNI"
-                    inputMode="numeric"
-                    pattern="[0-9]{1,10}"
-                    title="Solo números"
-                    required
-                    value={fila.dni}
-                    onChange={(e) =>
-                      cambiarDniResponsable(fila.clave, e.target.value.trim())
-                    }
-                    onBlur={(e) =>
-                      revisarDniResponsable(fila.clave, e.target.value.trim())
-                    }
-                  />
-                  <Selector
-                    etiqueta="Vínculo con el alumno"
-                    opciones={VINCULOS}
-                    value={fila.vinculo}
-                    onChange={(e) =>
-                      cambiarFila(fila.clave, {
-                        vinculo: e.target.value as Vinculo,
-                      })
-                    }
-                  />
-                  <Campo
-                    etiqueta="Nombre"
-                    required
-                    maxLength={60}
-                    readOnly={fila.estado !== 'nueva'}
-                    value={fila.nombre}
-                    onChange={(e) =>
-                      cambiarFila(fila.clave, { nombre: e.target.value })
-                    }
-                  />
-                  <Campo
-                    etiqueta="Apellido"
-                    required
-                    maxLength={60}
-                    readOnly={fila.estado !== 'nueva'}
-                    value={fila.apellido}
-                    onChange={(e) =>
-                      cambiarFila(fila.clave, { apellido: e.target.value })
-                    }
-                  />
-                  {fila.estado !== 'responsable' && (
-                    <>
-                      <Campo
-                        etiqueta="Teléfono"
-                        type="tel"
-                        required
-                        maxLength={20}
-                        value={fila.telefono}
-                        onChange={(e) =>
-                          cambiarFila(fila.clave, { telefono: e.target.value })
-                        }
-                      />
-                      <Campo
-                        etiqueta="Contraseña provisoria"
-                        type="password"
-                        autoComplete="new-password"
-                        required
-                        minLength={8}
-                        maxLength={72}
-                        value={fila.contrasena}
-                        onChange={(e) =>
-                          cambiarFila(fila.clave, {
-                            contrasena: e.target.value,
-                          })
-                        }
-                      />
-                    </>
-                  )}
-                </div>
-                <p className="mt-3 text-sm text-texto-suave">
-                  {fila.estado === 'responsable'
-                    ? 'Ya es responsable de otro alumno: se asocia sin cambiar sus datos ni su contraseña.'
-                    : 'La contraseña es provisoria: el responsable la cambia en su primer ingreso al portal.'}
-                </p>
-                {responsables.length > 1 && (
-                  <Boton
-                    variante="secundario"
-                    className="mt-3"
-                    onClick={() =>
-                      setResponsables((filas) =>
-                        filas.filter((f) => f.clave !== fila.clave),
-                      )
-                    }
-                  >
-                    Quitar responsable
-                  </Boton>
-                )}
-              </fieldset>
+                numero={indice + 1}
+                fila={fila}
+                onCambiar={(cambios) => cambiarFila(fila.clave, cambios)}
+                onCambiarDni={(dni) => cambiarDniResponsable(fila.clave, dni)}
+                onRevisarDni={(dni) => revisarDniResponsable(fila.clave, dni)}
+                onQuitar={
+                  responsables.length > 1
+                    ? () => quitarResponsable(fila.clave)
+                    : undefined
+                }
+              />
             ))}
           </div>
           <Boton
             variante="secundario"
             className="mt-4"
-            onClick={() => {
-              const clave = siguienteClave.current++
-              setResponsables((filas) => [...filas, filaVacia(clave)])
-            }}
+            onClick={agregarResponsable}
           >
             Agregar otro responsable
           </Boton>

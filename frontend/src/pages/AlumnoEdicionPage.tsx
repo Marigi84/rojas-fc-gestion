@@ -8,6 +8,7 @@ import { Tarjeta } from '../components/ui/Tarjeta'
 import { rutaAlumno } from '../routes/paths'
 import {
   alumnosApi,
+  CLAVE_LISTADOS_ALUMNOS,
   claveAlumno,
   type AlumnoDetalle,
   type ModificacionAlumno,
@@ -54,6 +55,7 @@ function FormularioEdicion({ alumno }: { alumno: AlumnoDetalle }) {
       alumnosApi.modificar(alumno.dni, cambios),
     onSuccess: (detalle) => {
       cliente.setQueryData(claveAlumno(alumno.dni), detalle)
+      cliente.invalidateQueries({ queryKey: CLAVE_LISTADOS_ALUMNOS })
       navegar(rutaAlumno(alumno.dni))
     },
   })
