@@ -59,4 +59,13 @@ public class Responsable implements UsuarioConContrasena {
     this.contrasenaHash = nuevoHash;
     this.contrasenaTemporal = false;
   }
+
+  /**
+   * El Administrador le asigna una contrasena provisoria nueva (RF-15). El
+   * responsable la tiene que cambiar en su proximo ingreso (RNF-01).
+   */
+  public void restablecerContrasena(String nuevoHash) {
+    this.contrasenaHash = nuevoHash;
+    this.contrasenaTemporal = true;
+  }
 }

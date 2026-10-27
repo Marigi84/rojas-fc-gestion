@@ -97,6 +97,19 @@ Reglas de acceso (`security/SecurityConfig.java`):
 DELETE FROM administrador WHERE dni = <dni>;
 ```
 
+**Otros administradores y contraseñas de responsables.** Solo para el Administrador:
+
+| Método y ruta | Uso |
+|---|---|
+| `GET /api/administradores` | Administradores registrados, ordenados por apellido. |
+| `POST /api/administradores` | Registra otro administrador con `{ "dni", "nombre", "apellido", "email", "contrasenaProvisoria" }` (RF-51). Responde 201. |
+| `PUT /api/responsables/{dni}/contrasena` | Asigna al responsable una contraseña provisoria nueva con `{ "contrasenaProvisoria" }` (RF-15). Responde 204. |
+
+- Como en el alta de responsables, la contraseña del nuevo administrador la asigna quien lo registra y es provisoria: la cambia en su primer ingreso (RNF-01). El correo sirve para recuperarla (RF-50).
+- Si el DNI ya es una persona del sistema (por ejemplo, un responsable), se reutilizan su nombre y apellido (RN-01): `nombre` y `apellido` se piden solo para personas nuevas.
+- Responde 409 con `error: "Administrador ya registrado"` si el DNI ya es administrador, o `"Correo en uso"` si el correo es de otro administrador.
+- Al restablecer la contraseña de un responsable, queda provisoria y la tiene que cambiar en su próximo ingreso. Si ese responsable tenía una sesión abierta en otro dispositivo, sigue valiendo hasta que vence su token.
+
 ## Alumnos
 
 Gestión de alumnos (Módulo 2). Todas las rutas son solo para el Administrador.
