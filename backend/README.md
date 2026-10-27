@@ -39,6 +39,7 @@ La conexión a MySQL se toma de variables de entorno, nunca de código:
 | `JWT_DURACION_MINUTOS` | `480` | Duración de la sesión |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origen permitido para el frontend |
 | `SERVER_PORT` | `8080` | Puerto del backend |
+| `ZONA_HORARIA` | `America/Argentina/Cordoba` | Zona horaria con la que se fechan altas y bajas |
 
 Ejemplo en PowerShell antes de levantar el backend:
 
@@ -94,6 +95,64 @@ Reglas de acceso (`security/SecurityConfig.java`):
 
 ```sql
 DELETE FROM administrador WHERE dni = <dni>;
+```
+
+## Alumnos
+
+Gestión de alumnos (Módulo 2). Todas las rutas son solo para el Administrador.
+
+| Método y ruta | Uso |
+|---|---|
+| `POST /api/alumnos` | Alta de un alumno con al menos un responsable, en una sola operación (RF-01, RN-05). Responde 201 con el detalle. |
+| `GET /api/alumnos/{dni}` | Datos, categoría, estado, morosidad, historial de permanencias y responsables (RF-02, RF-16). |
+| `PUT /api/alumnos/{dni}` | Modificación de nombre, apellido, fecha de nacimiento y dirección (RF-03). |
+| `POST /api/alumnos/{dni}/baja` | Baja lógica: cierra la permanencia vigente con la fecha de hoy (RF-04). |
+| `POST /api/alumnos/{dni}/reactivacion` | Abre una nueva permanencia y conserva las anteriores (RF-05). Si la baja fue hoy, la deshace. |
+| `GET /api/personas/{dni}` | Persona ya registrada y sus roles, para reutilizar sus datos en los formularios (RN-01). |
+
+Ejemplo de alta:
+
+```json
+{
+  "dni": 45111222,
+  "nombre": "Mateo",
+  "apellido": "Gómez",
+  "fechaNacimiento": "2015-03-10",
+  "direccion": "San Martín 123",
+  "responsables": [
+    {
+      "dni": 30111222,
+      "nombre": "Laura",
+      "apellido": "Gómez",
+      "telefono": "3511234567",
+      "vinculo": "MADRE",
+      "contrasenaProvisoria": "provisoria123"
+    }
+  ]
+}
+```
+
+- `vinculo` admite `MADRE`, `PADRE`, `TUTOR` u `OTRO`.
+- Si el DNI de una persona ya está registrado, se reutilizan su nombre y apellido (RN-01): `nombre` y `apellido` se piden solo para personas nuevas. Si un responsable ya existe, alcanza con su `dni` y el `vinculo`: `telefono` y `contrasenaProvisoria` se piden únicamente para quien todavía no es responsable. La contraseña la asigna el Administrador y es provisoria (RF-11, RNF-01).
+- **Reactivar el mismo día de la baja** la deshace (se toma como una baja por error) y el alumno vuelve a quedar activo en la misma permanencia, porque la clave de `permanencia` no admite dos altas el mismo día. En ese caso no queda registro de la baja anulada. Antes se controla RN-03, que el trigger de la base no cubre en esta reapertura.
+- Si el DNI ya es un alumno, no se crea otro: responde 409 con `error: "Alumno ya registrado"` si está activo, o `"Alumno inactivo"` si está dado de baja, para ofrecer la reactivación.
+- Cuando un trigger de la base rechaza la operación (por ejemplo, RN-03: un alumno activo no puede ser responsable), responde 409 con `error: "Regla de negocio"` y el mensaje del trigger.
+
+## Tests
+
+```bash
+mvn test
+```
+
+Corre los tests unitarios, que no necesitan base de datos.
+
+Las reglas que controla la base (triggers de RN-03, que un alta fallida no deje nada a medias) se prueban con tests de integración contra MySQL. Se activan con `TESTS_MYSQL=true` y usan las mismas variables `DB_*`. Crean desde `database/schema.sql` una base aparte, `rojasfc_test`, que se borra y se vuelve a crear en cada corrida, así que no tocan la base de desarrollo:
+
+```powershell
+$env:TESTS_MYSQL = "true"
+$env:DB_USERNAME = "root"
+$env:DB_PASSWORD = "tu_password"
+mvn test
 ```
 
 ## Empaquetar

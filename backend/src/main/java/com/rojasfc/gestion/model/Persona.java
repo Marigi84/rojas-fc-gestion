@@ -42,4 +42,9 @@ public class Persona {
   public String getApellido() {
     return apellido;
   }
+
+  public void modificarNombre(String nombre, String apellido) {
+    this.nombre = nombre;
+    this.apellido = apellido;
+  }
 }

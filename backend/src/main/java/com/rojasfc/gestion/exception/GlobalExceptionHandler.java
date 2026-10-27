@@ -1,11 +1,15 @@
 package com.rojasfc.gestion.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,6 +27,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+  /** SQLSTATE con el que los triggers de database/schema.sql rechazan una operacion. */
+  private static final String REGLA_DE_NEGOCIO = "45000";
 
   @Override
   protected ResponseEntity<Object> handleExceptionInternal(
@@ -50,6 +57,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         request.getRequestURI());
   }
 
+  @ExceptionHandler(ConflictoException.class)
+  public ResponseEntity<ApiError> handleConflicto(
+      ConflictoException ex, HttpServletRequest request) {
+    return build(HttpStatus.CONFLICT, ex.getTitulo(), ex.getMessage(), request.getRequestURI());
+  }
+
+  @ExceptionHandler(RecursoNoEncontradoException.class)
+  public ResponseEntity<ApiError> handleNoEncontrado(
+      RecursoNoEncontradoException ex, HttpServletRequest request) {
+    return build(HttpStatus.NOT_FOUND, "No encontrado", ex.getMessage(), request.getRequestURI());
+  }
+
+  /**
+   * Rechazos de la base. Los triggers de las reglas de negocio usan
+   * SQLSTATE 45000: se responde 409 con su mensaje, que ya esta escrito para
+   * el usuario. Una clave o UNIQUE repetida tambien es un 409.
+   */
+  @ExceptionHandler({DataAccessException.class, TransactionSystemException.class})
+  public ResponseEntity<ApiError> handleBaseDeDatos(Exception ex, HttpServletRequest request) {
+    SQLException sql = causaSql(ex);
+    if (sql != null && REGLA_DE_NEGOCIO.equals(sql.getSQLState())) {
+      return build(HttpStatus.CONFLICT, "Regla de negocio", sql.getMessage(),
+          request.getRequestURI());
+    }
+    if (ex instanceof DataIntegrityViolationException) {
+      return build(HttpStatus.CONFLICT, "Conflicto",
+          "La operación entra en conflicto con datos ya registrados.", request.getRequestURI());
+    }
+    return handleGeneric(ex, request);
+  }
+
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ApiError> handleIllegalArgument(
       IllegalArgumentException ex, HttpServletRequest request) {
@@ -60,6 +98,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest request) {
     return build(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno",
         "Ocurrio un error inesperado al procesar la solicitud", request.getRequestURI());
+  }
+
+  private static SQLException causaSql(Throwable ex) {
+    for (Throwable causa = ex; causa != null; causa = causa.getCause()) {
+      if (causa instanceof SQLException sql) {
+        return sql;
+      }
+    }
+    return null;
   }
 
   private String validationMessage(MethodArgumentNotValidException ex) {
