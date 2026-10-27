@@ -54,7 +54,9 @@ Los casos se ejecutan en orden y sobre la misma base, porque unos preparan los d
 
 Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI 20111222) y un alumno con dos responsables: Pedro (DNI 30555666), que ya había cambiado su contraseña, y Laura (DNI 30222333).
 
-**Última ejecución:** 27/10/2026, 19 de 19 casos correctos. Las pruebas unitarias del backend suman 6 casos nuevos (`AdministradorServiceTest` y `ResponsableServiceTest`).
+Igual que en la primera parte, los casos se ejecutan en orden y sobre la misma base: por ejemplo, Ana, registrada en el caso 3, es la que ingresa en el caso 14.
+
+**Última ejecución:** 27/10/2026 17:23, rama `modulo1/administradores-y-contrasenas`, commit `0813f6c`: 19 de 19 casos correctos. Las pruebas unitarias del backend suman 6 casos nuevos (`AdministradorServiceTest` y `ResponsableServiceTest`).
 
 | # | Caso | Pasos | Resultado esperado | Resultado |
 | - | ---- | ----- | ------------------ | --------- |
@@ -76,7 +78,7 @@ Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI
 | 16 | Responsable y Administradora | Laura ingresa con la contraseña de administradora | Ingresa como Administradora y le pide cambiar la provisoria | OK |
 | 17 | Quien no es responsable | `PUT /api/responsables/99999999/contrasena` como Administrador | Responde 404 | OK |
 | 18 | Celular | Abrir "Administradores" y el detalle del alumno con 390 px | No hay desplazamiento horizontal | OK |
-| 19 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores de JavaScript | OK |
+| 19 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores inesperados de JavaScript (los rechazos de los casos 9, 13 y 17 son esperados) | OK |
 
 ---
 
