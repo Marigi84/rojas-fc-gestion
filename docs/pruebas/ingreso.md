@@ -88,7 +88,7 @@ Para no depender de una cuenta real, el backend envió los correos a un servidor
 
 Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI 20111222, correo marina@rojasfc.com), un alumno con su responsable Pedro y otra administradora, Ana (DNI 28111222, correo ana@rojasfc.com), con contraseña provisoria. Los casos se ejecutan en orden y sobre la misma base: por ejemplo, el enlace que llega en el caso 4 es el que se vuelve a usar en los casos 12 y 13.
 
-**Última ejecución:** 27/10/2026 20:04, rama `modulo1/recuperar-contrasena`, commit `eccc530`: 20 de 20 casos correctos. Las pruebas unitarias del backend suman 9 casos nuevos (`TokenRecuperacionTest` y `RecuperacionContrasenaServiceTest`), entre ellos el enlace vencido, que no se puede esperar en el recorrido.
+**Última ejecución:** 27/10/2026 20:17, rama `modulo1/recuperar-contrasena`, commit `b0f32e3`: 20 de 20 casos correctos. Las pruebas unitarias del backend suman 9 casos nuevos (`TokenRecuperacionTest` y `RecuperacionContrasenaServiceTest`), entre ellos el enlace vencido, que no se puede esperar en el recorrido.
 
 | # | Caso | Pasos | Resultado esperado | Resultado |
 | - | ---- | ----- | ------------------ | --------- |
@@ -112,6 +112,8 @@ Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI
 | 18 | Correo con formato inválido | Llamar a `POST /api/auth/recuperacion` con "no-es-correo" | El backend responde 400 | OK |
 | 19 | Celular | Abrir las dos pantallas con 390 px | No hay desplazamiento horizontal | OK |
 | 20 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores inesperados de JavaScript (los rechazos de los casos 10, 12 y 13 son esperados) | OK |
+
+Además se apagó el servidor de correo de prueba y se volvió a pedir el enlace: el backend respondió igual (204, sin demora) y dejó en su consola el error "No se pudo enviar el correo de recuperacion".
 
 ---
 
