@@ -1,10 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
 import { Tabla } from '../components/ui/Tabla'
 import { Tarjeta } from '../components/ui/Tarjeta'
-import { PATHS, rutaEditarAlumno } from '../routes/paths'
+import {
+  PATHS,
+  rutaEditarAlumno,
+  rutaNuevoResponsable,
+  rutaResponsable,
+} from '../routes/paths'
 import {
   alumnosApi,
   CLAVE_LISTADOS_ALUMNOS,
@@ -12,6 +17,7 @@ import {
   etiquetaVinculo,
   type AlumnoDetalle,
 } from '../services/alumnos'
+import { claveResponsable, responsablesApi } from '../services/responsables'
 import { mensajeError } from '../utils/errores'
 import { formatearFecha } from '../utils/fechas'
 
@@ -40,6 +46,19 @@ export function AlumnoDetallePage() {
   const reactivacion = useMutation({
     mutationFn: () => alumnosApi.reactivar(dni),
     onSuccess: actualizar,
+  })
+  const desvinculacion = useMutation({
+    mutationFn: ({
+      dniResponsable,
+      dniAlumno,
+    }: {
+      dniResponsable: number
+      dniAlumno: number
+    }) => responsablesApi.desvincular(dniResponsable, dniAlumno),
+    onSuccess: (_, { dniResponsable, dniAlumno }) => {
+      cliente.invalidateQueries({ queryKey: claveAlumno(dniAlumno) })
+      cliente.invalidateQueries({ queryKey: claveResponsable(dniResponsable) })
+    },
   })
 
   if (!dniValido) {
@@ -152,12 +171,58 @@ export function AlumnoDetallePage() {
       </Tarjeta>
 
       <Tarjeta titulo="Responsables">
+        <div className="mb-3 flex justify-end">
+          <Boton
+            variante="secundario"
+            onClick={() => navegar(rutaNuevoResponsable(alumno.dni))}
+          >
+            Agregar responsable
+          </Boton>
+        </div>
+        {desvinculacion.isError && (
+          <div className="mb-3">
+            <Aviso tipo="error">{mensajeError(desvinculacion.error)}</Aviso>
+          </div>
+        )}
         <Tabla
           columnas={[
-            { titulo: 'Nombre', valor: (r) => `${r.apellido}, ${r.nombre}` },
+            {
+              titulo: 'Nombre',
+              valor: (r) => (
+                <Link
+                  to={rutaResponsable(r.dni)}
+                  className="font-semibold underline"
+                >
+                  {r.apellido}, {r.nombre}
+                </Link>
+              ),
+            },
             { titulo: 'DNI', valor: (r) => r.dni, numerica: true },
             { titulo: 'Vínculo', valor: (r) => etiquetaVinculo(r.vinculo) },
             { titulo: 'Teléfono', valor: (r) => r.telefono },
+            {
+              titulo: 'Acciones',
+              valor: (r) => (
+                <Boton
+                  variante="peligro"
+                  disabled={desvinculacion.isPending}
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `¿Desvincular a ${r.nombre} ${r.apellido} del alumno?`,
+                      )
+                    ) {
+                      desvinculacion.mutate({
+                        dniResponsable: r.dni,
+                        dniAlumno: alumno.dni,
+                      })
+                    }
+                  }}
+                >
+                  Desvincular
+                </Boton>
+              ),
+            },
           ]}
           filas={alumno.responsables}
           claveFila={(r) => r.dni}

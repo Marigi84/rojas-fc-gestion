@@ -4,6 +4,7 @@ import {
   AlumnoAltaPage,
   AlumnoDetallePage,
   AlumnoEdicionPage,
+  AlumnoResponsableAltaPage,
   AlumnosPage,
   CuotasPage,
   DashboardPage,
@@ -12,6 +13,10 @@ import {
   PagosPage,
   PortalResponsablePage,
   ReportesPage,
+  ResponsableAsociarPage,
+  ResponsableDetallePage,
+  ResponsableEdicionPage,
+  ResponsablesPage,
   SinConexionPage,
 } from '../pages'
 import { PATHS } from './paths'
@@ -30,8 +35,25 @@ export function AppRouter() {
           <Route index element={<DashboardPage />} />
           <Route path="alumnos" element={<AlumnosPage />} />
           <Route path="alumnos/nuevo" element={<AlumnoAltaPage />} />
+          <Route
+            path="alumnos/:dni/responsables/nuevo"
+            element={<AlumnoResponsableAltaPage />}
+          />
           <Route path="alumnos/:dni" element={<AlumnoDetallePage />} />
           <Route path="alumnos/:dni/editar" element={<AlumnoEdicionPage />} />
+          <Route path="responsables" element={<ResponsablesPage />} />
+          <Route
+            path="responsables/:dni"
+            element={<ResponsableDetallePage />}
+          />
+          <Route
+            path="responsables/:dni/editar"
+            element={<ResponsableEdicionPage />}
+          />
+          <Route
+            path="responsables/:dni/asociar"
+            element={<ResponsableAsociarPage />}
+          />
           <Route path="portal" element={<PortalResponsablePage />} />
           <Route path="cuotas" element={<CuotasPage />} />
           <Route path="pagos" element={<PagosPage />} />

@@ -108,13 +108,18 @@ La navegación base incluye las secciones de los 9 módulos del sistema
 | `/sin-conexion` | 9. Funcionamiento sin Conexión y Sincronización |
 | `/login`        | 1. Autenticación y Autorización                 |
 
-Dentro del Módulo 2 están además las pantallas de alumnos:
+Dentro del Módulo 2 están además las pantallas de alumnos y responsables:
 
-| Ruta                   | Pantalla                                |
-| ---------------------- | --------------------------------------- |
-| `/alumnos/nuevo`       | Alta de un alumno con sus responsables  |
-| `/alumnos/:dni`        | Detalle, historial, baja y reactivación |
-| `/alumnos/:dni/editar` | Modificación de los datos del alumno    |
+| Ruta                               | Pantalla                                        |
+| ---------------------------------- | ----------------------------------------------- |
+| `/alumnos/nuevo`                   | Alta de un alumno con sus responsables          |
+| `/alumnos/:dni`                    | Detalle, historial, baja y reactivación         |
+| `/alumnos/:dni/editar`             | Modificación de los datos del alumno            |
+| `/alumnos/:dni/responsables/nuevo` | Alta de un responsable para un alumno existente |
+| `/responsables`                    | Consulta de responsables por DNI                |
+| `/responsables/:dni`               | Detalle y alumnos a cargo                       |
+| `/responsables/:dni/editar`        | Modificación de los datos del responsable       |
+| `/responsables/:dni/asociar`       | Asociación con otro alumno                      |
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 
