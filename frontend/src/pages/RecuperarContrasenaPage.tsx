@@ -31,7 +31,7 @@ export function RecuperarContrasenaPage() {
           <Aviso>
             Si {email.trim()} es el correo de un administrador, te enviamos un
             enlace. Revisá tu bandeja de entrada y el correo no deseado. El
-            enlace vence en 30 minutos.
+            enlace vence en unos minutos: en el correo figura cuántos.
           </Aviso>
           <VolverAlIngreso />
         </div>
