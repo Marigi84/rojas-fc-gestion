@@ -58,7 +58,7 @@ Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI
 
 Igual que en la primera parte, los casos se ejecutan en orden y sobre la misma base: por ejemplo, Ana, registrada en el caso 3, es la que ingresa en el caso 14.
 
-**Última ejecución:** 27/10/2026 17:23, rama `modulo1/administradores-y-contrasenas`, commit `0813f6c`: 19 de 19 casos correctos. Las pruebas unitarias del backend suman 6 casos nuevos (`AdministradorServiceTest` y `ResponsableServiceTest`).
+**Última ejecución:** 29/10/2026 15:37, rama `modulo1/administradores-y-contrasenas`, commit `7ff4a07`: 19 de 19 casos correctos. Las pruebas unitarias del backend suman 6 casos nuevos (`AdministradorServiceTest` y `ResponsableServiceTest`).
 
 | # | Caso | Pasos | Resultado esperado | Resultado |
 | - | ---- | ----- | ------------------ | --------- |
