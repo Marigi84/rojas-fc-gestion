@@ -19,7 +19,9 @@ export function RutaProtegida({ roles }: PropsRutaProtegida) {
   if (!sesion) {
     // Si la sesión venció, al volver a ingresar se retoma esta pantalla. Si el
     // usuario la cerró, el próximo que ingrese entra a su inicio.
-    const estado = cerradaPorElUsuario ? null : { desde: ubicacion.pathname }
+    // Se guarda la ruta completa, con sus filtros (?...) y su ancla (#...).
+    const desde = ubicacion.pathname + ubicacion.search + ubicacion.hash
+    const estado = cerradaPorElUsuario ? null : { desde }
     return <Navigate to={PATHS.login} replace state={estado} />
   }
   if (

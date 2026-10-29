@@ -22,6 +22,8 @@ export function LoginPage() {
   const [dni, setDni] = useState('')
   const [contrasena, setContrasena] = useState('')
 
+  // Mientras se averigua si el sistema ya tiene Administrador, "Ingresar" queda
+  // desactivado: sin Administrador, este formulario lleva a la configuración inicial.
   const configuracion = useQuery({
     queryKey: CLAVE_CONFIGURACION,
     queryFn: authApi.estadoConfiguracion,
@@ -79,7 +81,11 @@ export function LoginPage() {
         {ingreso.isError && (
           <Aviso tipo="error">{mensajeError(ingreso.error)}</Aviso>
         )}
-        <Boton type="submit" className="w-full" disabled={ingreso.isPending}>
+        <Boton
+          type="submit"
+          className="w-full"
+          disabled={ingreso.isPending || configuracion.isPending}
+        >
           {ingreso.isPending ? 'Ingresando…' : 'Ingresar'}
         </Boton>
         <p className="text-center text-sm">
