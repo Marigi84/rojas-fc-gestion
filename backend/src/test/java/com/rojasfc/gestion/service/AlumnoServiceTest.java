@@ -11,12 +11,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.rojasfc.gestion.dto.AltaAlumnoRequest;
+import com.rojasfc.gestion.dto.PaginaAlumnos;
 import com.rojasfc.gestion.dto.ResponsableAltaRequest;
 import com.rojasfc.gestion.exception.ConflictoException;
 import com.rojasfc.gestion.model.Alumno;
 import com.rojasfc.gestion.model.Permanencia;
 import com.rojasfc.gestion.model.Persona;
 import com.rojasfc.gestion.model.Vinculo;
+import com.rojasfc.gestion.repository.AlumnoListadoVista;
 import com.rojasfc.gestion.repository.AlumnoRepository;
 import com.rojasfc.gestion.repository.PermanenciaRepository;
 import com.rojasfc.gestion.repository.PersonaRepository;
@@ -30,6 +32,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 /** Reglas de AlumnoService que no dependen de la base (orden de validaciones y reactivacion). */
 class AlumnoServiceTest {
@@ -125,6 +130,56 @@ class AlumnoServiceTest {
     assertTrue(nueva.getValue().isVigente());
     assertFalse(ultima.isVigente());
   }
+
+  @Test
+  void elListadoPorDefectoPideSoloActivos() {
+    AlumnoListadoVista fila = mock(AlumnoListadoVista.class);
+    when(fila.getDni()).thenReturn(DNI);
+    when(fila.getNombre()).thenReturn("Mateo");
+    when(fila.getApellido()).thenReturn("Gómez");
+    when(fila.getAnioNacimiento()).thenReturn(2015);
+    when(fila.getEstado()).thenReturn("activo");
+    when(fila.getMoroso()).thenReturn(0);
+    Page<AlumnoListadoVista> pagina = new PageImpl<>(List.of(fila),
+        PageRequest.of(0, 20), 1);
+    when(alumnos.listar(null, null, "activo", null, PageRequest.of(0, 20)))
+        .thenReturn(pagina);
+
+    PaginaAlumnos resultado = servicio.listar(null, null, null, null, 1, 20);
+
+    assertEquals(1, resultado.contenido().size());
+    assertEquals("Mateo", resultado.contenido().get(0).nombre());
+    assertEquals(2015, resultado.contenido().get(0).anioNacimiento());
+    assertFalse(resultado.contenido().get(0).moroso());
+    assertEquals(1, resultado.totalPaginas());
+  }
+
+  @Test
+  void elEstadoTodosQuitaElFiltroDeEstado() {
+    when(alumnos.listar(null, null, null, null, PageRequest.of(0, 20)))
+        .thenReturn(Page.empty(PageRequest.of(0, 20)));
+
+    servicio.listar(null, null, "todos", null, 1, 20);
+
+    verify(alumnos).listar(null, null, null, null, PageRequest.of(0, 20));
+  }
+
+  @Test
+  void elListadoLimpiaLaBusquedaYTraduceMoroso() {
+    when(alumnos.listar("mateo", 2015, "inactivo", 1, PageRequest.of(0, 10)))
+        .thenReturn(Page.empty(PageRequest.of(0, 10)));
+
+    servicio.listar(" mateo ", 2015, "inactivo", true, 1, 10);
+
+    verify(alumnos).listar("mateo", 2015, "inactivo", 1, PageRequest.of(0, 10));
+  }
+
+  @Test
+  void unEstadoQueNoExisteFalla() {
+    assertThrows(IllegalArgumentException.class,
+        () -> servicio.listar(null, null, "otro", null, 1, 20));
+  }
+
 
   private AltaAlumnoRequest alta(String nombre, List<ResponsableAltaRequest> responsables) {
     return new AltaAlumnoRequest(DNI, nombre, "Gómez", LocalDate.of(2015, 3, 10),
