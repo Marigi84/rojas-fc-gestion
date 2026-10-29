@@ -16,7 +16,7 @@ Los casos se recorrieron en Chromium, en escritorio (1280 px) y en celular (390 
 
 Los casos se ejecutan en orden y sobre la misma base, porque unos preparan los datos de los siguientes: por ejemplo, el responsable que se da de alta en el caso 9 es el que se usa desde el caso 10.
 
-**Última ejecución:** 27/10/2026 17:22, rama `frontend/pantallas-ingreso`, commit `9887ca2`: 23 de 23 casos correctos.
+**Última ejecución:** 29/10/2026 15:36, rama `frontend/pantallas-ingreso`, commit `015f574`: 25 de 25 casos correctos. El caso 24 se ejecuta antes del caso 1, con la base todavía vacía.
 
 ---
 
@@ -47,6 +47,8 @@ Los casos se ejecutan en orden y sobre la misma base, porque unos preparan los d
 | 21 | Token inválido al cambiar la contraseña | Alterar el token guardado e intentar cambiar la contraseña | El backend responde 401, se cierra la sesión y lleva al ingreso | OK |
 | 22 | Ingreso después del rechazo | Volver a ingresar | Retoma el cambio de contraseña, que era la pantalla abierta | OK |
 | 23 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores inesperados de JavaScript (los 401 de los casos 18 y 21 se provocan a propósito) | OK |
+| 24 | Ingreso mientras se consulta la configuración | Con la base vacía, demorar 2,5 s la respuesta de `/api/configuracion-inicial` y abrir `/login` | "Ingresar" está desactivado hasta que llega la respuesta, y después lleva a la configuración inicial | OK |
+| 25 | Volver a la ruta completa | Sin sesión, entrar a `/alumnos?buscar=lopez#resultados` e ingresar | Después del ingreso abre `/alumnos?buscar=lopez#resultados` | OK |
 
 ---
 
