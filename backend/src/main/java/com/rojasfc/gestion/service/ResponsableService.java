@@ -1,6 +1,8 @@
 package com.rojasfc.gestion.service;
 
 import com.rojasfc.gestion.dto.ResponsableAltaRequest;
+import com.rojasfc.gestion.dto.RestablecimientoContrasenaRequest;
+import com.rojasfc.gestion.exception.RecursoNoEncontradoException;
 import com.rojasfc.gestion.model.Persona;
 import com.rojasfc.gestion.model.Responsable;
 import com.rojasfc.gestion.model.ResponsableAlumno;
@@ -14,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Responsables (Modulo 2). Por ahora cubre lo que necesita el alta de un
- * alumno; el resto de la gestion de responsables (RF-06 a RF-10) se suma en
- * el issue #40.
+ * alumno y el restablecimiento de la contrasena (RF-15, Modulo 1); el resto de
+ * la gestion de responsables (RF-06 a RF-10) se suma en el issue #40.
  */
 @Service
 public class ResponsableService {
@@ -59,6 +61,18 @@ public class ResponsableService {
           passwordEncoder.encode(pedido.contrasenaProvisoria()), true));
     }
     vinculos.saveAndFlush(new ResponsableAlumno(dni, dniAlumno, pedido.vinculo()));
+  }
+
+  /**
+   * El Administrador le asigna al responsable una contrasena provisoria nueva,
+   * por ejemplo si se olvido la suya (RF-15). En su proximo ingreso la tiene
+   * que cambiar (RNF-01).
+   */
+  @Transactional
+  public void restablecerContrasena(Long dni, RestablecimientoContrasenaRequest pedido) {
+    Responsable responsable = responsables.findById(dni).orElseThrow(() ->
+        new RecursoNoEncontradoException("No hay ningún responsable con el DNI " + dni + "."));
+    responsable.restablecerContrasena(passwordEncoder.encode(pedido.contrasenaProvisoria()));
   }
 
   private void validarResponsableNuevo(ResponsableAltaRequest pedido) {

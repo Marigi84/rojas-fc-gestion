@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { RestablecerContrasena } from '../components/responsables/RestablecerContrasena'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
 import { Tabla } from '../components/ui/Tabla'
@@ -41,6 +43,8 @@ export function AlumnoDetallePage() {
     mutationFn: () => alumnosApi.reactivar(dni),
     onSuccess: actualizar,
   })
+  // Responsable al que se le está restableciendo la contraseña (RF-15).
+  const [restableciendo, setRestableciendo] = useState<number | null>(null)
 
   if (!dniValido) {
     return <Aviso tipo="error">El DNI de la dirección no es válido.</Aviso>
@@ -63,6 +67,7 @@ export function AlumnoDetallePage() {
   const activo = alumno.estado === 'activo'
   const nombreCompleto = `${alumno.nombre} ${alumno.apellido}`
   const enCurso = baja.isPending || reactivacion.isPending
+  const aRestablecer = alumno.responsables.find((r) => r.dni === restableciendo)
 
   // Confirmación antes de cambiar el estado del alumno (RNF-13).
   function darDeBaja() {
@@ -158,11 +163,34 @@ export function AlumnoDetallePage() {
             { titulo: 'DNI', valor: (r) => r.dni, numerica: true },
             { titulo: 'Vínculo', valor: (r) => etiquetaVinculo(r.vinculo) },
             { titulo: 'Teléfono', valor: (r) => r.telefono },
+            {
+              titulo: 'Acceso al portal',
+              valor: (r) => (
+                <Boton
+                  variante="secundario"
+                  className="text-sm whitespace-nowrap"
+                  aria-label={`Restablecer contraseña de ${r.nombre} ${r.apellido}`}
+                  onClick={() => setRestableciendo(r.dni)}
+                >
+                  Restablecer contraseña
+                </Boton>
+              ),
+            },
           ]}
           filas={alumno.responsables}
           claveFila={(r) => r.dni}
           vacia="El alumno no tiene responsables asociados."
         />
+        {aRestablecer && (
+          <div className="mt-4 rounded-lg border border-borde p-4">
+            <RestablecerContrasena
+              key={aRestablecer.dni}
+              dni={aRestablecer.dni}
+              nombre={`${aRestablecer.nombre} ${aRestablecer.apellido}`}
+              onCerrar={() => setRestableciendo(null)}
+            />
+          </div>
+        )}
       </Tarjeta>
 
       <Tarjeta titulo="Historial en la escuela">

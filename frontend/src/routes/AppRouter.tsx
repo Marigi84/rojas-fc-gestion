@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/layout/Layout'
 import {
+  AdministradoresPage,
   AlumnoAltaPage,
   AlumnoDetallePage,
   AlumnoEdicionPage,
@@ -55,6 +56,7 @@ export function AppRouter() {
               <Route path="eventos" element={<EventosPage />} />
               <Route path="reportes" element={<ReportesPage />} />
               <Route path="sin-conexion" element={<SinConexionPage />} />
+              <Route path="administradores" element={<AdministradoresPage />} />
             </Route>
           </Route>
         </Route>

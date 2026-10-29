@@ -114,14 +114,15 @@ Del Módulo 1 están además estas pantallas:
 | ------------------------ | ------------------------------------------------------ |
 | `/configuracion-inicial` | Alta del primer Administrador (solo si todavía no hay) |
 | `/cambiar-contrasena`    | Cambio de contraseña (obligatorio con la provisoria)   |
+| `/administradores`       | Administradores del sistema y alta de otro (RF-51)     |
 
 Dentro del Módulo 2 están además las pantallas de alumnos:
 
-| Ruta                   | Pantalla                                |
-| ---------------------- | --------------------------------------- |
-| `/alumnos/nuevo`       | Alta de un alumno con sus responsables  |
-| `/alumnos/:dni`        | Detalle, historial, baja y reactivación |
-| `/alumnos/:dni/editar` | Modificación de los datos del alumno    |
+| Ruta                   | Pantalla                                                                                         |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `/alumnos/nuevo`       | Alta de un alumno con sus responsables                                                           |
+| `/alumnos/:dni`        | Detalle, historial, baja y reactivación, y restablecer la contraseña de sus responsables (RF-15) |
+| `/alumnos/:dni/editar` | Modificación de los datos del alumno                                                             |
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 

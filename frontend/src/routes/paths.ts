@@ -15,6 +15,7 @@ export const PATHS = {
   eventos: '/eventos',
   reportes: '/reportes',
   sinConexion: '/sin-conexion',
+  administradores: '/administradores',
 } as const
 
 // Rutas con parámetros del Módulo 2.
@@ -46,6 +47,12 @@ export const MODULOS = [
   {
     ruta: PATHS.sinConexion,
     etiqueta: 'Sin Conexión',
+    roles: SOLO_ADMINISTRADOR,
+  },
+  // Parte del Módulo 1 (RF-51): va al final para no mezclarse con los módulos.
+  {
+    ruta: PATHS.administradores,
+    etiqueta: 'Administradores',
     roles: SOLO_ADMINISTRADOR,
   },
 ]
