@@ -42,6 +42,8 @@ export const responsablesApi = {
     api.post<ResponsableDetalle>(`/responsables/${dni}/alumnos`, datos),
   desvincular: (dni: number, dniAlumno: number) =>
     api.delete<void>(`/responsables/${dni}/alumnos/${dniAlumno}`),
+  restablecerContrasena: (dni: number, contrasenaProvisoria: string) =>
+    api.put<void>(`/responsables/${dni}/contrasena`, { contrasenaProvisoria }),
   // El backend acepta una lista para poder cargar mas de un responsable en la
   // misma operacion; la pantalla de este issue carga uno por vez.
   agregarAAlumno: (dniAlumno: number, responsables: ResponsableAlta[]) =>

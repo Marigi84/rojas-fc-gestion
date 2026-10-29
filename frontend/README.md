@@ -108,20 +108,48 @@ La navegación base incluye las secciones de los 9 módulos del sistema
 | `/sin-conexion` | 9. Funcionamiento sin Conexión y Sincronización |
 | `/login`        | 1. Autenticación y Autorización                 |
 
+Del Módulo 1 están además estas pantallas:
+
+| Ruta                     | Pantalla                                               |
+| ------------------------ | ------------------------------------------------------ |
+| `/configuracion-inicial` | Alta del primer Administrador (solo si todavía no hay) |
+| `/cambiar-contrasena`    | Cambio de contraseña (obligatorio con la provisoria)   |
+| `/administradores`       | Administradores del sistema y alta de otro (RF-51)     |
+
 Dentro del Módulo 2 están además las pantallas de alumnos y responsables:
 
-| Ruta                               | Pantalla                                        |
-| ---------------------------------- | ----------------------------------------------- |
-| `/alumnos/nuevo`                   | Alta de un alumno con sus responsables          |
-| `/alumnos/:dni`                    | Detalle, historial, baja y reactivación         |
-| `/alumnos/:dni/editar`             | Modificación de los datos del alumno            |
-| `/alumnos/:dni/responsables/nuevo` | Alta de un responsable para un alumno existente |
-| `/responsables`                    | Consulta de responsables por DNI                |
-| `/responsables/:dni`               | Detalle y alumnos a cargo                       |
-| `/responsables/:dni/editar`        | Modificación de los datos del responsable       |
-| `/responsables/:dni/asociar`       | Asociación con otro alumno                      |
+| Ruta                               | Pantalla                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `/alumnos/nuevo`                   | Alta de un alumno con sus responsables                                                           |
+| `/alumnos/:dni`                    | Detalle, historial, baja y reactivación, y restablecer la contraseña de sus responsables (RF-15) |
+| `/alumnos/:dni/editar`             | Modificación de los datos del alumno                                                             |
+| `/alumnos/:dni/responsables/nuevo` | Alta de un responsable para un alumno existente                                                  |
+| `/responsables`                    | Consulta de responsables por DNI                                                                 |
+| `/responsables/:dni`               | Detalle y alumnos a cargo                                                                        |
+| `/responsables/:dni/editar`        | Modificación de los datos del responsable                                                        |
+| `/responsables/:dni/asociar`       | Asociación con otro alumno                                                                       |
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
+
+## Sesión y rutas protegidas
+
+La sesión (token JWT, perfil y nombre del usuario) se guarda con **Zustand** en
+`src/stores/sesion.ts` y se conserva en `localStorage`, así que recargar la
+página no la cierra. `apiClient` toma el token de ahí.
+
+`src/routes/RutaProtegida.tsx` decide quién entra a cada ruta (RF-52):
+
+- **Sin sesión:** lleva a `/login`. Si el sistema todavía no tiene
+  Administrador, el ingreso lleva a `/configuracion-inicial`.
+- **Con la contraseña provisoria:** solo deja entrar a `/cambiar-contrasena`
+  (RNF-01).
+- **Responsable:** solo ve el Portal del Responsable; el resto de las rutas lo
+  lleva a `/portal`.
+- **Administrador:** entra a todas las rutas.
+
+Si el backend responde 401 (token vencido o inválido), la sesión se cierra y se
+vuelve al ingreso; al ingresar de nuevo se retoma la pantalla en la que estaba.
+Esto es una ayuda para el usuario: los permisos los valida siempre el backend.
 
 ## Servicio de comunicación con la API
 

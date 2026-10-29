@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { RestablecerContrasena } from '../components/responsables/RestablecerContrasena'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
 import { Tabla } from '../components/ui/Tabla'
@@ -22,7 +24,7 @@ import { mensajeError } from '../utils/errores'
 import { formatearFecha } from '../utils/fechas'
 
 // Datos e historial de un alumno, con su baja y reactivación (RF-02, RF-04,
-// RF-05, RF-16).
+// RF-05, RF-16), y acciones sobre sus responsables (RF-10, RF-15).
 export function AlumnoDetallePage() {
   const { dni: parametro } = useParams()
   const dni = Number(parametro)
@@ -60,6 +62,8 @@ export function AlumnoDetallePage() {
       cliente.invalidateQueries({ queryKey: claveResponsable(dniResponsable) })
     },
   })
+  // Responsable al que se le está restableciendo la contraseña (RF-15).
+  const [restableciendo, setRestableciendo] = useState<number | null>(null)
 
   if (!dniValido) {
     return <Aviso tipo="error">El DNI de la dirección no es válido.</Aviso>
@@ -82,6 +86,7 @@ export function AlumnoDetallePage() {
   const activo = alumno.estado === 'activo'
   const nombreCompleto = `${alumno.nombre} ${alumno.apellido}`
   const enCurso = baja.isPending || reactivacion.isPending
+  const aRestablecer = alumno.responsables.find((r) => r.dni === restableciendo)
 
   // Confirmación antes de cambiar el estado del alumno (RNF-13).
   function darDeBaja() {
@@ -203,24 +208,34 @@ export function AlumnoDetallePage() {
             {
               titulo: 'Acciones',
               valor: (r) => (
-                <Boton
-                  variante="peligro"
-                  disabled={desvinculacion.isPending}
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        `¿Desvincular a ${r.nombre} ${r.apellido} del alumno?`,
-                      )
-                    ) {
-                      desvinculacion.mutate({
-                        dniResponsable: r.dni,
-                        dniAlumno: alumno.dni,
-                      })
-                    }
-                  }}
-                >
-                  Desvincular
-                </Boton>
+                <div className="flex flex-wrap gap-2">
+                  <Boton
+                    variante="secundario"
+                    className="text-sm whitespace-nowrap"
+                    aria-label={`Restablecer contraseña de ${r.nombre} ${r.apellido}`}
+                    onClick={() => setRestableciendo(r.dni)}
+                  >
+                    Restablecer contraseña
+                  </Boton>
+                  <Boton
+                    variante="peligro"
+                    disabled={desvinculacion.isPending}
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `¿Desvincular a ${r.nombre} ${r.apellido} del alumno?`,
+                        )
+                      ) {
+                        desvinculacion.mutate({
+                          dniResponsable: r.dni,
+                          dniAlumno: alumno.dni,
+                        })
+                      }
+                    }}
+                  >
+                    Desvincular
+                  </Boton>
+                </div>
               ),
             },
           ]}
@@ -228,6 +243,16 @@ export function AlumnoDetallePage() {
           claveFila={(r) => r.dni}
           vacia="El alumno no tiene responsables asociados."
         />
+        {aRestablecer && (
+          <div className="mt-4 rounded-lg border border-borde p-4">
+            <RestablecerContrasena
+              key={aRestablecer.dni}
+              dni={aRestablecer.dni}
+              nombre={`${aRestablecer.nombre} ${aRestablecer.apellido}`}
+              onCerrar={() => setRestableciendo(null)}
+            />
+          </div>
+        )}
       </Tarjeta>
 
       <Tarjeta titulo="Historial en la escuela">

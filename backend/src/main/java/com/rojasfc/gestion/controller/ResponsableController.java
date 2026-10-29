@@ -3,6 +3,7 @@ package com.rojasfc.gestion.controller;
 import com.rojasfc.gestion.dto.AsociacionAlumnoRequest;
 import com.rojasfc.gestion.dto.ModificacionResponsableRequest;
 import com.rojasfc.gestion.dto.ResponsableDetalle;
+import com.rojasfc.gestion.dto.RestablecimientoContrasenaRequest;
 import com.rojasfc.gestion.service.ResponsableService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Gestion de responsables (Modulo 2). Solo Administrador (SecurityConfig). */
+/**
+ * Responsables (Modulo 2, RF-06 a RF-10) y restablecimiento de la contrasena
+ * de un responsable (RF-15). Solo Administrador (SecurityConfig).
+ */
 @RestController
 @RequestMapping("/api/responsables")
 public class ResponsableController {
@@ -48,5 +52,12 @@ public class ResponsableController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void desvincular(@PathVariable Long dni, @PathVariable Long dniAlumno) {
     responsableService.desvincular(dniAlumno, dni);
+  }
+
+  @PutMapping("/{dni}/contrasena")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void restablecerContrasena(@PathVariable Long dni,
+      @Valid @RequestBody RestablecimientoContrasenaRequest pedido) {
+    responsableService.restablecerContrasena(dni, pedido);
   }
 }

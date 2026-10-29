@@ -1,6 +1,7 @@
 package com.rojasfc.gestion.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -8,6 +9,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.rojasfc.gestion.dto.ResponsableAltaRequest;
+import com.rojasfc.gestion.dto.RestablecimientoContrasenaRequest;
+import com.rojasfc.gestion.exception.RecursoNoEncontradoException;
+import com.rojasfc.gestion.model.Responsable;
 import com.rojasfc.gestion.model.ResponsableAlumno;
 import com.rojasfc.gestion.model.Vinculo;
 import com.rojasfc.gestion.repository.AlumnoRepository;
@@ -15,11 +19,15 @@ import com.rojasfc.gestion.repository.PermanenciaRepository;
 import com.rojasfc.gestion.repository.PersonaRepository;
 import com.rojasfc.gestion.repository.ResponsableAlumnoRepository;
 import com.rojasfc.gestion.repository.ResponsableRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/** Que pide el alta para cada responsable segun ya exista o no (RN-01, RF-06). */
+/**
+ * Que pide el alta para cada responsable segun ya exista o no (RN-01, RF-06),
+ * y el restablecimiento de su contrasena (RF-15).
+ */
 class ResponsableServiceTest {
 
   private static final Long ALUMNO = 45111222L;
@@ -77,5 +85,23 @@ class ResponsableServiceTest {
         new ResponsableAltaRequest(DNI, null, null, "3511234567", Vinculo.MADRE, "provisoria123")));
 
     verify(personas, never()).saveAndFlush(any());
+  }
+
+  @Test
+  void restablecerLaContrasenaLaDejaProvisoria() {
+    Responsable responsable = new Responsable(DNI, "3511234567", "hash-viejo", false);
+    when(responsables.findById(DNI)).thenReturn(Optional.of(responsable));
+
+    servicio.restablecerContrasena(DNI, new RestablecimientoContrasenaRequest("provisoria456"));
+
+    assertTrue(responsable.isContrasenaTemporal());
+  }
+
+  @Test
+  void noSeRestableceLaContrasenaDeQuienNoEsResponsable() {
+    when(responsables.findById(DNI)).thenReturn(Optional.empty());
+
+    assertThrows(RecursoNoEncontradoException.class, () ->
+        servicio.restablecerContrasena(DNI, new RestablecimientoContrasenaRequest("provisoria456")));
   }
 }

@@ -5,6 +5,7 @@ import com.rojasfc.gestion.dto.ModificacionResponsableRequest;
 import com.rojasfc.gestion.dto.ResponsableAltaRequest;
 import com.rojasfc.gestion.dto.ResponsableDetalle;
 import com.rojasfc.gestion.dto.ResponsableDetalle.AlumnoAsociado;
+import com.rojasfc.gestion.dto.RestablecimientoContrasenaRequest;
 import com.rojasfc.gestion.exception.ConflictoException;
 import com.rojasfc.gestion.exception.RecursoNoEncontradoException;
 import com.rojasfc.gestion.model.Alumno;
@@ -26,11 +27,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Responsables (Modulo 2: RF-06 a RF-10).
+ * Responsables (Modulo 2: RF-06 a RF-10) y restablecimiento de su contrasena
+ * (RF-15).
  *
  * El alta de un alumno (#39) usa {@link #asociarEnAlta} dentro de su propia
- * transaccion. El resto de las operaciones de este issue trabajan sobre un
- * alumno existente o sobre un responsable existente.
+ * transaccion. El resto de las operaciones trabajan sobre un alumno existente
+ * o sobre un responsable existente.
  */
 @Service
 public class ResponsableService {
@@ -163,6 +165,18 @@ public class ResponsableService {
       responsables.deleteById(dniResponsable);
       responsables.flush();
     }
+  }
+
+  /**
+   * El Administrador le asigna al responsable una contrasena provisoria nueva,
+   * por ejemplo si se olvido la suya (RF-15). En su proximo ingreso la tiene
+   * que cambiar (RNF-01).
+   */
+  @Transactional
+  public void restablecerContrasena(Long dni, RestablecimientoContrasenaRequest pedido) {
+    Responsable responsable = responsables.findById(dni).orElseThrow(() ->
+        new RecursoNoEncontradoException("No hay ningún responsable con el DNI " + dni + "."));
+    responsable.restablecerContrasena(passwordEncoder.encode(pedido.contrasenaProvisoria()));
   }
 
   private void validarLista(Long dniAlumno, List<ResponsableAltaRequest> pedidos) {
