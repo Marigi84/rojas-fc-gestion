@@ -10,9 +10,9 @@ Las pruebas automáticas del backend se describen en `backend/README.md`, secci�
 
 1. Base `rojasfc` con dos alumnos: 45111222 (Mateo Gómez, año 2015, activo, no moroso) y 45111223 (Sofía López, año 2016, inactiva, no morosa).
 2. Backend levantado con `mvn spring-boot:run` y frontend con `npm run dev`.
-3. La pantalla de ingreso todavía no está en esta rama, así que el token del administrador se cargó a mano en `localStorage` (`rojas_fc_token`), igual que en las pruebas del #39.
+3. Ingreso con el administrador DNI 30111222 por la pantalla de inicio de sesión.
 
-**Última ejecución:** 29/10/2026.
+**Última ejecución:** 30/10/2026.
 
 Los casos de pantalla se recorrieron con el backend y el frontend levantados en local. La paginación y los errores de validación se probaron contra la API, porque con dos alumnos no se llega a una segunda página.
 
@@ -31,12 +31,13 @@ Los casos de pantalla se recorrieron con el backend y el frontend levantados en 
 | 7 | Filtro por morosidad (RF-38) | Elegir Morosidad = Morosos con el estado en Todos | Muestra "No hay alumnos para esos filtros" y "0 alumnos" | OK |
 | 8 | Limpiar los filtros | Presionar "Limpiar" | Los campos vuelven vacíos, el estado vuelve a Activos y reaparece Mateo | OK |
 | 9 | Acceso al detalle (RF-39) | Hacer clic en el nombre del alumno | Abre `/alumnos/45111222` con sus datos, responsables e historial | OK |
-| 10 | Sin sesión | Pedir el listado a la API sin token | Responde 401 | OK |
+| 10 | Sin sesión | Entrar a `/alumnos` sin sesión | Redirige a la pantalla de ingreso | OK |
 | 11 | Paginación (RF-39) | Pedir `?estado=todos&tamano=1&pagina=2` | Devuelve a Sofía como segunda página, con total 2 y 2 páginas | OK |
 | 12 | Estado inválido | Pedir `?estado=otro` | Responde 400 con "El estado tiene que ser activo, inactivo o todos." | OK |
 | 13 | Página inválida | Pedir `?pagina=0` | Responde 400 con "La página tiene que ser mayor o igual a 1." | OK |
 | 14 | Tamaño de página inválido | Pedir `?tamano=200` | Responde 400 con "El tamaño de página debe estar entre 1 y 100." | OK |
-| 15 | Consola del navegador | Revisar la consola durante el recorrido | Sin errores de JavaScript | OK |
+| 15 | Caracteres especiales (RF-38) | Buscar `%` y después `_` con el estado en Todos | No devuelve resultados: se buscan como texto y no como comodines | OK |
+| 16 | Consola del navegador | Revisar la consola durante el recorrido | Sin errores de JavaScript | OK |
 
 ### Verificación automática
 
