@@ -32,7 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-class ResponsableService40Test {
+class ResponsableServiceGestionTest {
 
   @Mock
   private PersonaRepository personas;
