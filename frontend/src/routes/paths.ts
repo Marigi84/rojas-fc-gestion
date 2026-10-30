@@ -6,6 +6,8 @@ export const PATHS = {
   login: '/login',
   configuracionInicial: '/configuracion-inicial',
   cambiarContrasena: '/cambiar-contrasena',
+  recuperarContrasena: '/recuperar-contrasena',
+  nuevaContrasena: '/restablecer-contrasena',
   dashboard: '/',
   alumnos: '/alumnos',
   alumnoNuevo: '/alumnos/nuevo',

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { PantallaAcceso } from '../components/layout/PantallaAcceso'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
@@ -88,6 +88,14 @@ export function LoginPage() {
         >
           {ingreso.isPending ? 'Ingresando…' : 'Ingresar'}
         </Boton>
+        <p className="text-center text-sm">
+          <Link
+            to={PATHS.recuperarContrasena}
+            className="text-verde-oscuro underline hover:text-verde"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </p>
       </form>
     </PantallaAcceso>
   )

@@ -13,8 +13,10 @@ import {
   DashboardPage,
   EventosPage,
   LoginPage,
+  NuevaContrasenaPage,
   PagosPage,
   PortalResponsablePage,
+  RecuperarContrasenaPage,
   ReportesPage,
   ResponsableAsociarPage,
   ResponsableDetallePage,
@@ -28,8 +30,8 @@ import { RutaProtegida } from './RutaProtegida'
 // Mapa de navegación: una ruta por cada módulo y, debajo, las pantallas de los
 // módulos ya implementados. Los segmentos deben coincidir con los valores de
 // PATHS y las funciones de ruta de src/routes/paths.ts.
-// Protección por perfil (arquitectura, sección 4.5; RF-52): el ingreso y la
-// configuración inicial son públicos; el cambio de contraseña y el portal
+// Protección por perfil (arquitectura, sección 4.5; RF-52): el ingreso, la
+// configuración inicial y la recuperación de la contraseña son públicos; el cambio de contraseña y el portal
 // piden sesión; el resto, sesión de Administrador.
 export function AppRouter() {
   return (
@@ -40,6 +42,11 @@ export function AppRouter() {
           path={PATHS.configuracionInicial}
           element={<ConfiguracionInicialPage />}
         />
+        <Route
+          path={PATHS.recuperarContrasena}
+          element={<RecuperarContrasenaPage />}
+        />
+        <Route path={PATHS.nuevaContrasena} element={<NuevaContrasenaPage />} />
         <Route element={<RutaProtegida />}>
           <Route element={<Layout />}>
             <Route
