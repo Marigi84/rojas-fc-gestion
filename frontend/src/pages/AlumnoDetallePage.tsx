@@ -217,9 +217,21 @@ export function AlumnoDetallePage() {
                   >
                     Restablecer contraseña
                   </Boton>
+                  {/* Con un solo responsable el backend rechaza la baja (RN-05),
+                      así que se deshabilita antes de intentarlo. */}
                   <Boton
                     variante="peligro"
-                    disabled={desvinculacion.isPending}
+                    className="text-sm whitespace-nowrap"
+                    aria-label={`Desvincular a ${r.nombre} ${r.apellido} del alumno`}
+                    disabled={
+                      desvinculacion.isPending ||
+                      alumno.responsables.length <= 1
+                    }
+                    title={
+                      alumno.responsables.length <= 1
+                        ? 'El alumno debe conservar al menos un responsable'
+                        : undefined
+                    }
                     onClick={() => {
                       if (
                         window.confirm(
