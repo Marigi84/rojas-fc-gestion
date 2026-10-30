@@ -40,6 +40,13 @@ La conexión a MySQL se toma de variables de entorno, nunca de código:
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origen permitido para el frontend |
 | `SERVER_PORT` | `8080` | Puerto del backend |
 | `ZONA_HORARIA` | `America/Argentina/Cordoba` | Zona horaria con la que se fechan altas y bajas |
+| `FRONTEND_URL` | `http://localhost:5173` | Dirección del frontend, para armar el enlace del correo de recuperación |
+| `MAIL_USERNAME` | — | Cuenta que envía los correos (por ejemplo, la cuenta de Gmail del club) |
+| `MAIL_PASSWORD` | — | Contraseña de aplicación de esa cuenta (no la contraseña normal) |
+| `MAIL_HOST` | `smtp.gmail.com` | Servidor SMTP |
+| `MAIL_PORT` | `587` | Puerto SMTP |
+| `MAIL_FROM` | `MAIL_USERNAME` | Remitente, si es distinto de la cuenta |
+| `RECUPERACION_DURACION_MINUTOS` | `30` | Validez del enlace de recuperación |
 
 Ejemplo en PowerShell antes de levantar el backend:
 
@@ -50,6 +57,15 @@ $env:JWT_SECRET = "una-clave-larga-de-al-menos-32-caracteres"
 ```
 
 (En Linux/Mac, usar `export DB_USERNAME=root` en lugar de `$env:`.)
+
+**Correo con Gmail.** Para que funcione la recuperación de contraseña (RF-50), la cuenta que envía los correos necesita la verificación en 2 pasos activada y una contraseña de aplicación (en la cuenta de Google: Seguridad → Contraseñas de aplicación). Esa contraseña va en `MAIL_PASSWORD`, nunca en el código:
+
+```powershell
+$env:MAIL_USERNAME = "cuenta@gmail.com"
+$env:MAIL_PASSWORD = "la contraseña de aplicación"
+```
+
+Sin estas variables el resto del sistema funciona igual; solo falla el envío del correo, y queda registrado en la consola del backend.
 
 ## Levantar el backend
 
@@ -78,10 +94,12 @@ El ingreso usa DNI y contraseña y devuelve un JWT que el frontend envía en el 
 | `POST /api/configuracion-inicial` | público, solo sin administradores | Registra el primer administrador y devuelve su sesión iniciada. Después responde 409. |
 | `POST /api/auth/login` | público | Ingreso con `{ "dni", "contrasena" }`. Devuelve el token, el rol y si la contraseña es provisoria. |
 | `PUT /api/auth/contrasena` | autenticado | Cambio de contraseña con `{ "actual", "nueva" }` (mínimo 8 caracteres). Devuelve un token nuevo. |
+| `POST /api/auth/recuperacion` | público | Pide el enlace de recuperación con `{ "email" }` (RF-50). Responde 204 siempre. |
+| `POST /api/auth/recuperacion/nueva-contrasena` | público | Guarda la contraseña nueva con `{ "token", "nueva" }`. Responde 204, o 400 si el enlace no es válido. |
 
 Reglas de acceso (`security/SecurityConfig.java`):
 
-- `/api/health`, `/api/auth/login` y `/api/configuracion-inicial` son públicas.
+- `/api/health`, `/api/auth/login`, `/api/auth/recuperacion` (y su `/nueva-contrasena`) y `/api/configuracion-inicial` son públicas.
 - `/api/portal/**` es para el Responsable (y el Administrador).
 - Todo lo demás es solo para el Administrador.
 - Con la contraseña provisoria solo se puede cambiar la contraseña (RNF-01). El resto responde 403 hasta que se cambie.
@@ -91,11 +109,20 @@ Reglas de acceso (`security/SecurityConfig.java`):
 
 - Si algo falla al guardar, no queda nada a medias y se puede volver a intentar.
 - Si el DNI ya estaba cargado (por ejemplo, como responsable), se reutiliza esa persona con su nombre y apellido.
-- Para volver a empezar (por ejemplo, si se olvidó la contraseña antes de tener la recuperación por correo), se borra el administrador en MySQL y la configuración inicial vuelve a aparecer:
+- Para volver a empezar (por ejemplo, si se olvidó la contraseña y el correo no está configurado), se borra el administrador en MySQL y la configuración inicial vuelve a aparecer:
 
 ```sql
 DELETE FROM administrador WHERE dni = <dni>;
 ```
+
+**Recuperar la contraseña del Administrador (RF-50).** Desde el ingreso, "¿Olvidaste tu contraseña?" pide el correo. Si es de un administrador, le llega un enlace para elegir una contraseña nueva.
+
+- La respuesta es la misma si el correo no está registrado, y el correo se envía en segundo plano: así no se puede averiguar qué correos son de administradores.
+- El enlace vence a los 30 minutos (`RECUPERACION_DURACION_MINUTOS`) y sirve una sola vez: lleva una huella de la contraseña actual, que deja de coincidir cuando se cambia. Por eso no hace falta guardar nada en la base.
+- Se firma con una clave derivada de `JWT_SECRET`, distinta de la de las sesiones, así que el enlace no sirve para ingresar al sistema.
+- Si la contraseña era provisoria, la nueva queda como propia.
+- El Responsable no tiene correo registrado: si se olvida la contraseña, el Administrador se la restablece (RF-15).
+- Pendiente: limitar cuántos pedidos se pueden hacer por minuto, cuando el sistema se publique en internet.
 
 **Otros administradores y contraseñas de responsables.** Solo para el Administrador:
 
