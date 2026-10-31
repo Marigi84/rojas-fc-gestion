@@ -1,12 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { RestablecerContrasena } from '../components/responsables/RestablecerContrasena'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
 import { Tabla } from '../components/ui/Tabla'
 import { Tarjeta } from '../components/ui/Tarjeta'
-import { PATHS, rutaEditarAlumno } from '../routes/paths'
+import {
+  PATHS,
+  rutaEditarAlumno,
+  rutaNuevoResponsable,
+  rutaResponsable,
+} from '../routes/paths'
 import {
   alumnosApi,
   CLAVE_LISTADOS_ALUMNOS,
@@ -14,11 +19,12 @@ import {
   etiquetaVinculo,
   type AlumnoDetalle,
 } from '../services/alumnos'
+import { claveResponsable, responsablesApi } from '../services/responsables'
 import { mensajeError } from '../utils/errores'
 import { formatearFecha } from '../utils/fechas'
 
 // Datos e historial de un alumno, con su baja y reactivación (RF-02, RF-04,
-// RF-05, RF-16).
+// RF-05, RF-16), y acciones sobre sus responsables (RF-10, RF-15).
 export function AlumnoDetallePage() {
   const { dni: parametro } = useParams()
   const dni = Number(parametro)
@@ -42,6 +48,19 @@ export function AlumnoDetallePage() {
   const reactivacion = useMutation({
     mutationFn: () => alumnosApi.reactivar(dni),
     onSuccess: actualizar,
+  })
+  const desvinculacion = useMutation({
+    mutationFn: ({
+      dniResponsable,
+      dniAlumno,
+    }: {
+      dniResponsable: number
+      dniAlumno: number
+    }) => responsablesApi.desvincular(dniResponsable, dniAlumno),
+    onSuccess: (_, { dniResponsable, dniAlumno }) => {
+      cliente.invalidateQueries({ queryKey: claveAlumno(dniAlumno) })
+      cliente.invalidateQueries({ queryKey: claveResponsable(dniResponsable) })
+    },
   })
   // Responsable al que se le está restableciendo la contraseña (RF-15).
   const [restableciendo, setRestableciendo] = useState<number | null>(null)
@@ -157,23 +176,78 @@ export function AlumnoDetallePage() {
       </Tarjeta>
 
       <Tarjeta titulo="Responsables">
+        <div className="mb-3 flex justify-end">
+          <Boton
+            variante="secundario"
+            onClick={() => navegar(rutaNuevoResponsable(alumno.dni))}
+          >
+            Agregar responsable
+          </Boton>
+        </div>
+        {desvinculacion.isError && (
+          <div className="mb-3">
+            <Aviso tipo="error">{mensajeError(desvinculacion.error)}</Aviso>
+          </div>
+        )}
         <Tabla
           columnas={[
-            { titulo: 'Nombre', valor: (r) => `${r.apellido}, ${r.nombre}` },
+            {
+              titulo: 'Nombre',
+              valor: (r) => (
+                <Link
+                  to={rutaResponsable(r.dni)}
+                  className="font-semibold underline"
+                >
+                  {r.apellido}, {r.nombre}
+                </Link>
+              ),
+            },
             { titulo: 'DNI', valor: (r) => r.dni, numerica: true },
             { titulo: 'Vínculo', valor: (r) => etiquetaVinculo(r.vinculo) },
             { titulo: 'Teléfono', valor: (r) => r.telefono },
             {
-              titulo: 'Acceso al portal',
+              titulo: 'Acciones',
               valor: (r) => (
-                <Boton
-                  variante="secundario"
-                  className="text-sm whitespace-nowrap"
-                  aria-label={`Restablecer contraseña de ${r.nombre} ${r.apellido}`}
-                  onClick={() => setRestableciendo(r.dni)}
-                >
-                  Restablecer contraseña
-                </Boton>
+                <div className="flex flex-wrap gap-2">
+                  <Boton
+                    variante="secundario"
+                    className="text-sm whitespace-nowrap"
+                    aria-label={`Restablecer contraseña de ${r.nombre} ${r.apellido}`}
+                    onClick={() => setRestableciendo(r.dni)}
+                  >
+                    Restablecer contraseña
+                  </Boton>
+                  {/* Con un solo responsable el backend rechaza la baja (RN-05),
+                      así que se deshabilita antes de intentarlo. */}
+                  <Boton
+                    variante="peligro"
+                    className="text-sm whitespace-nowrap"
+                    aria-label={`Desvincular a ${r.nombre} ${r.apellido} del alumno`}
+                    disabled={
+                      desvinculacion.isPending ||
+                      alumno.responsables.length <= 1
+                    }
+                    title={
+                      alumno.responsables.length <= 1
+                        ? 'El alumno debe conservar al menos un responsable'
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `¿Desvincular a ${r.nombre} ${r.apellido} del alumno?`,
+                        )
+                      ) {
+                        desvinculacion.mutate({
+                          dniResponsable: r.dni,
+                          dniAlumno: alumno.dni,
+                        })
+                      }
+                    }}
+                  >
+                    Desvincular
+                  </Boton>
+                </div>
               ),
             },
           ]}

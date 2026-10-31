@@ -195,6 +195,37 @@ $env:DB_USERNAME = "root"
 $env:DB_PASSWORD = "tu_password"
 mvn test
 ```
+## Responsables
+
+Gestión de responsables (Módulo 2, RF-06 a RF-10). Todas las rutas son solo para el Administrador.
+
+| Método y ruta | Uso |
+|---|---|
+| `GET /api/responsables/{dni}` | Datos del responsable y alumnos a su cargo (RF-07). |
+| `PUT /api/responsables/{dni}` | Modificación de nombre, apellido y teléfono (RF-08). |
+| `POST /api/responsables/{dni}/alumnos` | Asociación con otro alumno (RF-09, RN-11). |
+| `DELETE /api/responsables/{dni}/alumnos/{dniAlumno}` | Desvinculación; el alumno debe conservar otro responsable (RF-10, RN-05). |
+| `POST /api/alumnos/{dni}/responsables` | Alta de uno o más responsables para un alumno existente (RF-06). |
+
+Ejemplo para agregar un responsable a un alumno existente:
+
+```json
+{
+  "responsables": [
+    {
+      "dni": 30111222,
+      "nombre": "Laura",
+      "apellido": "Gómez",
+      "telefono": "3511234567",
+      "vinculo": "MADRE",
+      "contrasenaProvisoria": "provisoria123"
+    }
+  ]
+}
+```
+
+- Si la persona ya existe, se reutilizan sus datos (RN-01); si ya es responsable, solo se asocia y no se piden teléfono ni contraseña.
+- Al desvincular al último responsable de un alumno, la base rechaza la operación con 409 (RN-05). Si el responsable se queda sin alumnos, se elimina su rol y, si no tiene otro rol, la persona (RN-02).
 
 ## Empaquetar
 

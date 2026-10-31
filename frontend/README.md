@@ -118,13 +118,18 @@ Del Módulo 1 están además estas pantallas:
 | `/recuperar-contrasena`   | Pedido del enlace de recuperación por correo (RF-50)   |
 | `/restablecer-contrasena` | Contraseña nueva desde el enlace del correo (RF-50)    |
 
-Dentro del Módulo 2 están además las pantallas de alumnos:
+Dentro del Módulo 2 están además las pantallas de alumnos y responsables:
 
-| Ruta                   | Pantalla                                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------------------ |
-| `/alumnos/nuevo`       | Alta de un alumno con sus responsables                                                           |
-| `/alumnos/:dni`        | Detalle, historial, baja y reactivación, y restablecer la contraseña de sus responsables (RF-15) |
-| `/alumnos/:dni/editar` | Modificación de los datos del alumno                                                             |
+| Ruta                               | Pantalla                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `/alumnos/nuevo`                   | Alta de un alumno con sus responsables                                                           |
+| `/alumnos/:dni`                    | Detalle, historial, baja y reactivación, y restablecer la contraseña de sus responsables (RF-15) |
+| `/alumnos/:dni/editar`             | Modificación de los datos del alumno                                                             |
+| `/alumnos/:dni/responsables/nuevo` | Alta de un responsable para un alumno existente                                                  |
+| `/responsables`                    | Consulta de responsables por DNI                                                                 |
+| `/responsables/:dni`               | Detalle y alumnos a cargo                                                                        |
+| `/responsables/:dni/editar`        | Modificación de los datos del responsable                                                        |
+| `/responsables/:dni/asociar`       | Asociación con otro alumno                                                                       |
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 

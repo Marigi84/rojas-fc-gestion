@@ -14,6 +14,8 @@ import com.rojasfc.gestion.exception.RecursoNoEncontradoException;
 import com.rojasfc.gestion.model.Responsable;
 import com.rojasfc.gestion.model.ResponsableAlumno;
 import com.rojasfc.gestion.model.Vinculo;
+import com.rojasfc.gestion.repository.AlumnoRepository;
+import com.rojasfc.gestion.repository.PermanenciaRepository;
 import com.rojasfc.gestion.repository.PersonaRepository;
 import com.rojasfc.gestion.repository.ResponsableAlumnoRepository;
 import com.rojasfc.gestion.repository.ResponsableRepository;
@@ -32,16 +34,21 @@ class ResponsableServiceTest {
   private static final Long DNI = 30111222L;
 
   private PersonaRepository personas;
+  private AlumnoRepository alumnos;
   private ResponsableRepository responsables;
   private ResponsableAlumnoRepository vinculos;
+  private PermanenciaRepository permanencias;
   private ResponsableService servicio;
 
   @BeforeEach
   void preparar() {
     personas = mock(PersonaRepository.class);
+    alumnos = mock(AlumnoRepository.class);
     responsables = mock(ResponsableRepository.class);
     vinculos = mock(ResponsableAlumnoRepository.class);
-    servicio = new ResponsableService(personas, responsables, vinculos, mock(PasswordEncoder.class));
+    permanencias = mock(PermanenciaRepository.class);
+    servicio = new ResponsableService(personas, alumnos, responsables, vinculos, permanencias,
+        mock(PasswordEncoder.class));
   }
 
   @Test

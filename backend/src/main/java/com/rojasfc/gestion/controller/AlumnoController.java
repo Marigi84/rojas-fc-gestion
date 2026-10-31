@@ -1,11 +1,13 @@
 package com.rojasfc.gestion.controller;
 
 import com.rojasfc.gestion.dto.AltaAlumnoRequest;
+import com.rojasfc.gestion.dto.AltaResponsablesRequest;
 import com.rojasfc.gestion.dto.AlumnoDetalle;
 import com.rojasfc.gestion.dto.ModificacionAlumnoRequest;
 import com.rojasfc.gestion.dto.PaginaAlumnos;
 import com.rojasfc.gestion.security.UsuarioAutenticado;
 import com.rojasfc.gestion.service.AlumnoService;
+import com.rojasfc.gestion.service.ResponsableService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlumnoController {
 
   private final AlumnoService alumnoService;
+  private final ResponsableService responsableService;
 
-  public AlumnoController(AlumnoService alumnoService) {
+  public AlumnoController(AlumnoService alumnoService, ResponsableService responsableService) {
     this.alumnoService = alumnoService;
+    this.responsableService = responsableService;
   }
 
   @PostMapping
@@ -69,5 +73,13 @@ public class AlumnoController {
   public AlumnoDetalle reactivar(@PathVariable Long dni,
       @AuthenticationPrincipal UsuarioAutenticado usuario) {
     return alumnoService.reactivar(dni, usuario.dni());
+  }
+
+  /** Agrega uno o mas responsables a un alumno existente (RF-06). */
+  @PostMapping("/{dni}/responsables")
+  public AlumnoDetalle agregarResponsables(@PathVariable Long dni,
+      @Valid @RequestBody AltaResponsablesRequest pedido) {
+    responsableService.registrarEnAlumno(dni, pedido.responsables());
+    return alumnoService.consultar(dni);
   }
 }
