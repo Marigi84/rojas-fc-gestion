@@ -11,6 +11,7 @@ export const PATHS = {
   dashboard: '/',
   alumnos: '/alumnos',
   alumnoNuevo: '/alumnos/nuevo',
+  responsables: '/responsables',
   portal: '/portal',
   cuotas: '/cuotas',
   pagos: '/pagos',
@@ -24,6 +25,13 @@ export const PATHS = {
 export const rutaAlumno = (dni: number | string) => `/alumnos/${dni}`
 export const rutaEditarAlumno = (dni: number | string) =>
   `/alumnos/${dni}/editar`
+export const rutaNuevoResponsable = (dniAlumno: number | string) =>
+  `/alumnos/${dniAlumno}/responsables/nuevo`
+export const rutaResponsable = (dni: number | string) => `/responsables/${dni}`
+export const rutaEditarResponsable = (dni: number | string) =>
+  `/responsables/${dni}/editar`
+export const rutaAsociarResponsable = (dni: number | string) =>
+  `/responsables/${dni}/asociar`
 
 const SOLO_ADMINISTRADOR: Rol[] = ['ADMINISTRADOR']
 const AMBOS_PERFILES: Rol[] = ['ADMINISTRADOR', 'RESPONSABLE']
@@ -33,6 +41,11 @@ const AMBOS_PERFILES: Rol[] = ['ADMINISTRADOR', 'RESPONSABLE']
 export const MODULOS = [
   { ruta: PATHS.dashboard, etiqueta: 'Dashboard', roles: SOLO_ADMINISTRADOR },
   { ruta: PATHS.alumnos, etiqueta: 'Alumnos', roles: SOLO_ADMINISTRADOR },
+  {
+    ruta: PATHS.responsables,
+    etiqueta: 'Responsables',
+    roles: SOLO_ADMINISTRADOR,
+  },
   {
     ruta: PATHS.portal,
     etiqueta: 'Portal del Responsable',

@@ -38,6 +38,10 @@ public class ResponsableAlumno {
     return dniResponsable;
   }
 
+  public Long getDniAlumno() {
+    return dniAlumno;
+  }
+
   public Vinculo getVinculo() {
     return vinculo;
   }
