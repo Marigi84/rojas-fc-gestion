@@ -37,11 +37,12 @@ Los casos de pantalla se recorrieron con el backend y el frontend levantados en 
 | 13 | Página inválida | Pedir `?pagina=0` | Responde 400 con "La página tiene que ser mayor o igual a 1." | OK |
 | 14 | Tamaño de página inválido | Pedir `?tamano=200` | Responde 400 con "El tamaño de página debe estar entre 1 y 100." | OK |
 | 15 | Caracteres especiales (RF-38) | Buscar `%` y después `_` con el estado en Todos | No devuelve resultados: se buscan como texto y no como comodines | OK |
-| 16 | Consola del navegador | Revisar la consola durante el recorrido | Sin errores de JavaScript | OK |
+| 16 | Búsqueda sin tilde (RF-38) | Buscar "sofia" y "gomez" con el estado en Todos | Encuentra a Sofía y a Gómez | OK |
+| 17 | Consola del navegador | Revisar la consola durante el recorrido | Sin errores de JavaScript | OK |
 
 ### Verificación automática
 
-- Backend: `mvn test` sin fallas. Incluye cuatro pruebas del listado (estado por defecto, estado "todos", búsqueda recortada con morosidad y estado inválido).
+- Backend: `mvn test` sin fallas. Incluye cinco pruebas del listado (estado por defecto, estado "todos", búsqueda recortada con morosidad, escape de comodines y estado inválido).
 - Frontend: `npm run lint`, `npm run format:check` y `npm run build` sin errores.
 
 ---
