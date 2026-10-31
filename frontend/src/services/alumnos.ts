@@ -71,6 +71,32 @@ export interface PersonaResumen {
   administrador: boolean
 }
 
+export interface FiltrosAlumnos {
+  busqueda: string
+  anioNacimiento: string
+  estado: string
+  moroso: string
+  pagina: number
+  tamano: number
+}
+
+export interface AlumnoListadoItem {
+  dni: number
+  nombre: string
+  apellido: string
+  anioNacimiento: number
+  estado: 'activo' | 'inactivo'
+  moroso: boolean
+}
+
+export interface PaginaAlumnos {
+  contenido: AlumnoListadoItem[]
+  pagina: number
+  tamano: number
+  total: number
+  totalPaginas: number
+}
+
 // Clave de TanStack Query del detalle de un alumno.
 export const claveAlumno = (dni: number) => ['alumno', dni] as const
 
@@ -78,7 +104,26 @@ export const claveAlumno = (dni: number) => ['alumno', dni] as const
 // reactivaciones y modificaciones lo invalidan para que el listado se actualice.
 export const CLAVE_LISTADOS_ALUMNOS = ['alumnos'] as const
 
+export const claveListadoAlumnos = (filtros: FiltrosAlumnos) =>
+  [...CLAVE_LISTADOS_ALUMNOS, filtros] as const
+
 export const alumnosApi = {
+  listar: (filtros: FiltrosAlumnos) => {
+    const parametros = new URLSearchParams()
+    if (filtros.busqueda.trim()) {
+      parametros.set('busqueda', filtros.busqueda.trim())
+    }
+    if (filtros.anioNacimiento.trim()) {
+      parametros.set('anioNacimiento', filtros.anioNacimiento.trim())
+    }
+    parametros.set('estado', filtros.estado)
+    if (filtros.moroso) {
+      parametros.set('moroso', filtros.moroso)
+    }
+    parametros.set('pagina', String(filtros.pagina))
+    parametros.set('tamano', String(filtros.tamano))
+    return api.get<PaginaAlumnos>(`/alumnos?${parametros.toString()}`)
+  },
   registrar: (datos: AltaAlumno) => api.post<AlumnoDetalle>('/alumnos', datos),
   consultar: (dni: number) => api.get<AlumnoDetalle>(`/alumnos/${dni}`),
   modificar: (dni: number, datos: ModificacionAlumno) =>

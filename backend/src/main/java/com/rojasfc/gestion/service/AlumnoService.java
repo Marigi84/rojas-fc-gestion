@@ -4,7 +4,9 @@ import com.rojasfc.gestion.dto.AltaAlumnoRequest;
 import com.rojasfc.gestion.dto.AlumnoDetalle;
 import com.rojasfc.gestion.dto.AlumnoDetalle.PermanenciaDetalle;
 import com.rojasfc.gestion.dto.AlumnoDetalle.ResponsableDetalle;
+import com.rojasfc.gestion.dto.AlumnoListadoItem;
 import com.rojasfc.gestion.dto.ModificacionAlumnoRequest;
+import com.rojasfc.gestion.dto.PaginaAlumnos;
 import com.rojasfc.gestion.dto.ResponsableAltaRequest;
 import com.rojasfc.gestion.exception.ConflictoException;
 import com.rojasfc.gestion.exception.RecursoNoEncontradoException;
@@ -13,6 +15,7 @@ import com.rojasfc.gestion.model.Permanencia;
 import com.rojasfc.gestion.model.Persona;
 import com.rojasfc.gestion.model.Responsable;
 import com.rojasfc.gestion.model.ResponsableAlumno;
+import com.rojasfc.gestion.repository.AlumnoListadoVista;
 import com.rojasfc.gestion.repository.AlumnoRepository;
 import com.rojasfc.gestion.repository.PermanenciaRepository;
 import com.rojasfc.gestion.repository.PersonaRepository;
@@ -23,7 +26,10 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,6 +97,58 @@ public class AlumnoService {
   @Transactional(readOnly = true)
   public AlumnoDetalle consultar(Long dni) {
     return detalle(dni);
+  }
+
+  /**
+   * Listado paginado con búsqueda y filtros combinables (RF-38, RF-39). Por
+   * defecto muestra solo los alumnos activos; estado=todos quita ese filtro.
+   */
+  @Transactional(readOnly = true)
+  public PaginaAlumnos listar(String busqueda, Integer anioNacimiento, String estado,
+      Boolean moroso, int pagina, int tamano) {
+    if (pagina < 1) {
+      throw new IllegalArgumentException("La página tiene que ser mayor o igual a 1.");
+    }
+    if (tamano < 1 || tamano > 100) {
+      throw new IllegalArgumentException("El tamaño de página debe estar entre 1 y 100.");
+    }
+    String filtroBusqueda = (busqueda == null || busqueda.isBlank()) ? null
+        : escaparComodinesLike(busqueda.trim());
+    String filtroEstado = normalizarEstado(estado);
+    Integer filtroMoroso = moroso == null ? null : (moroso ? 1 : 0);
+
+    Page<AlumnoListadoVista> resultado = alumnos.listar(filtroBusqueda, anioNacimiento,
+        filtroEstado, filtroMoroso, PageRequest.of(pagina - 1, tamano));
+    List<AlumnoListadoItem> contenido = resultado.getContent().stream()
+        .map(fila -> new AlumnoListadoItem(fila.getDni(), fila.getNombre(), fila.getApellido(),
+            fila.getAnioNacimiento(), fila.getEstado(),
+            fila.getMoroso() != null && fila.getMoroso() == 1))
+        .toList();
+    return new PaginaAlumnos(contenido, pagina, tamano, resultado.getTotalElements(),
+        resultado.getTotalPages());
+  }
+
+  private String normalizarEstado(String estado) {
+    if (estado == null || estado.isBlank()) {
+      return "activo";
+    }
+    String valor = estado.trim().toLowerCase(Locale.ROOT);
+    if ("todos".equals(valor)) {
+      return null;
+    }
+    if (!"activo".equals(valor) && !"inactivo".equals(valor)) {
+      throw new IllegalArgumentException("El estado tiene que ser activo, inactivo o todos.");
+    }
+    return valor;
+  }
+
+  /**
+   * Escapa los comodines de LIKE para que se busquen como texto. Usa '!' como
+   * caracter de escape, el mismo que declara la consulta, para no mezclar
+   * barras invertidas entre Java y MySQL.
+   */
+  private String escaparComodinesLike(String texto) {
+    return texto.replace("!", "!!").replace("%", "!%").replace("_", "!_");
   }
 
   /** Modificacion de los datos del alumno (RF-03). */

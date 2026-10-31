@@ -4,6 +4,7 @@ import com.rojasfc.gestion.dto.AltaAlumnoRequest;
 import com.rojasfc.gestion.dto.AltaResponsablesRequest;
 import com.rojasfc.gestion.dto.AlumnoDetalle;
 import com.rojasfc.gestion.dto.ModificacionAlumnoRequest;
+import com.rojasfc.gestion.dto.PaginaAlumnos;
 import com.rojasfc.gestion.security.UsuarioAutenticado;
 import com.rojasfc.gestion.service.AlumnoService;
 import com.rojasfc.gestion.service.ResponsableService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,6 +39,17 @@ public class AlumnoController {
   public AlumnoDetalle registrar(@Valid @RequestBody AltaAlumnoRequest pedido,
       @AuthenticationPrincipal UsuarioAutenticado usuario) {
     return alumnoService.registrar(pedido, usuario.dni());
+  }
+
+  @GetMapping
+  public PaginaAlumnos listar(
+      @RequestParam(required = false) String busqueda,
+      @RequestParam(required = false) Integer anioNacimiento,
+      @RequestParam(required = false) String estado,
+      @RequestParam(required = false) Boolean moroso,
+      @RequestParam(defaultValue = "1") int pagina,
+      @RequestParam(defaultValue = "20") int tamano) {
+    return alumnoService.listar(busqueda, anioNacimiento, estado, moroso, pagina, tamano);
   }
 
   @GetMapping("/{dni}")
