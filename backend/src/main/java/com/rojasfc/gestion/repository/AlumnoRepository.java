@@ -17,16 +17,17 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
    * Listado paginado de alumnos (RF-38, RF-39). Los filtros son opcionales:
    * el servicio decide el estado por defecto y traduce moroso a 1/0.
    *
-   * La busqueda usa LOCATE y no LIKE para que % y _ se busquen como texto y no
-   * como comodines.
+   * La busqueda usa LIKE con ESCAPE '!' y el servicio escapa % y _ para que se
+   * busquen como texto. LIKE, a diferencia de LOCATE, compara sin distinguir
+   * tildes con la collation de la base.
    */
   @Query(value = """
       SELECT dni, nombre, apellido, categoria AS anioNacimiento, estado, moroso
       FROM vista_alumno
       WHERE (:busqueda IS NULL
-             OR LOCATE(LOWER(:busqueda), LOWER(nombre)) > 0
-             OR LOCATE(LOWER(:busqueda), LOWER(apellido)) > 0
-             OR LOCATE(:busqueda, CAST(dni AS CHAR)) > 0)
+             OR LOWER(nombre) LIKE LOWER(CONCAT('%', :busqueda, '%')) ESCAPE '!'
+             OR LOWER(apellido) LIKE LOWER(CONCAT('%', :busqueda, '%')) ESCAPE '!'
+             OR CAST(dni AS CHAR) LIKE CONCAT('%', :busqueda, '%') ESCAPE '!')
         AND (:anioNacimiento IS NULL OR categoria = :anioNacimiento)
         AND (:estado IS NULL OR estado = :estado)
         AND (:moroso IS NULL OR moroso = :moroso)
@@ -35,9 +36,9 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
       SELECT COUNT(*)
       FROM vista_alumno
       WHERE (:busqueda IS NULL
-             OR LOCATE(LOWER(:busqueda), LOWER(nombre)) > 0
-             OR LOCATE(LOWER(:busqueda), LOWER(apellido)) > 0
-             OR LOCATE(:busqueda, CAST(dni AS CHAR)) > 0)
+             OR LOWER(nombre) LIKE LOWER(CONCAT('%', :busqueda, '%')) ESCAPE '!'
+             OR LOWER(apellido) LIKE LOWER(CONCAT('%', :busqueda, '%')) ESCAPE '!'
+             OR CAST(dni AS CHAR) LIKE CONCAT('%', :busqueda, '%') ESCAPE '!')
         AND (:anioNacimiento IS NULL OR categoria = :anioNacimiento)
         AND (:estado IS NULL OR estado = :estado)
         AND (:moroso IS NULL OR moroso = :moroso)

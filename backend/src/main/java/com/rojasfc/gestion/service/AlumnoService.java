@@ -112,7 +112,8 @@ public class AlumnoService {
     if (tamano < 1 || tamano > 100) {
       throw new IllegalArgumentException("El tamaño de página debe estar entre 1 y 100.");
     }
-    String filtroBusqueda = (busqueda == null || busqueda.isBlank()) ? null : busqueda.trim();
+    String filtroBusqueda = (busqueda == null || busqueda.isBlank()) ? null
+        : escaparComodinesLike(busqueda.trim());
     String filtroEstado = normalizarEstado(estado);
     Integer filtroMoroso = moroso == null ? null : (moroso ? 1 : 0);
 
@@ -139,6 +140,15 @@ public class AlumnoService {
       throw new IllegalArgumentException("El estado tiene que ser activo, inactivo o todos.");
     }
     return valor;
+  }
+
+  /**
+   * Escapa los comodines de LIKE para que se busquen como texto. Usa '!' como
+   * caracter de escape, el mismo que declara la consulta, para no mezclar
+   * barras invertidas entre Java y MySQL.
+   */
+  private String escaparComodinesLike(String texto) {
+    return texto.replace("!", "!!").replace("%", "!%").replace("_", "!_");
   }
 
   /** Modificacion de los datos del alumno (RF-03). */

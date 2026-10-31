@@ -175,6 +175,16 @@ class AlumnoServiceTest {
   }
 
   @Test
+  void laBusquedaEscapaLosComodinesDeLike() {
+    when(alumnos.listar("100!%!_!!", null, "activo", null, PageRequest.of(0, 20)))
+        .thenReturn(Page.empty(PageRequest.of(0, 20)));
+
+    servicio.listar("100%_!", null, null, null, 1, 20);
+
+    verify(alumnos).listar("100!%!_!!", null, "activo", null, PageRequest.of(0, 20));
+  }
+
+  @Test
   void unEstadoQueNoExisteFalla() {
     assertThrows(IllegalArgumentException.class,
         () -> servicio.listar(null, null, "otro", null, 1, 20));
