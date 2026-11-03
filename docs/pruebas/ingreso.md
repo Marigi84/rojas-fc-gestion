@@ -4,7 +4,7 @@
 
 Este documento registra las pruebas de las pantallas de ingreso (configuración inicial, inicio de sesión, cambio de contraseña y protección de rutas) hechas con el sistema completo levantado en local: backend, frontend y base MySQL creada desde `database/schema.sql`.
 
-Cubre los requisitos RF-11, RF-15, RF-49, RF-51 y RF-52, y RNF-01 y RNF-02.
+Cubre los requisitos RF-11, RF-15, RF-49, RF-50, RF-51 y RF-52, y RNF-01 y RNF-02.
 
 ### Cómo se prepararon
 
@@ -84,7 +84,42 @@ Igual que en la primera parte, los casos se ejecutan en orden y sobre la misma b
 
 ---
 
+## Recuperar la contraseña del Administrador por correo
+
+Para no depender de una cuenta real, el backend envió los correos a un servidor SMTP de prueba levantado en la misma computadora (`aiosmtpd`, de Python), que guarda cada correo recibido para revisarlo. Se configuró con `MAIL_HOST=127.0.0.1`, `MAIL_PORT=2525`, `MAIL_SMTP_AUTH=false` y `MAIL_STARTTLS=false`. Con Gmail se usan las variables de `backend/README.md`.
+
+Antes de recorrerlos se cargaron por la API el primer Administrador (Marina, DNI 20111222, correo marina@rojasfc.com), un alumno con su responsable Pedro y otra administradora, Ana (DNI 28111222, correo ana@rojasfc.com), con contraseña provisoria. Los casos se ejecutan en orden y sobre la misma base: por ejemplo, el enlace que llega en el caso 4 es el que se vuelve a usar en los casos 12 y 13.
+
+**Última ejecución:** 29/10/2026 15:38, rama `modulo1/recuperar-contrasena`, commit `81554d1`: 20 de 20 casos correctos. Las pruebas unitarias del backend suman 9 casos nuevos (`TokenRecuperacionTest` y `RecuperacionContrasenaServiceTest`), entre ellos el enlace vencido, que no se puede esperar en el recorrido.
+
+| # | Caso | Pasos | Resultado esperado | Resultado |
+| - | ---- | ----- | ------------------ | --------- |
+| 1 | Acceso desde el ingreso | En el ingreso, tocar "¿Olvidaste tu contraseña?" | Abre `/recuperar-contrasena` | OK |
+| 2 | Aclaración para el Responsable | Mirar la pantalla | Dice que el responsable le pide la contraseña al administrador (RF-15) | OK |
+| 3 | Correo no registrado | Pedir el enlace para nadie@rojasfc.com | Muestra el mismo aviso que con un correo registrado y no envía nada | OK |
+| 4 | Pedido del enlace (RF-50) | Pedir el enlace para MARINA@ROJASFC.COM | Llega un correo a marina@rojasfc.com | OK |
+| 5 | Contenido del correo | Leer el correo | Asunto "Rojas FC: recuperar tu contraseña", saludo con el nombre, enlace a `/restablecer-contrasena` y aviso de que vence en 30 minutos | OK |
+| 6 | Abrir el enlace | Entrar al enlace del correo | Pide la contraseña nueva y el token desaparece de la barra de direcciones | OK |
+| 7 | Contraseñas distintas | Repetir otra contraseña | Avisa "Las contraseñas no coinciden." | OK |
+| 8 | Contraseña nueva | Guardarla | Confirma "Ya podés ingresar con tu contraseña nueva." | OK |
+| 9 | Volver al ingreso | Tocar "Ir al ingreso" | Abre el ingreso | OK |
+| 10 | Contraseña anterior | Ingresar con la anterior | Avisa "El DNI o la contraseña no coinciden" | OK |
+| 11 | Ingreso con la nueva | Ingresar con la nueva | Abre el Dashboard | OK |
+| 12 | Enlace usado | Volver a abrir el mismo enlace y guardar otra contraseña | Avisa que el enlace no es válido, venció o ya se usó, y ofrece pedir uno nuevo | OK |
+| 13 | Enlace alterado | Cambiar el final del token y guardar | Avisa que el enlace no es válido | OK |
+| 14 | Enlace sin token | Abrir `/restablecer-contrasena` sin token | Avisa "Enlace incompleto" | OK |
+| 15 | El enlace no es una sesión | Llamar a `GET /api/alumnos/{dni}` con el token del enlace | El backend responde 401 | OK |
+| 16 | Una sesión no es un enlace | Llamar a `POST /api/auth/recuperacion/nueva-contrasena` con un token de sesión | El backend responde 400 | OK |
+| 17 | Administradora con contraseña provisoria | Ana recupera la contraseña e ingresa | Entra al Dashboard sin que le pida cambiarla | OK |
+| 18 | Correo con formato inválido | Llamar a `POST /api/auth/recuperacion` con "no-es-correo" | El backend responde 400 | OK |
+| 19 | Celular | Abrir las dos pantallas con 390 px | No hay desplazamiento horizontal | OK |
+| 20 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores inesperados de JavaScript (los rechazos de los casos 10, 12 y 13 son esperados) | OK |
+
+Además se apagó el servidor de correo de prueba y se volvió a pedir el enlace: el backend respondió igual (204, sin demora) y dejó en su consola el error "No se pudo enviar el correo de recuperacion".
+
+---
+
 ## Pendiente
 
-- Recuperar la contraseña del Administrador por correo (RF-50) se prueba cuando esté hecha.
-- Al restablecer la contraseña de un responsable, si tenía una sesión abierta en otro dispositivo, sigue valiendo hasta que vence su token.
+- Limitar cuántos enlaces de recuperación se pueden pedir por minuto, cuando el sistema se publique en internet.
+- Al cambiar una contraseña desde el enlace o al restablecer la de un responsable, si había una sesión abierta en otro dispositivo, sigue valiendo hasta que vence su token.

@@ -15,7 +15,7 @@ Cubre los requisitos RF-01 a RF-06 y RF-16, y las reglas RN-01, RN-03, RN-05 y R
 
 Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular (390 px). El recorrido se automatizó con Playwright para poder repetirlo después de cada cambio.
 
-**Última ejecución:** 29/10/2026, sobre `main` con el login del #38: 22 de 22 casos correctos.
+**Última ejecución:** 03/11/2026, con el login del #38 y el listado del #41: 22 de 22 casos correctos.
 
 ---
 
@@ -39,7 +39,7 @@ Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular
 | 14 | Alumno ya registrado | En un alta, poner el DNI 45333444 y salir del campo | Avisa que ya existe, ofrece "Ver alumno" y desactiva "Registrar alumno" | OK |
 | 15 | Alta de un alumno dado de baja | Dar de baja al 45333444; en un alta, completar todo, poner ese DNI y presionar Enter | Muestra que está dado de baja y ofrece "Reactivar alumno" | OK |
 | 16 | Cambiar el DNI después de ese aviso | Cambiar el DNI del alumno | El aviso y el botón "Reactivar alumno" desaparecen | OK |
-| 17 | Consultar por DNI (RF-02) | En Alumnos, escribir 45111222 y presionar "Ver alumno" | Abre el detalle | OK |
+| 17 | Consultar por DNI (RF-02) | En Alumnos, escribir 45111222 en "Buscar" y presionar "Buscar" | El alumno aparece en el listado y, al hacer clic en su nombre, se abre el detalle | OK |
 | 18 | Alumno inexistente | Entrar a `/alumnos/99999999` | Muestra "No hay ningún alumno…" | OK |
 | 19 | Sin sesión | Borrar la sesión del navegador, entrar al detalle de un alumno e ingresar | Pide ingresar y, después, abre el alumno pedido | OK |
 | 20 | Responsable sin acceso (RF-52) | Ingresar como la responsable 30111222 con la contraseña provisoria del alta, cambiarla y entrar al detalle de un alumno | Pide cambiar la contraseña provisoria (RNF-01) y después no deja abrir Alumnos: lleva al portal | OK |
@@ -50,4 +50,4 @@ Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular
 
 ## Relación con el listado (#41)
 
-El listado de alumnos se prueba en su propio issue. Las pantallas de este documento ya invalidan su consulta para que se actualice después de cada alta, baja, reactivación o modificación.
+El listado de alumnos se prueba en su propio documento: `docs/pruebas/listado-alumnos.md`. Las pantallas de este documento ya invalidan su consulta para que se actualice después de cada alta, baja, reactivación o modificación.

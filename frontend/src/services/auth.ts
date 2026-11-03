@@ -22,6 +22,11 @@ export interface ConfiguracionInicial {
   contrasena: string
 }
 
+export interface NuevaContrasena {
+  token: string
+  nueva: string
+}
+
 // Clave de TanStack Query del estado de la configuración inicial.
 export const CLAVE_CONFIGURACION = ['configuracion-inicial'] as const
 
@@ -33,4 +38,9 @@ export const authApi = {
     api.get<{ configurado: boolean }>('/configuracion-inicial'),
   configurar: (datos: ConfiguracionInicial) =>
     api.post<Sesion>('/configuracion-inicial', datos),
+  // Recuperación de la contraseña del Administrador por correo (RF-50).
+  solicitarRecuperacion: (email: string) =>
+    api.post<void>('/auth/recuperacion', { email }),
+  guardarNuevaContrasena: (datos: NuevaContrasena) =>
+    api.post<void>('/auth/recuperacion/nueva-contrasena', datos),
 }

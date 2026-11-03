@@ -44,6 +44,11 @@ public class Responsable implements UsuarioConContrasena {
     return telefono;
   }
 
+  /** Datos propios del rol Responsable que se pueden modificar (RF-08). */
+  public void modificarTelefono(String telefono) {
+    this.telefono = telefono;
+  }
+
   @Override
   public String getContrasenaHash() {
     return contrasenaHash;

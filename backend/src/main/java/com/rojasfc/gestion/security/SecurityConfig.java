@@ -20,8 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * el backend, aunque el frontend oculte opciones.
  *
  * Convencion de rutas:
- * - /api/health, /api/auth/login y /api/configuracion-inicial: publicas (la
- *   configuracion inicial se rechaza sola cuando ya hay un Administrador).
+ * - /api/health, /api/auth/login, /api/auth/recuperacion (y su
+ *   /nueva-contrasena) y /api/configuracion-inicial: publicas (la configuracion inicial se rechaza
+ *   sola cuando ya hay un Administrador; la recuperacion exige el enlace del
+ *   correo).
  * - /api/auth/contrasena: cualquier usuario autenticado, incluso con
  *   contrasena provisoria.
  * - /api/portal/**: Responsable y Administrador (el Administrador ya incluye
@@ -46,6 +48,8 @@ public class SecurityConfig {
             .requestMatchers("/error").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/auth/recuperacion",
+                "/api/auth/recuperacion/nueva-contrasena").permitAll()
             .requestMatchers("/api/configuracion-inicial").permitAll()
             .requestMatchers("/api/auth/contrasena").authenticated()
             .requestMatchers("/api/portal/**").hasAnyRole("RESPONSABLE", "ADMINISTRADOR")

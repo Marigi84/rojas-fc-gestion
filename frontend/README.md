@@ -110,19 +110,26 @@ La navegación base incluye las secciones de los 9 módulos del sistema
 
 Del Módulo 1 están además estas pantallas:
 
-| Ruta                     | Pantalla                                               |
-| ------------------------ | ------------------------------------------------------ |
-| `/configuracion-inicial` | Alta del primer Administrador (solo si todavía no hay) |
-| `/cambiar-contrasena`    | Cambio de contraseña (obligatorio con la provisoria)   |
-| `/administradores`       | Administradores del sistema y alta de otro (RF-51)     |
+| Ruta                      | Pantalla                                               |
+| ------------------------- | ------------------------------------------------------ |
+| `/configuracion-inicial`  | Alta del primer Administrador (solo si todavía no hay) |
+| `/cambiar-contrasena`     | Cambio de contraseña (obligatorio con la provisoria)   |
+| `/administradores`        | Administradores del sistema y alta de otro (RF-51)     |
+| `/recuperar-contrasena`   | Pedido del enlace de recuperación por correo (RF-50)   |
+| `/restablecer-contrasena` | Contraseña nueva desde el enlace del correo (RF-50)    |
 
-Dentro del Módulo 2 están además las pantallas de alumnos:
+Dentro del Módulo 2 están además las pantallas de alumnos y responsables:
 
-| Ruta                   | Pantalla                                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------------------ |
-| `/alumnos/nuevo`       | Alta de un alumno con sus responsables                                                           |
-| `/alumnos/:dni`        | Detalle, historial, baja y reactivación, y restablecer la contraseña de sus responsables (RF-15) |
-| `/alumnos/:dni/editar` | Modificación de los datos del alumno                                                             |
+| Ruta                               | Pantalla                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `/alumnos/nuevo`                   | Alta de un alumno con sus responsables                                                           |
+| `/alumnos/:dni`                    | Detalle, historial, baja y reactivación, y restablecer la contraseña de sus responsables (RF-15) |
+| `/alumnos/:dni/editar`             | Modificación de los datos del alumno                                                             |
+| `/alumnos/:dni/responsables/nuevo` | Alta de un responsable para un alumno existente                                                  |
+| `/responsables`                    | Consulta de responsables por DNI                                                                 |
+| `/responsables/:dni`               | Detalle y alumnos a cargo                                                                        |
+| `/responsables/:dni/editar`        | Modificación de los datos del responsable                                                        |
+| `/responsables/:dni/asociar`       | Asociación con otro alumno                                                                       |
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 
@@ -135,7 +142,9 @@ página no la cierra. `apiClient` toma el token de ahí.
 `src/routes/RutaProtegida.tsx` decide quién entra a cada ruta (RF-52):
 
 - **Sin sesión:** lleva a `/login`. Si el sistema todavía no tiene
-  Administrador, el ingreso lleva a `/configuracion-inicial`.
+  Administrador, el ingreso lleva a `/configuracion-inicial`. La recuperación
+  de la contraseña (`/recuperar-contrasena` y `/restablecer-contrasena`) es
+  pública.
 - **Con la contraseña provisoria:** solo deja entrar a `/cambiar-contrasena`
   (RNF-01).
 - **Responsable:** solo ve el Portal del Responsable; el resto de las rutas lo
@@ -191,5 +200,4 @@ Se recomienda ejecutar `npm run lint` y `npm run format:check` antes de cada com
 ## Pendiente para la Etapa 3
 
 - Pantallas con funcionalidad y datos.
-- Autenticación real y protección de rutas por perfil.
 - Servicios por módulo sobre `apiClient`.
