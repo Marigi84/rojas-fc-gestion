@@ -38,15 +38,17 @@ Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular
 | 13 | Alumno ya registrado | En un alta, poner el DNI 45333444 y salir del campo | Avisa que ya existe, ofrece "Ver alumno" y desactiva "Registrar alumno" | OK |
 | 14 | Alta de un alumno dado de baja | Dar de baja al 45333444; en un alta, completar todo, poner ese DNI y presionar Enter | Muestra que está dado de baja y ofrece "Reactivar alumno" | OK |
 | 15 | Cambiar el DNI después de ese aviso | Cambiar el DNI del alumno | El aviso y el botón "Reactivar alumno" desaparecen | OK |
-| 16 | Consultar por DNI (RF-02) | En Alumnos, escribir 45111222 y presionar "Ver alumno" | Abre el detalle | OK |
+| 16 | Consultar por DNI (RF-02) | En Alumnos, escribir 45111222 en "Buscar" y presionar "Buscar" | El alumno aparece en el listado y, al hacer clic en su nombre, se abre el detalle | OK |
 | 17 | Alumno inexistente | Entrar a `/alumnos/99999999` | Muestra "No hay ningún alumno…" | OK |
 | 18 | Sin sesión | Borrar el token y entrar a un detalle | Muestra el mensaje del backend pidiendo iniciar sesión | OK |
 | 19 | Celular | Abrir el alta con 390 px de ancho | No hay desplazamiento horizontal | OK |
 | 20 | Consola del navegador | Revisar la consola durante todo el recorrido | Sin errores de JavaScript; solo las respuestas 401, 404 y 409 que los casos provocan a propósito | OK |
+
+> El caso 16 se actualizó el 29/10/2026 con la pantalla del #41: la tarjeta "Consultar un alumno" se reemplazó por el listado con búsqueda y filtros, así que el botón "Ver alumno" ya no existe.
 
 ---
 
 ## Pendiente
 
 - Repetir los casos con la pantalla de ingreso real cuando esté el #38, en lugar de cargar el token a mano.
-- El listado de alumnos (#41) se prueba en su propio issue. Las pantallas de este documento ya invalidan su consulta para que se actualice después de cada alta, baja, reactivación o modificación.
+- El listado de alumnos (#41) se prueba en su propio issue; ver `docs/pruebas/listado-alumnos.md`. Las pantallas de este documento ya invalidan su consulta para que se actualice después de cada alta, baja, reactivación o modificación.

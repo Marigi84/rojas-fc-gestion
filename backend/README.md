@@ -144,6 +144,7 @@ Gestión de alumnos (Módulo 2). Todas las rutas son solo para el Administrador.
 | Método y ruta | Uso |
 |---|---|
 | `POST /api/alumnos` | Alta de un alumno con al menos un responsable, en una sola operación (RF-01, RN-05). Responde 201 con el detalle. |
+| `GET /api/alumnos` | Listado paginado con búsqueda y filtros (RF-38, RF-39). Parámetros: `busqueda`, `anioNacimiento`, `estado` (`activo` por defecto, `inactivo` o `todos`), `moroso` (`true`/`false`), `pagina` (1) y `tamano` (20). |
 | `GET /api/alumnos/{dni}` | Datos, categoría, estado, morosidad, historial de permanencias y responsables (RF-02, RF-16). |
 | `PUT /api/alumnos/{dni}` | Modificación de nombre, apellido, fecha de nacimiento y dirección (RF-03). |
 | `POST /api/alumnos/{dni}/baja` | Baja lógica: cierra la permanencia vigente con la fecha de hoy (RF-04). |
