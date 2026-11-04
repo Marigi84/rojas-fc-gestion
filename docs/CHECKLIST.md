@@ -46,7 +46,7 @@ Cada tarea tiene su issue y su responsable en el tablero.
 | README final | #71 | Alex |
 | Datos de ejemplo para la demo | #74 | Alex |
 | Pruebas de navegador en el repositorio | #75 | Alex |
-| Prueba final y corrección de errores | #73 | Alex |
+| Prueba final, pruebas cruzadas y corrección de errores | #73 | Los tres |
 | Video | #69 | Los tres |
 | Entrega en el aula | #76 | Alex |
 | Defensa en mesa, después de la entrega | #77 | Los tres |
