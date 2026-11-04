@@ -12,10 +12,11 @@ Las pruebas automáticas del backend están en `CuotaServiceTest` (10 casos, sin
 2. Backend y frontend levantados en local.
 3. Configuración inicial con el administrador DNI 20111222 e ingreso por la pantalla de inicio de sesión.
 4. Tres alumnos: Mateo Gómez (45111222) y Sofía López (45111223), activos, y Tomás Ruiz (45111224), dado de baja.
+5. Las fechas de alta de esos alumnos se adelantaron en la base al 01/01/2026, porque no se le cobra un mes pasado a quien todavía no estaba inscripto.
 
 Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular (390 px). El recorrido se automatizó con Playwright. El mes vencido del ejemplo es octubre de 2026.
 
-**Última ejecución:** 03/11/2026, rama `modulo4/cuotas`: 23 de 23 casos correctos.
+**Última ejecución:** 03/11/2026, con todos los PRs abiertos combinados sobre `main`: 23 de 23 casos correctos.
 
 ---
 
@@ -57,10 +58,13 @@ Estos casos se prueban contra MySQL en `CuotaIntegracionTest`, porque dependen d
 - Una cuota pagada muestra su pago y deja de contar como deuda; si el pago se anula, vuelve a estar vencida (RF-22, RN-32).
 - El trigger rechaza cambiar un período con cuotas, aunque no se pase por el servicio (RN-22).
 - El total adeudado suma las cuotas vencidas con su interés (RF-23).
+- Un mes pasado no se le cobra a quien se inscribió después de ese mes (RN-14).
+- Un responsable no accede a los períodos, las cuotas ni los morosos (RF-52).
 
 El pago de una cuota desde la interfaz se prueba con el issue #64.
 
 ## Limitaciones conocidas
 
+- Las altas quedan con la fecha del día en que se registran, así que no se pueden cargar deudas de meses anteriores a esa fecha. Para mostrar una cuota vencida en una demo hace falta configurar el mes en curso con un vencimiento ya pasado, o datos de ejemplo con altas anteriores.
 - Quien se da de alta después de generadas las cuotas del mes empieza a pagar desde el mes siguiente, porque las cuotas son para quienes están activos al generarlas (RN-14).
 - `vista_cuota` usa la fecha del servidor de MySQL para decidir si una cuota venció. En un servidor con otra zona horaria, una cuota puede figurar vencida unas horas antes o después. Hay que tenerlo en cuenta al desplegar (#60).
