@@ -32,7 +32,7 @@ Se propone desarrollar una aplicación web de gestión que permita centralizar l
 
 El sistema permitirá gestionar alumnos, responsables, categorías, cuotas, pagos, recibos, eventos y otros conceptos de cobro desde una plataforma centralizada.
 
-Entre las principales funcionalidades previstas se encuentran:
+La propuesta original preveía las siguientes funcionalidades. Lo que el sistema hace hoy y lo que quedó fuera están en [Estado del proyecto](#estado-del-proyecto):
 
 - Gestión de alumnos y responsables.
 - Organización de alumnos por categorías según año de nacimiento.
@@ -214,7 +214,7 @@ Para el seguimiento de las actividades se prevé utilizar **GitHub Projects** me
 
 La planificación será revisada durante el avance del proyecto. Ante posibles desvíos de tiempo o dificultades técnicas se priorizarán las funcionalidades centrales de gestión de alumnos, responsables, cuotas y pagos, procurando mantener la estabilidad y calidad de la versión final.
 
-## Estructura inicial del repositorio
+## Estructura del repositorio
 
 ```text
 rojas-fc-gestion/
@@ -222,6 +222,7 @@ rojas-fc-gestion/
 ├── backend/
 ├── database/
 ├── docs/
+├── pruebas/
 ├── .gitignore
 └── README.md
 ```
@@ -230,6 +231,7 @@ rojas-fc-gestion/
 - `backend/`: API y lógica de negocio desarrolladas con Java y Spring Boot.
 - `database/`: scripts, esquemas y recursos relacionados con MySQL.
 - `docs/`: documentación, diagramas, informes y entregas del proyecto.
+- `pruebas/navegador/`: recorridos automatizados en el navegador.
 
 ## Instalación
 
@@ -247,6 +249,18 @@ rojas-fc-gestion/
 
 El backend queda disponible en `http://localhost:8080` y el frontend en `http://localhost:5173`.
 
+Al entrar por primera vez, el sistema pide crear el primer Administrador.
+
+### Datos de ejemplo
+
+Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](database/datos-demo.sql) sobre una base recién creada, en lugar de crear el Administrador. Los usuarios de demostración figuran al principio del archivo. Sus contraseñas son públicas: no hay que cargarlos en un sistema con información real.
+
+### Pruebas
+
+- **Backend:** `mvn test` corre las pruebas unitarias. Con `TESTS_MYSQL=true` suma las de integración contra MySQL. Ver [`backend/README.md`](backend/README.md).
+- **Navegador:** recorridos automatizados en [`pruebas/navegador/`](pruebas/navegador/README.md).
+- **Casos probados:** documentados en [`docs/pruebas/`](docs/pruebas/).
+
 ## Documentación de las entregas
 
 - [`docs/1ra Entrega - Propuesta de Proyecto.md`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.md) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
@@ -255,15 +269,46 @@ El backend queda disponible en `http://localhost:8080` y el frontend en `http://
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
 - [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md) — Ajustes sobre el alcance de la Primera Entrega.
 - [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
-- `docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md` — Módulos, modelo de datos y arquitectura. **En revisión.**
+- [`docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md`](docs/2da%20Entrega%20-%20Dise%C3%B1o%20de%20M%C3%B3dulos%20y%20Modelo%20de%20Datos.md) — Módulos, modelo de datos y arquitectura. **En revisión.**
 - [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
 - [`docs/entidades-relaciones-cardinalidad/`](docs/entidades-relaciones-cardinalidad/) — Modelo conceptual y DER.
 - [`docs/esquema-relacional/claves-restricciones.md`](docs/esquema-relacional/claves-restricciones.md) — Claves y restricciones del esquema relacional.
 - [`docs/esquema-relacional/indices.md`](docs/esquema-relacional/indices.md) — Índices del esquema relacional.
 - [`docs/esquema-relacional/diagrama-relacional.md`](docs/esquema-relacional/diagrama-relacional.md) — Diagrama del esquema relacional.
 - [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
+- [`docs/pruebas/`](docs/pruebas/) — Casos de prueba de cada módulo y sus resultados.
 - [`docs/CHECKLIST.md`](docs/CHECKLIST.md) — Checklist de la cátedra con el estado de cada punto.
 
 ## Estado del proyecto
 
-🟡 **Segunda Entrega presentada. En desarrollo: Etapa 3, núcleo funcional.**
+🟡 **En desarrollo. Entrega final prevista: 14/11/2026.**
+
+| Módulo | Estado |
+|---|---|
+| 1. Autenticación y Autorización | Hecho |
+| 2. Alumnos, Responsables y Categorías | Hecho |
+| 3. Portal del Responsable | Hecho, salvo descargar el recibo, que llega con el módulo 5 |
+| 4. Cuotas | Hecho |
+| 5. Pagos y Recibos | En desarrollo |
+| 7. Búsqueda y listado de alumnos | Hecho |
+| 8. Dashboard | Hecho |
+
+### Fuera de la entrega final
+
+Eventos e indumentaria, exportación y reportes, compartir recibos por WhatsApp y funcionamiento sin conexión. El detalle y la justificación están en [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md), sección 3.
+
+### Limitaciones conocidas
+
+- **Validación con el cliente:** la problemática surge del proceso real del club, documentado en la Primera Entrega, pero el sistema no se validó todavía con el coordinador.
+- **Sesiones abiertas:** al cambiar una contraseña, una sesión ya iniciada sigue valiendo hasta que vence.
+- **Cuotas:** quien se da de alta después de generadas las cuotas del mes empieza a pagar el mes siguiente, y las condiciones de un período quedan fijas una vez generadas sus cuotas.
+- **Fecha de vencimiento:** se toma de la fecha del servidor de MySQL.
+
+### Enlaces de la entrega final
+
+Se completan a medida que estén disponibles:
+
+- **Sistema desplegado:** pendiente.
+- **Informe Final en PDF:** pendiente.
+- **Video de presentación:** pendiente.
+- **Checklist de la entrega:** [`docs/CHECKLIST.md`](docs/CHECKLIST.md).

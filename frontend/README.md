@@ -2,11 +2,6 @@
 
 Aplicación web del Sistema de Gestión Rojas FC, desarrollada con **React + TypeScript + Vite**.
 
-> **Estado:** Etapa 2 — estructura base. Incluye el proyecto, la organización de
-> carpetas, la navegación entre los 9 módulos y el servicio base de API. Todavía
-> **no hay pantallas con funcionalidad ni datos**: eso corresponde a otra etapa,
-> una vez aprobado el esquema de base de datos.
-
 ## Requisitos previos
 
 - **Node.js** 20.19 o superior (probado con Node 26). Vite requiere `^20.19.0 || >=22.12.0`.
@@ -198,8 +193,3 @@ paleta.
 - **Prettier** se encarga del formato, sin punto y coma y con comillas simples.
 
 Se recomienda ejecutar `npm run lint` y `npm run format:check` antes de cada commit.
-
-## Pendiente para la Etapa 3
-
-- Pantallas con funcionalidad y datos.
-- Servicios por módulo sobre `apiClient`.

@@ -19,14 +19,14 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | Sección | ✅ | 🟡 | ❌ | 👤 | ⏳ | Total |
 |---|---|---|---|---|---|---|
 | 1. Requisitos generales y cronograma | 8 | 1 | 1 | 3 | 1 | 14 |
-| 2. Repositorio único en GitHub | 12 | 2 | 2 | 0 | 0 | 16 |
-| 3. Sistema final, despliegue y README | 8 | 2 | 9 | 0 | 0 | 19 |
+| 2. Repositorio único en GitHub | 12 | 3 | 1 | 0 | 0 | 16 |
+| 3. Sistema final, despliegue y README | 9 | 1 | 9 | 0 | 0 | 19 |
 | 4. Informe Final en PDF | 0 | 0 | 42 | 0 | 0 | 42 |
 | 5. Video final | 0 | 0 | 31 | 1 | 14 | 46 |
-| 6. Checklist final para finalizar la cursada | 15 | 4 | 25 | 0 | 3 | 47 |
+| 6. Checklist final para finalizar la cursada | 17 | 4 | 23 | 0 | 3 | 47 |
 | 7. Checklist para la presentación / defensa final en mesa | 3 | 1 | 7 | 4 | 33 | 48 |
-| 8. Criterios finales importantes | 0 | 1 | 0 | 3 | 2 | 6 |
-| **Total** | **46** | **11** | **117** | **11** | **53** | **238** |
+| 8. Criterios finales importantes | 1 | 0 | 0 | 3 | 2 | 6 |
+| **Total** | **50** | **10** | **114** | **11** | **53** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
@@ -104,7 +104,7 @@ El repositorio incluye:
 - [x] ✅ Variables de entorno documentadas en un .env.example o similar. *`frontend/.env.example` y la tabla de `backend/README.md`.*
 - [x] ✅ Sin credenciales, tokens ni secretos publicados. *Revisado por patrones en el código y el historial. Repetir al entregar.*
 - [x] ✅ Pruebas relevantes incluidas. *50 tests de backend y `docs/pruebas/`.*
-- [ ] ❌ README actualizado. *Dice "Etapa 3", describe funciones en futuro y marca la 2da entrega "En revisión".*
+- [ ] 🟡 README actualizado. *Refleja el estado real; faltan los enlaces al sistema, al informe y al video (#71).*
 - [ ] ❌ Enlace al sistema desplegado. *Depende del #60.*
 - [ ] 🟡 Documentación necesaria para comprender y evaluar el proyecto. *Hay mucha en `docs/`; falta el informe.*
 - [ ] 🟡 Evitar enlaces dispersos: todo debe estar referenciado desde el README principal. *No enlaza `docs/pruebas/` ni la 2da entrega.*
@@ -115,7 +115,7 @@ El repositorio incluye:
 
 ### 3.1 Sistema y despliegue
 
-- [ ] ❌ Versión definitiva y funcional del sistema. *Hechos: módulos 1 y 2, búsqueda y listado (19 de 57 RF). Hay 7 pantallas vacías.*
+- [ ] ❌ Versión definitiva y funcional del sistema. *Falta pagos y recibos (#64). Ver el README, "Estado del proyecto".*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno. *Probado: base recreada desde `schema.sql` el 03/11.*
@@ -125,7 +125,7 @@ El repositorio incluye:
   - [ ] ❌ Backend en Render / Railway / similar, o
   - [ ] ❌ Base de datos en MongoDB Atlas / Supabase / PlanetScale / Aiven / similar.
 - [ ] ❌ Enlace al sistema desplegado incluido en el README.
-- [ ] 🟡 Limitaciones, dependencias externas o funcionalidades simuladas documentadas con claridad. *Hay notas sueltas (preinscripción, #56); falta una sección que las reúna y aclare los módulos no hechos.*
+- [x] ✅ Limitaciones, dependencias externas o funcionalidades simuladas documentadas con claridad. *README, "Estado del proyecto". Repasar al entregar.*
 
 ### 3.2 README final
 
@@ -191,14 +191,14 @@ Debe permitir encontrar fácilmente:
 
 - [ ] ❌ Principales módulos desarrollados. *Según lo que quede hecho.*
 - [ ] ❌ Recorridos o casos de uso importantes. *`docs/pruebas/`.*
-- [ ] ❌ Capturas o diagramas cuando faciliten la explicación. *No hay capturas en el repositorio.*
+- [ ] ❌ Capturas o diagramas cuando faciliten la explicación. *Capturas en `docs/capturas/`.*
 - [ ] ❌ Dificultades técnicas relevantes y forma en que fueron resueltas. *Ejemplos: búsqueda sin tilde (`LOCATE` y `LIKE`, #59), alta en una sola transacción (#51).*
 
 **Pruebas y validación**
 
 - [ ] ❌ Qué aspectos fueron probados. *`docs/pruebas/`.*
-- [ ] ❌ Casos de prueba relevantes. *`docs/pruebas/` y `backend/src/test/`.*
-- [ ] ❌ Evidencia de funcionamiento. *Hay que sumar capturas.*
+- [ ] ❌ Casos de prueba relevantes. *`docs/pruebas/`, `backend/src/test/` y `pruebas/navegador/`.*
+- [ ] ❌ Evidencia de funcionamiento. *Capturas en `docs/capturas/` y `docs/pruebas/`.*
 - [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *No se hizo (#70, cerrado: el coordinador no respondió). Se declara como limitación; se puede retomar si responde.*
 - [ ] ❌ Resultados obtenidos.
 - [ ] ❌ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *`AlumnoIntegracionTest` cubre las reglas de alumnos. Pagos todavía no existe.*
@@ -297,7 +297,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 ### 6.1 Repositorio
 
 - [x] ✅ Repositorio único en GitHub declarado formalmente en la primer entrega.
-- [ ] ❌ README principal actualizado.
+- [ ] 🟡 README principal actualizado. *Faltan los enlaces (#71).*
 - [x] ✅ Código fuente ordenado en carpetas claras.
 - [x] ✅ Base de datos incluida: scripts DDL/DML, esquema o migraciones.
 - [ ] 🟡 Documentación e informes dentro del repositorio. *La documentación está; falta el informe.*
@@ -315,7 +315,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 - [x] ✅ Pruebas relevantes ejecutables.
 - [ ] ❌ Al menos un componente principal desplegado y funcionando online.
 - [ ] ❌ Enlace al sistema desplegado incluido en el README.
-- [ ] 🟡 Limitaciones, dependencias externas o funcionalidades simuladas documentadas.
+- [x] ✅ Limitaciones, dependencias externas o funcionalidades simuladas documentadas.
 
 ### 6.3 README
 
@@ -355,9 +355,9 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 - [ ] ⏳ El informe describe el sistema que realmente existe.
 - [ ] ⏳ El video muestra el sistema que realmente existe.
-- [ ] ❌ El README coincide con el sistema que realmente existe. *Hoy describe el plan, no lo que está hecho.*
+- [ ] 🟡 El README coincide con el sistema que realmente existe. *Hoy sí; revisarlo al cerrar el sistema (#73).*
 - [ ] ⏳ No se documentaron funcionalidades no implementadas como si estuvieran terminadas. *Controlarlo al cerrar el informe y el README.*
-- [ ] 🟡 Las limitaciones están declaradas con claridad.
+- [x] ✅ Las limitaciones están declaradas con claridad.
 
 ---
 
@@ -445,5 +445,5 @@ Además:
 - [ ] 👤 Priorizar: estabilidad, coherencia, pruebas, documentación y capacidad de explicar las decisiones.
 - [ ] 👤 Una funcionalidad sencilla pero bien implementada, validada y defendible vale más que muchos módulos incompletos.
 - [ ] ⏳ El informe, el video y el README deben describir el sistema que realmente existe al momento de entregar.
-- [ ] 🟡 Documentar claramente limitaciones, dependencias externas o funcionalidades simuladas.
+- [x] ✅ Documentar claramente limitaciones, dependencias externas o funcionalidades simuladas.
 - [ ] ⏳ Preparar la entrega final no solo como documentación, sino como preparación directa para la defensa.
