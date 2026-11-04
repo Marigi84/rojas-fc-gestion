@@ -84,7 +84,7 @@ Se priorizan las funcionalidades centrales de gestión de alumnos, responsables,
 
 ### Cómo queda
 
-Forman parte de la entrega final la autenticación, la gestión de alumnos y responsables, la búsqueda y el listado de alumnos, las cuotas, y los pagos con sus recibos. El Dashboard (RF-45 a RF-48) y el Portal del Responsable (RF-12 a RF-14) se incorporan si se completan antes de la fecha de corte del 10/11/2026; en caso contrario, se agregan a este recorte.
+Forman parte de la entrega final la autenticación, la gestión de alumnos y responsables, la búsqueda y el listado de alumnos, las cuotas, y los pagos con sus recibos. El Dashboard (RF-45 a RF-48) y el Portal del Responsable (RF-12 a RF-14) se incorporan si se completan antes de que el grupo deje de agregar funciones; en caso contrario, se agregan a este recorte.
 
 El esquema de la base de datos no cambia: conserva las tablas `evento`, `participacion` y `encargo`, y el estado de sincronización de los pagos, por lo que estas funcionalidades pueden incorporarse en un incremento posterior sin rediseñar el modelo. Los requisitos y las reglas de negocio tampoco se modifican, porque describen el sistema completo.
 
