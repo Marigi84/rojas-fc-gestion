@@ -1,7 +1,7 @@
 // Recorrido del Dashboard y del Portal del Responsable, con database/datos-demo.sql.
 const { chromium } = require('playwright-core')
 const path = require('path')
-const { WEB, API, NAVEGADOR, CAPTURAS } = require('./base')
+const { WEB, API, OPCIONES_NAVEGADOR, textoSeguro, CAPTURAS } = require('./base')
 
 const CLAVE = 'Demo12345'
 const resultados = []
@@ -9,7 +9,7 @@ const erroresConsola = []
 
 function caso(nombre, ok, detalle = '') {
   resultados.push(ok)
-  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${detalle}` : ''}`)
+  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${textoSeguro(detalle)}` : ''}`)
 }
 const captura = (p, n) => p.screenshot({ path: path.join(CAPTURAS, `${n}.png`), fullPage: true })
 const tarjeta = (p, t) => p.locator(`section:has(> h2:text-is("${t}"))`)
@@ -31,7 +31,7 @@ function nuevaPagina(contexto) {
 }
 
 ;(async () => {
-  const navegador = await chromium.launch({ executablePath: NAVEGADOR, headless: true })
+  const navegador = await chromium.launch({ ...OPCIONES_NAVEGADOR, headless: true })
   const contexto = await navegador.newContext({ viewport: { width: 1280, height: 900 } })
 
   // --- Dashboard ---

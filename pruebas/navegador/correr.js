@@ -1,5 +1,5 @@
-// Corre todos los recorridos, cada uno con los datos que necesita. BORRA la base
-// de desarrollo: no usar con datos que se quieran conservar.
+// Corre todos los recorridos, cada uno con los datos que necesita. Borra la base
+// de las pruebas (rojasfc_pruebas), no la de desarrollo.
 const { spawnSync } = require('child_process')
 const path = require('path')
 const { reiniciarBase, cargarArchivo } = require('./base')

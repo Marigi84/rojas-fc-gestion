@@ -1,14 +1,14 @@
 // Recorrido de responsables y del listado. Corre despues de alumnos.js, sobre la misma base.
 const { chromium } = require('playwright-core')
 const path = require('path')
-const { WEB, API, NAVEGADOR, CAPTURAS } = require('./base')
+const { WEB, API, OPCIONES_NAVEGADOR, textoSeguro, CAPTURAS } = require('./base')
 
 const resultados = []
 const erroresConsola = []
 
 function caso(nombre, ok, detalle = '') {
   resultados.push(ok)
-  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${detalle}` : ''}`)
+  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${textoSeguro(detalle)}` : ''}`)
 }
 const captura = (p, n) => p.screenshot({ path: path.join(CAPTURAS, `${n}.png`), fullPage: true })
 const tarjeta = (p, t) => p.locator(`section:has(> h2:text-is("${t}"))`)
@@ -41,7 +41,7 @@ async function filasListado(p) {
   })
   if (!alta.ok) throw new Error(`alta de prueba: ${alta.status} ${await alta.text()}`)
 
-  const navegador = await chromium.launch({ executablePath: NAVEGADOR, headless: true })
+  const navegador = await chromium.launch({ ...OPCIONES_NAVEGADOR, headless: true })
   const p = await (await navegador.newContext({ viewport: { width: 1280, height: 900 } })).newPage()
   p.on('console', (m) => m.type() === 'error' && erroresConsola.push(m.text()))
   p.on('pageerror', (e) => erroresConsola.push(String(e)))

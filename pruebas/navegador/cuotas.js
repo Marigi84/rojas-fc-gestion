@@ -1,14 +1,14 @@
 // Recorrido de las cuotas (Modulo 4). Base recien creada.
 const { chromium } = require('playwright-core')
 const path = require('path')
-const { WEB, API, NAVEGADOR, CAPTURAS, ejecutarSql } = require('./base')
+const { WEB, API, OPCIONES_NAVEGADOR, textoSeguro, CAPTURAS, ejecutarSql } = require('./base')
 
 const resultados = []
 const erroresConsola = []
 
 function caso(nombre, ok, detalle = '') {
   resultados.push(ok)
-  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${detalle}` : ''}`)
+  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${textoSeguro(detalle)}` : ''}`)
 }
 const captura = (p, n) => p.screenshot({ path: path.join(CAPTURAS, `${n}.png`), fullPage: true })
 const tarjeta = (p, t) => p.locator(`section:has(> h2:text-is("${t}"))`)
@@ -51,7 +51,7 @@ async function configurar(p, m, importe, vencimiento, interes) {
   // Las altas son de hoy: se adelantan para que el mes vencido del ejemplo les corresponda.
   ejecutarSql("UPDATE permanencia SET fecha_alta = '2026-01-01'")
 
-  const navegador = await chromium.launch({ executablePath: NAVEGADOR, headless: true })
+  const navegador = await chromium.launch({ ...OPCIONES_NAVEGADOR, headless: true })
   const p = await (await navegador.newContext({ viewport: { width: 1280, height: 900 } })).newPage()
   p.on('console', (m) => m.type() === 'error' && erroresConsola.push(m.text()))
   p.on('pageerror', (e) => erroresConsola.push(String(e)))

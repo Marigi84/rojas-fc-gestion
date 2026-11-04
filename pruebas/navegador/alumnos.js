@@ -1,14 +1,14 @@
 // Recorrido de la gestion de alumnos, entrando con el login. Base recien creada.
 const { chromium } = require('playwright-core')
 const path = require('path')
-const { WEB, API, NAVEGADOR, CAPTURAS } = require('./base')
+const { WEB, API, OPCIONES_NAVEGADOR, textoSeguro, CAPTURAS } = require('./base')
 
 const resultados = []
 const erroresConsola = []
 
 function caso(nombre, ok, detalle = '') {
   resultados.push(ok)
-  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${detalle}` : ''}`)
+  console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${textoSeguro(detalle)}` : ''}`)
 }
 
 async function captura(pagina, nombre) {
@@ -34,7 +34,7 @@ const tarjeta = (pagina, titulo) =>
   if (!conf.ok) throw new Error(`configuración inicial: ${conf.status}`)
 
   const navegador = await chromium.launch({
-    executablePath: NAVEGADOR,
+    ...OPCIONES_NAVEGADOR,
     headless: true,
   })
   const contexto = await navegador.newContext({ viewport: { width: 1280, height: 900 } })
