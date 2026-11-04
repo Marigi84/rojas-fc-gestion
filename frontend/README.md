@@ -133,6 +133,8 @@ Dentro del Módulo 2 están además las pantallas de alumnos y responsables:
 
 En `/cuotas` (Módulo 4) se configuran los períodos, se generan las cuotas y se ven los alumnos morosos. Las cuotas de cada alumno están en su detalle (`/alumnos/:dni`).
 
+En `/pagos` (Módulo 5) se busca un alumno por DNI, se registra el pago de sus cuotas, se anulan con un motivo y se consulta el historial. Cada pago enlaza a su recibo (`/recibos/:numero`), que se puede descargar como archivo de texto.
+
 El Dashboard (`/`) muestra los indicadores al Administrador y el Portal (`/portal`) es la pantalla de consulta del Responsable.
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).

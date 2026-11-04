@@ -33,6 +33,10 @@ export const rutaEditarResponsable = (dni: number | string) =>
 export const rutaAsociarResponsable = (dni: number | string) =>
   `/responsables/${dni}/asociar`
 
+// Ruta del recibo de un pago.
+export const rutaRecibo = (numeroRecibo: number | string) =>
+  `/recibos/${numeroRecibo}`
+
 const SOLO_ADMINISTRADOR: Rol[] = ['ADMINISTRADOR']
 const AMBOS_PERFILES: Rol[] = ['ADMINISTRADOR', 'RESPONSABLE']
 
