@@ -11,18 +11,15 @@ import {
   ConfiguracionInicialPage,
   CuotasPage,
   DashboardPage,
-  EventosPage,
   LoginPage,
   NuevaContrasenaPage,
   PagosPage,
   PortalResponsablePage,
   RecuperarContrasenaPage,
-  ReportesPage,
   ResponsableAsociarPage,
   ResponsableDetallePage,
   ResponsableEdicionPage,
   ResponsablesPage,
-  SinConexionPage,
 } from '../pages'
 import { PATHS } from './paths'
 import { RutaProtegida } from './RutaProtegida'
@@ -82,9 +79,6 @@ export function AppRouter() {
               />
               <Route path="cuotas" element={<CuotasPage />} />
               <Route path="pagos" element={<PagosPage />} />
-              <Route path="eventos" element={<EventosPage />} />
-              <Route path="reportes" element={<ReportesPage />} />
-              <Route path="sin-conexion" element={<SinConexionPage />} />
               <Route path="administradores" element={<AdministradoresPage />} />
             </Route>
           </Route>
