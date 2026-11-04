@@ -114,17 +114,27 @@ export function AdministradoresPage() {
     contenidoListado = (
       <Tabla
         columnas={[
-          { titulo: 'Nombre', valor: (a) => `${a.apellido}, ${a.nombre}` },
-          { titulo: 'DNI', valor: (a) => a.dni, numerica: true },
-          { titulo: 'Correo', valor: (a) => a.email },
+          {
+            titulo: 'Nombre',
+            valor: (administrador) =>
+              `${administrador.apellido}, ${administrador.nombre}`,
+          },
+          {
+            titulo: 'DNI',
+            valor: (administrador) => administrador.dni,
+            numerica: true,
+          },
+          { titulo: 'Correo', valor: (administrador) => administrador.email },
           {
             titulo: 'Contraseña',
-            valor: (a) =>
-              a.contrasenaTemporal ? 'Provisoria, sin cambiar' : 'Propia',
+            valor: (administrador) =>
+              administrador.contrasenaTemporal
+                ? 'Provisoria, sin cambiar'
+                : 'Propia',
           },
         ]}
         filas={listado.data}
-        claveFila={(a) => a.dni}
+        claveFila={(administrador) => administrador.dni}
         vacia="No hay administradores."
       />
     )

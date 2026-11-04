@@ -80,8 +80,9 @@ public class AuthService {
 
   private Optional<UsuarioConRol> buscar(Long dni) {
     return administradores.findById(dni)
-        .<UsuarioConRol>map(a -> new UsuarioConRol(a, Rol.ADMINISTRADOR))
-        .or(() -> responsables.findById(dni).map(r -> new UsuarioConRol(r, Rol.RESPONSABLE)));
+        .<UsuarioConRol>map(administrador -> new UsuarioConRol(administrador, Rol.ADMINISTRADOR))
+        .or(() -> responsables.findById(dni)
+            .map(responsable -> new UsuarioConRol(responsable, Rol.RESPONSABLE)));
   }
 
   private LoginResponse respuesta(Long dni, UsuarioConRol usuario) {
