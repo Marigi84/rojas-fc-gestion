@@ -6,7 +6,7 @@ Checklist orientativo de la cátedra, con el estado de cada punto en nuestro pro
 
 | Marca | Significa | ¿Se tilda? |
 |---|---|---|
-| ✅ | Hecho y comprobado en el repositorio | Sí |
+| ✅ | Hecho: comprobado en el repositorio o confirmado por el grupo | Sí |
 | 🟡 | Hecho en parte: la nota dice qué falta | No |
 | ❌ | Falta | No |
 | 👤 | No se puede comprobar desde el repositorio: lo confirma el grupo | Si corresponde |
@@ -18,7 +18,7 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 
 | Sección | ✅ | 🟡 | ❌ | 👤 | ⏳ | Total |
 |---|---|---|---|---|---|---|
-| 1. Requisitos generales y cronograma | 6 | 1 | 1 | 5 | 1 | 14 |
+| 1. Requisitos generales y cronograma | 8 | 1 | 1 | 3 | 1 | 14 |
 | 2. Repositorio único en GitHub | 12 | 2 | 2 | 0 | 0 | 16 |
 | 3. Sistema final, despliegue y README | 8 | 2 | 9 | 0 | 0 | 19 |
 | 4. Informe Final en PDF | 0 | 0 | 42 | 0 | 0 | 42 |
@@ -26,7 +26,7 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | 6. Checklist final para finalizar la cursada | 15 | 4 | 25 | 0 | 3 | 47 |
 | 7. Checklist para la presentación / defensa final en mesa | 3 | 1 | 7 | 4 | 33 | 48 |
 | 8. Criterios finales importantes | 0 | 1 | 0 | 3 | 2 | 6 |
-| **Total** | **44** | **11** | **117** | **13** | **53** | **238** |
+| **Total** | **46** | **11** | **117** | **11** | **53** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
@@ -45,8 +45,8 @@ La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases 
 ### 1.1 Requisitos académicos y administrativos
 
 - [x] ✅ Grupo de 2 o 3 integrantes. *Somos 3.*
-- [ ] 👤 Tutor/a elegido/a en la plataforma. *Las entregas nombran a Sebastián Bruselario; confirmar en la plataforma.*
-- [ ] 👤 Confirmación de lectura y aceptación de condiciones marcada como finalizada.
+- [x] ✅ Tutor/a elegido/a en la plataforma. *Sebastián Bruselario. Confirmado por el grupo.*
+- [x] ✅ Confirmación de lectura y aceptación de condiciones marcada como finalizada. *Confirmado por el grupo.*
 - [ ] 👤 Para presentar informe final, proyecto y defensa oral: acreditar la totalidad de las asignaturas de la carrera aprobadas, conforme al Plan de Estudios vigente. *Cada integrante.*
 - [ ] 👤 Cursada aprobada y todas las instancias previas del TFI realizadas y aprobadas para acceder a la mesa.
 
