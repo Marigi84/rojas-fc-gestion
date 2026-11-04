@@ -2,7 +2,7 @@
 
 Checklist orientativo de la cátedra, con el estado de cada punto en nuestro proyecto. La página original guarda los checks solo en el navegador de cada uno, así que este archivo es la referencia común del grupo.
 
-**Estado al 03/11/2026, sobre `main` (commit `642ac24`). Entrega final: 14/11/2026.**
+**Estado al 03/11/2026, sobre `main` (commit `642ac24`). Fecha de entrega final: [A completar].**
 
 | Marca | Significa | ¿Se tilda? |
 |---|---|---|
@@ -51,7 +51,7 @@ Cada tarea tiene su issue y su responsable en el tablero.
 | Entrega en el aula | #76 | Alex |
 | Defensa en mesa, después de la entrega | #77 | Los tres |
 
-Fecha de corte: el 10/11 se deja de agregar funciones.
+Fecha de corte, desde la que se deja de agregar funciones: [A completar].
 
 ---
 
@@ -363,7 +363,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ## 7. Checklist para la presentación / defensa final en mesa
 
-*Es una instancia posterior a la entrega del 14/11.*
+*Es una instancia posterior a la entrega final.*
 
 ### 7.1 Requisitos habilitantes
 
