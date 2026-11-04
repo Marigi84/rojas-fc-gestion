@@ -39,12 +39,17 @@ Cada tarea tiene su issue y su responsable en el tablero.
 | Cuotas | #63 | Alex |
 | Pagos y recibos | #64 | Silvia |
 | Recorte del alcance | #65 | Alex |
+| Dashboard | #66 | Alex |
+| Portal del Responsable | #67 | Alex |
 | Despliegue | #60 | Marina |
 | Informe Final | #68 | Marina arma la estructura; cada uno escribe su parte |
 | README final | #71 | Alex |
-| Validación con el coordinador | #70 | Quien tenga más contacto |
+| Datos de ejemplo para la demo | #74 | Alex |
+| Pruebas de navegador en el repositorio | #75 | Alex |
+| Prueba final y corrección de errores | #73 | Alex |
 | Video | #69 | Los tres |
-| Dashboard y Portal (opcionales) | #66 y #67 | Quien termine primero |
+| Entrega en el aula | #76 | Alex |
+| Defensa en mesa, después de la entrega | #77 | Los tres |
 
 Fecha de corte: el 10/11 se deja de agregar funciones.
 
@@ -157,7 +162,7 @@ Debe permitir encontrar fácilmente:
 
 - [ ] ❌ Situación que dio origen al proyecto. *1ra entrega, sección 1.*
 - [ ] ❌ Usuarios o actores involucrados. *1ra entrega, sección 3.*
-- [ ] ❌ Evidencia utilizada para validar el problema: entrevistas, encuestas, observaciones, casos reales, documentación, etc. *No hay entrevistas ni encuestas documentadas. Hay que registrar lo hablado con el coordinador.*
+- [ ] ❌ Evidencia utilizada para validar el problema: entrevistas, encuestas, observaciones, casos reales, documentación, etc. *No hay entrevistas ni encuestas documentadas. Se usa lo relevado en la 1ra entrega, sección 1.*
 - [ ] ❌ Necesidad concreta que se buscó resolver. *1ra entrega, secciones 1 y 2.*
 
 **Objetivos y alcance**
@@ -194,7 +199,7 @@ Debe permitir encontrar fácilmente:
 - [ ] ❌ Qué aspectos fueron probados. *`docs/pruebas/`.*
 - [ ] ❌ Casos de prueba relevantes. *`docs/pruebas/` y `backend/src/test/`.*
 - [ ] ❌ Evidencia de funcionamiento. *Hay que sumar capturas.*
-- [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *No hay ninguna documentada.*
+- [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *No se hizo (#70, cerrado: el coordinador no respondió). Se declara como limitación; se puede retomar si responde.*
 - [ ] ❌ Resultados obtenidos.
 - [ ] ❌ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *`AlumnoIntegracionTest` cubre las reglas de alumnos. Pagos todavía no existe.*
 
