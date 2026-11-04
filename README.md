@@ -262,6 +262,7 @@ El backend queda disponible en `http://localhost:8080` y el frontend en `http://
 - [`docs/esquema-relacional/indices.md`](docs/esquema-relacional/indices.md) — Índices del esquema relacional.
 - [`docs/esquema-relacional/diagrama-relacional.md`](docs/esquema-relacional/diagrama-relacional.md) — Diagrama del esquema relacional.
 - [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
+- [`docs/CHECKLIST.md`](docs/CHECKLIST.md) — Checklist de la cátedra con el estado de cada punto.
 
 ## Estado del proyecto
 
