@@ -32,11 +32,21 @@ La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases 
 
 ## Lo más urgente
 
-1. **Cuotas y Pagos (módulos 4 y 5, prioridad Alta):** no están empezados y no tienen issue.
-2. **Módulos 3, 6, 7 (exportación y reportes), 8 y 9:** tampoco tienen issue. Hay que decidir cuáles se hacen y documentar el recorte de los demás en `docs/alcance/revision-del-alcance.md`.
-3. **Despliegue (#60):** sin responsable. `application.properties` tiene fijo `useSSL=false`, y Aiven exige conexión segura.
-4. **Informe Final en PDF y video:** no están empezados.
-5. **README:** todavía dice "Etapa 3" y le faltan enlaces.
+Cada tarea tiene su issue y su responsable en el tablero.
+
+| Tarea | Issue | Responsable |
+|---|---|---|
+| Cuotas | #63 | Alex |
+| Pagos y recibos | #64 | Silvia |
+| Recorte del alcance | #65 | Alex |
+| Despliegue | #60 | Marina |
+| Informe Final | #68 | Marina arma la estructura; cada uno escribe su parte |
+| README final | #71 | Alex |
+| Validación con el coordinador | #70 | Quien tenga más contacto |
+| Video | #69 | Los tres |
+| Dashboard y Portal (opcionales) | #66 y #67 | Quien termine primero |
+
+Fecha de corte: el 10/11 se deja de agregar funciones.
 
 ---
 
