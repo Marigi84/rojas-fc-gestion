@@ -13,7 +13,9 @@ export const VINCULOS: { valor: Vinculo; etiqueta: string }[] = [
 ]
 
 export function etiquetaVinculo(vinculo: Vinculo): string {
-  return VINCULOS.find((v) => v.valor === vinculo)?.etiqueta ?? vinculo
+  return (
+    VINCULOS.find((opcion) => opcion.valor === vinculo)?.etiqueta ?? vinculo
+  )
 }
 
 // Nombre y apellido solo se envían para una persona nueva; teléfono y

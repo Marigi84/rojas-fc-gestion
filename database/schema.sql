@@ -352,61 +352,64 @@ DELIMITER ;
 --    (RN-13, RN-19, RN-20, RN-23, RN-24, RN-32, RN-37, RN-42)
 -- =====================================================================
 CREATE VIEW vista_cuota AS
-SELECT c.dni_alumno, c.periodo, p.importe, p.fecha_vencimiento,
-       pg.id_pago, pg.fecha AS fecha_pago,
-       p.importe
-         + IF(COALESCE(pg.fecha, CURDATE()) > p.fecha_vencimiento,
-              ROUND(p.importe * p.porcentaje_interes / 100, 2), 0)
+SELECT cuota.dni_alumno, cuota.periodo, periodo.importe, periodo.fecha_vencimiento,
+       pago.id_pago, pago.fecha AS fecha_pago,
+       periodo.importe
+         + IF(COALESCE(pago.fecha, CURDATE()) > periodo.fecha_vencimiento,
+              ROUND(periodo.importe * periodo.porcentaje_interes / 100, 2), 0)
          AS monto_a_pagar,
        CASE
-         WHEN pg.id_pago IS NOT NULL          THEN 'pagada'
-         WHEN CURDATE() > p.fecha_vencimiento THEN 'vencida'
+         WHEN pago.id_pago IS NOT NULL              THEN 'pagada'
+         WHEN CURDATE() > periodo.fecha_vencimiento THEN 'vencida'
          ELSE 'pendiente'
        END AS estado
-FROM cuota c
-JOIN periodo p ON p.periodo = c.periodo
-LEFT JOIN pago pg ON pg.dni_alumno = c.dni_alumno
-                 AND pg.periodo = c.periodo
-                 AND pg.vigente = 1;
+FROM cuota
+JOIN periodo ON periodo.periodo = cuota.periodo
+LEFT JOIN pago ON pago.dni_alumno = cuota.dni_alumno
+              AND pago.periodo = cuota.periodo
+              AND pago.vigente = 1;
 
 CREATE VIEW vista_participacion AS
-SELECT pa.dni_alumno, pa.nombre_evento, pa.anio_evento, e.importe,
-       e.importe - COALESCE(SUM(pg.monto), 0) AS saldo
-FROM participacion pa
-JOIN evento e ON e.nombre = pa.nombre_evento AND e.anio = pa.anio_evento
-LEFT JOIN pago pg ON pg.dni_alumno = pa.dni_alumno
-                 AND pg.nombre_evento = pa.nombre_evento
-                 AND pg.anio_evento = pa.anio_evento
-                 AND pg.fecha_anulacion IS NULL
-                 AND pg.estado_sincronizacion = 'confirmado'
-GROUP BY pa.dni_alumno, pa.nombre_evento, pa.anio_evento, e.importe;
+SELECT participacion.dni_alumno, participacion.nombre_evento, participacion.anio_evento,
+       evento.importe,
+       evento.importe - COALESCE(SUM(pago.monto), 0) AS saldo
+FROM participacion
+JOIN evento ON evento.nombre = participacion.nombre_evento
+           AND evento.anio = participacion.anio_evento
+LEFT JOIN pago ON pago.dni_alumno = participacion.dni_alumno
+              AND pago.nombre_evento = participacion.nombre_evento
+              AND pago.anio_evento = participacion.anio_evento
+              AND pago.fecha_anulacion IS NULL
+              AND pago.estado_sincronizacion = 'confirmado'
+GROUP BY participacion.dni_alumno, participacion.nombre_evento, participacion.anio_evento,
+         evento.importe;
 
 CREATE VIEW vista_encargo AS
-SELECT en.dni_alumno, en.fecha_hora, en.descripcion, en.monto,
-       en.monto - COALESCE(SUM(pg.monto), 0) AS saldo
-FROM encargo en
-LEFT JOIN pago pg ON pg.dni_alumno = en.dni_alumno
-                 AND pg.fecha_hora_encargo = en.fecha_hora
-                 AND pg.fecha_anulacion IS NULL
-                 AND pg.estado_sincronizacion = 'confirmado'
-GROUP BY en.dni_alumno, en.fecha_hora, en.descripcion, en.monto;
+SELECT encargo.dni_alumno, encargo.fecha_hora, encargo.descripcion, encargo.monto,
+       encargo.monto - COALESCE(SUM(pago.monto), 0) AS saldo
+FROM encargo
+LEFT JOIN pago ON pago.dni_alumno = encargo.dni_alumno
+              AND pago.fecha_hora_encargo = encargo.fecha_hora
+              AND pago.fecha_anulacion IS NULL
+              AND pago.estado_sincronizacion = 'confirmado'
+GROUP BY encargo.dni_alumno, encargo.fecha_hora, encargo.descripcion, encargo.monto;
 
 CREATE VIEW vista_alumno AS
-SELECT a.dni, pe.nombre, pe.apellido, a.fecha_nacimiento,
-       YEAR(a.fecha_nacimiento) AS categoria,
+SELECT alumno.dni, persona.nombre, persona.apellido, alumno.fecha_nacimiento,
+       YEAR(alumno.fecha_nacimiento) AS categoria,
        IF(EXISTS (SELECT 1 FROM permanencia
-                  WHERE dni_alumno = a.dni AND vigente = 1),
+                  WHERE dni_alumno = alumno.dni AND vigente = 1),
           'activo', 'inactivo') AS estado,
        EXISTS (SELECT 1 FROM vista_cuota
-               WHERE dni_alumno = a.dni AND estado = 'vencida') AS moroso
-FROM alumno a
-JOIN persona pe ON pe.dni = a.dni;
+               WHERE dni_alumno = alumno.dni AND estado = 'vencida') AS moroso
+FROM alumno
+JOIN persona ON persona.dni = alumno.dni;
 
 CREATE VIEW vista_recibo AS
-SELECT r.numero_recibo, r.id_pago, r.fecha_emision,
-       pg.fecha_anulacion IS NOT NULL AS anulado
-FROM recibo r
-JOIN pago pg ON pg.id_pago = r.id_pago;
+SELECT recibo.numero_recibo, recibo.id_pago, recibo.fecha_emision,
+       pago.fecha_anulacion IS NOT NULL AS anulado
+FROM recibo
+JOIN pago ON pago.id_pago = recibo.id_pago;
 
 -- =====================================================================
 -- 10. Índices (RF-38, RF-39, RF-42, RF-44, RF-46, RF-48, RNF-06, RNF-07)
