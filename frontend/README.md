@@ -93,20 +93,18 @@ frontend/
 
 ## Rutas
 
-La navegación base incluye las secciones de los 9 módulos del sistema
-(definidos en `docs/modulos/propuesta-modulos.md`), más el login.
+La navegación incluye los módulos que entran en la entrega final (definidos en
+`docs/modulos/propuesta-modulos.md` y recortados en
+`docs/alcance/revision-del-alcance.md`, sección 3), más el login.
 
-| Ruta            | Módulo                                          |
-| --------------- | ----------------------------------------------- |
-| `/`             | 8. Dashboard                                    |
-| `/alumnos`      | 2. Alumnos, Responsables y Categorías           |
-| `/portal`       | 3. Portal del Responsable                       |
-| `/cuotas`       | 4. Cuotas                                       |
-| `/pagos`        | 5. Pagos y Recibos                              |
-| `/eventos`      | 6. Eventos e Indumentaria                       |
-| `/reportes`     | 7. Búsquedas, Listados, Exportación y Reportes  |
-| `/sin-conexion` | 9. Funcionamiento sin Conexión y Sincronización |
-| `/login`        | 1. Autenticación y Autorización                 |
+| Ruta       | Módulo                                |
+| ---------- | ------------------------------------- |
+| `/`        | 8. Dashboard                          |
+| `/alumnos` | 2. Alumnos, Responsables y Categorías |
+| `/portal`  | 3. Portal del Responsable             |
+| `/cuotas`  | 4. Cuotas                             |
+| `/pagos`   | 5. Pagos y Recibos                    |
+| `/login`   | 1. Autenticación y Autorización       |
 
 Del Módulo 1 están además estas pantallas:
 

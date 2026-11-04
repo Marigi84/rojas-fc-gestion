@@ -164,6 +164,7 @@ Esto no impide que los módulos interactúen entre sí en tiempo de ejecución (
 ## Fuera de alcance
 
 - **Preinscripción en línea:** reprogramada como evolución posterior del sistema. El detalle y la justificación están en `docs/alcance/revision-del-alcance.md`, sección 1. Ningún módulo de esta propuesta la incluye.
+- **Módulos 6 y 9, exportación y reportes del Módulo 7, y RF-26 y RF-32 del Módulo 5:** quedan fuera de la entrega final y se reprograman como evolución posterior. El detalle y la justificación están en `docs/alcance/revision-del-alcance.md`, sección 3. El resto de esta propuesta describe el sistema completo.
 
 ## Requisitos no funcionales
 
