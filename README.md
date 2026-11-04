@@ -281,7 +281,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Estado del proyecto
 
-🟡 **En desarrollo. Entrega final prevista: 14/11/2026.**
+🟡 **En desarrollo. Fecha de entrega final: [A completar].**
 
 | Módulo | Estado |
 |---|---|
