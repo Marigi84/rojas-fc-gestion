@@ -254,6 +254,22 @@ Ejemplo de configuración:
 - **Interés por mora.** No se guarda: lo calcula `vista_cuota` a partir de las condiciones del período. Se aplica una sola vez sobre el importe a las cuotas impagas después del vencimiento (RF-21, RN-19, RN-20).
 - **Fecha del servidor.** `vista_cuota` usa la fecha de MySQL para decidir si una cuota venció. Si el servidor está en otra zona horaria, una cuota puede figurar vencida unas horas antes o después.
 
+## Dashboard
+
+`GET /api/dashboard`, solo para el Administrador: alumnos activos, alumnos activos por categoría, cantidad de morosos y lo recaudado desde el día 1 del mes hasta hoy, sin contar los pagos anulados (RF-45 a RF-48, RN-32).
+
+## Portal del Responsable
+
+`GET /api/portal/alumnos`, para el usuario de la sesión: sus alumnos a cargo, con las cuotas, el historial de pagos y los recibos de cada uno (RF-12 a RF-14). Es solo de consulta. El DNI sale del token y no se recibe por parámetro, así que nadie puede pedir los datos de un alumno que no tiene asociado (RNF-03).
+
+## Datos de ejemplo
+
+`database/datos-demo.sql` carga alumnos, responsables, cuotas, pagos y recibos para la demo, sobre una base recién creada. Las fechas son relativas al mes en curso. Los usuarios y su contraseña figuran al principio del archivo: son públicos, así que no hay que cargarlos en un sistema con información real.
+
+```bash
+mysql -u root -p rojasfc < database/datos-demo.sql
+```
+
 ## Empaquetar
 
 ```bash
