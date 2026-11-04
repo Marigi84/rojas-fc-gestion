@@ -249,8 +249,8 @@ Ejemplo de configuración:
 }
 ```
 
-- **Generación automática (RN-15).** Corre al arrancar el backend y todos los días a la 1 de la mañana, no solo el día 1, porque el servidor puede estar apagado ese día. Si el mes ya tiene cuotas, no hace nada. Si no está configurado, lo crea con el importe y el interés del último período y el mismo día de vencimiento, ajustado si el mes es más corto (RN-17). Para cambiar el valor de un mes, hay que configurarlo antes de que empiece: una vez generadas sus cuotas, sus condiciones quedan fijas (RN-22). Antes del primer período configurado no genera nada.
-- **Altas durante el mes.** Las cuotas son para los alumnos activos al generarlas (RN-14), así que quien se da de alta después empieza a pagar desde el mes siguiente.
+- **Generación automática (RN-15).** Corre al arrancar el backend y todos los días a la 1 de la mañana, no solo el día 1, porque el servidor puede estar apagado ese día. Si el mes ya tiene cuotas, no hace nada. Si no está configurado, lo crea con el importe y el interés del último período y el mismo día de vencimiento, ajustado si el mes es más corto (RN-17). Para cambiar el valor de un mes, hay que configurarlo antes de que empiece: una vez generadas sus cuotas, sus condiciones quedan fijas (RN-22). Antes del primer período configurado no genera nada. Un período creado así queda a nombre del administrador que configuró el anterior, porque la base exige uno (RNF-11).
+- **Altas durante el mes.** Las cuotas son para los alumnos activos al generarlas (RN-14), así que quien se da de alta después empieza a pagar desde el mes siguiente. Si se genera un mes pasado, no se le cobra a quien se inscribió después de ese mes.
 - **Interés por mora.** No se guarda: lo calcula `vista_cuota` a partir de las condiciones del período. Se aplica una sola vez sobre el importe a las cuotas impagas después del vencimiento (RF-21, RN-19, RN-20).
 - **Fecha del servidor.** `vista_cuota` usa la fecha de MySQL para decidir si una cuota venció. Si el servidor está en otra zona horaria, una cuota puede figurar vencida unas horas antes o después.
 

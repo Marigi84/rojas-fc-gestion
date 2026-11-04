@@ -88,6 +88,35 @@ class CuotaIntegracionTest {
   }
 
   @Test
+  void rn14UnMesPasadoNoSeLeCobraAQuienTodaviaNoSeHabiaInscripto() throws Exception {
+    alumno(42000011, "Antiguo");
+    alumno(42000012, "Nuevo");
+    jdbc.update("UPDATE permanencia SET fecha_alta = '2021-06-15' WHERE dni_alumno = 42000012");
+    configurar("2021-05", "2099-12-31", "1000", "10");
+    configurar("2021-06", "2099-12-31", "1000", "10");
+
+    generar("2021-05").andExpect(jsonPath("$.cuotasGeneradas").value(1));
+    generar("2021-06").andExpect(jsonPath("$.cuotasGeneradas").value(2));
+
+    assertEquals(0, contar("cuota WHERE dni_alumno = 42000012 AND periodo = '2021-05-01'"));
+    assertEquals(1, contar("cuota WHERE dni_alumno = 42000012 AND periodo = '2021-06-01'"));
+  }
+
+  @Test
+  void rf52UnResponsableNoAccedeALasCuotas() throws Exception {
+    UsuarioAutenticado usuario = new UsuarioAutenticado(30000001L, Rol.RESPONSABLE, false);
+    RequestPostProcessor responsable = authentication(new UsernamePasswordAuthenticationToken(
+        usuario, null, List.of(new SimpleGrantedAuthority("ROLE_RESPONSABLE"))));
+
+    mvc.perform(get("/api/periodos").with(responsable)).andExpect(status().isForbidden());
+    mvc.perform(get("/api/cuotas/morosos").with(responsable)).andExpect(status().isForbidden());
+    mvc.perform(get("/api/alumnos/42000001/cuotas").with(responsable))
+        .andExpect(status().isForbidden());
+    mvc.perform(post("/api/periodos/2020-01/cuotas").with(responsable))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
   void rn16NoSeGeneraDosVeces() throws Exception {
     alumno(42000003, "Unico");
     configurar("2020-02", "2099-12-31", "1000", "10");

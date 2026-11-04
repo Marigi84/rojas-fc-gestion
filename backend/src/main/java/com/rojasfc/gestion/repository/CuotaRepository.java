@@ -16,13 +16,17 @@ public interface CuotaRepository extends JpaRepository<Cuota, CuotaId> {
   @Query("SELECT cuota.periodo AS periodo, COUNT(cuota) AS cantidad FROM Cuota cuota GROUP BY cuota.periodo")
   List<CuotasPorPeriodo> contarPorPeriodo();
 
-  /** Una cuota por cada alumno con permanencia vigente al generar (RN-14, RN-16). */
+  /**
+   * Una cuota por cada alumno con permanencia vigente al generar (RN-14, RN-16).
+   * Si se genera un mes pasado, no incluye a quien se inscribio despues de ese mes.
+   */
   @Modifying
   @Query(value = """
       INSERT INTO cuota (dni_alumno, periodo, fecha_generacion)
       SELECT dni_alumno, :periodo, :hoy
       FROM permanencia
       WHERE vigente = 1
+        AND fecha_alta <= LAST_DAY(:periodo)
       """, nativeQuery = true)
   int generar(@Param("periodo") LocalDate periodo, @Param("hoy") LocalDate hoy);
 
