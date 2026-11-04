@@ -7,6 +7,27 @@ export function formatearFecha(iso: string | null): string {
   return `${dia}/${mes}/${anio}`
 }
 
+const MESES = [
+  'enero',
+  'febrero',
+  'marzo',
+  'abril',
+  'mayo',
+  'junio',
+  'julio',
+  'agosto',
+  'septiembre',
+  'octubre',
+  'noviembre',
+  'diciembre',
+]
+
+// Mes en formato AAAA-MM como texto, por ejemplo "noviembre de 2026".
+export function formatearPeriodo(periodo: string): string {
+  const [anio, mes] = periodo.split('-')
+  return `${MESES[Number(mes) - 1]} de ${anio}`
+}
+
 // Hoy en formato ISO, según el reloj local del navegador.
 export function hoyIso(): string {
   const ahora = new Date()
