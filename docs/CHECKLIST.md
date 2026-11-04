@@ -139,7 +139,7 @@ Debe permitir encontrar fácilmente:
 - [ ] ❌ Universidad y carrera.
 - [ ] ❌ Materia: Proyecto Final.
 - [ ] ❌ Nombre del proyecto.
-- [ ] ❌ Número de grupo. *No figura en el repositorio.*
+- [ ] ❌ Número de grupo. *Somos el grupo 142.*
 - [ ] ❌ Nombre completo de todos los integrantes.
 - [ ] ❌ Año.
 
