@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { CuotasAlumno } from '../components/cuotas/CuotasAlumno'
 import { RestablecerContrasena } from '../components/responsables/RestablecerContrasena'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
@@ -266,6 +267,8 @@ export function AlumnoDetallePage() {
           </div>
         )}
       </Tarjeta>
+
+      <CuotasAlumno dni={alumno.dni} />
 
       <Tarjeta titulo="Historial en la escuela">
         <Tabla

@@ -187,7 +187,7 @@ mvn test
 
 Corre los tests unitarios, que no necesitan base de datos.
 
-Las reglas que controla la base (triggers de RN-03, que un alta fallida no deje nada a medias) se prueban con tests de integración contra MySQL. Se activan con `TESTS_MYSQL=true` y usan las mismas variables `DB_*`. Crean desde `database/schema.sql` una base aparte, `rojasfc_test`, que se borra y se vuelve a crear en cada corrida, así que no tocan la base de desarrollo:
+Las reglas que controla la base (triggers de RN-03 y RN-22, que un alta fallida no deje nada a medias, el interés de `vista_cuota`) se prueban con tests de integración contra MySQL. Se activan con `TESTS_MYSQL=true` y usan las mismas variables `DB_*`. Crean desde `database/schema.sql` una base aparte, `rojasfc_test`, que se borra y se vuelve a crear en cada corrida, así que no tocan la base de desarrollo:
 
 ```powershell
 $env:TESTS_MYSQL = "true"
@@ -226,6 +226,33 @@ Ejemplo para agregar un responsable a un alumno existente:
 
 - Si la persona ya existe, se reutilizan sus datos (RN-01); si ya es responsable, solo se asocia y no se piden teléfono ni contraseña.
 - Al desvincular al último responsable de un alumno, la base rechaza la operación con 409 (RN-05). Si el responsable se queda sin alumnos, se elimina su rol y, si no tiene otro rol, la persona (RN-02).
+
+## Cuotas
+
+Períodos y cuotas (Módulo 4). Todas las rutas son solo para el Administrador. El período se indica como mes, en formato `AAAA-MM`.
+
+| Método y ruta | Uso |
+|---|---|
+| `GET /api/periodos` | Períodos configurados, del más reciente al más antiguo, con la cantidad de cuotas generadas. |
+| `PUT /api/periodos/{periodo}` | Crea o modifica el importe, el vencimiento y el interés de un período (RF-17, RF-19, RF-20). Responde 409 si ya tiene cuotas (RN-22). |
+| `POST /api/periodos/{periodo}/cuotas` | Genera las cuotas de un período ya configurado para los alumnos activos (RF-18, RN-14). Responde 409 si ya están generadas y 400 si el mes todavía no empezó. |
+| `GET /api/alumnos/{dni}/cuotas` | Cuotas de un alumno con importe, vencimiento, monto a pagar, estado y pago asociado (RF-22). |
+| `GET /api/cuotas/morosos` | Alumnos con deuda vencida, con la cantidad de cuotas y el total adeudado con interés (RF-23, RN-23). |
+
+Ejemplo de configuración:
+
+```json
+{
+  "importe": 1000.00,
+  "fechaVencimiento": "2026-11-13",
+  "porcentajeInteres": 10.00
+}
+```
+
+- **Generación automática (RN-15).** Corre al arrancar el backend y todos los días a la 1 de la mañana, no solo el día 1, porque el servidor puede estar apagado ese día. Si el mes ya tiene cuotas, no hace nada. Si no está configurado, lo crea con el importe y el interés del último período y el mismo día de vencimiento, ajustado si el mes es más corto (RN-17). Para cambiar el valor de un mes, hay que configurarlo antes de que empiece: una vez generadas sus cuotas, sus condiciones quedan fijas (RN-22). Antes del primer período configurado no genera nada.
+- **Altas durante el mes.** Las cuotas son para los alumnos activos al generarlas (RN-14), así que quien se da de alta después empieza a pagar desde el mes siguiente.
+- **Interés por mora.** No se guarda: lo calcula `vista_cuota` a partir de las condiciones del período. Se aplica una sola vez sobre el importe a las cuotas impagas después del vencimiento (RF-21, RN-19, RN-20).
+- **Fecha del servidor.** `vista_cuota` usa la fecha de MySQL para decidir si una cuota venció. Si el servidor está en otra zona horaria, una cuota puede figurar vencida unas horas antes o después.
 
 ## Empaquetar
 
