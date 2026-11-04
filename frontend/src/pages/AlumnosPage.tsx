@@ -138,32 +138,37 @@ export function AlumnosPage() {
               columnas={[
                 {
                   titulo: 'Nombre',
-                  valor: (a) => (
+                  valor: (alumno) => (
                     <Link
-                      to={rutaAlumno(a.dni)}
+                      to={rutaAlumno(alumno.dni)}
                       className="font-semibold underline"
                     >
-                      {a.apellido}, {a.nombre}
+                      {alumno.apellido}, {alumno.nombre}
                     </Link>
                   ),
                 },
-                { titulo: 'DNI', valor: (a) => a.dni, numerica: true },
+                {
+                  titulo: 'DNI',
+                  valor: (alumno) => alumno.dni,
+                  numerica: true,
+                },
                 {
                   titulo: 'Año',
-                  valor: (a) => a.anioNacimiento,
+                  valor: (alumno) => alumno.anioNacimiento,
                   numerica: true,
                 },
                 {
                   titulo: 'Estado',
-                  valor: (a) => (a.estado === 'activo' ? 'Activo' : 'Inactivo'),
+                  valor: (alumno) =>
+                    alumno.estado === 'activo' ? 'Activo' : 'Inactivo',
                 },
                 {
                   titulo: 'Moroso',
-                  valor: (a) => (a.moroso ? 'Sí' : 'No'),
+                  valor: (alumno) => (alumno.moroso ? 'Sí' : 'No'),
                 },
               ]}
               filas={pagina?.contenido ?? []}
-              claveFila={(a) => a.dni}
+              claveFila={(alumno) => alumno.dni}
               vacia="No hay alumnos para esos filtros."
             />
             {pagina && (

@@ -108,34 +108,37 @@ export function ResponsableDetallePage() {
           columnas={[
             {
               titulo: 'Nombre',
-              valor: (a) => (
+              valor: (alumno) => (
                 <Link
-                  to={rutaAlumno(a.dni)}
+                  to={rutaAlumno(alumno.dni)}
                   className="font-semibold underline"
                 >
-                  {a.apellido}, {a.nombre}
+                  {alumno.apellido}, {alumno.nombre}
                 </Link>
               ),
             },
-            { titulo: 'DNI', valor: (a) => a.dni, numerica: true },
-            { titulo: 'Vínculo', valor: (a) => etiquetaVinculo(a.vinculo) },
+            { titulo: 'DNI', valor: (alumno) => alumno.dni, numerica: true },
+            {
+              titulo: 'Vínculo',
+              valor: (alumno) => etiquetaVinculo(alumno.vinculo),
+            },
             {
               titulo: 'Estado',
-              valor: (a) => (a.activo ? 'Activo' : 'Inactivo'),
+              valor: (alumno) => (alumno.activo ? 'Activo' : 'Inactivo'),
             },
             {
               titulo: 'Acciones',
-              valor: (a) => (
+              valor: (alumno) => (
                 <Boton
                   variante="peligro"
                   disabled={desvinculacion.isPending}
                   onClick={() => {
                     if (
                       window.confirm(
-                        `¿Desvincular a ${responsable.nombre} ${responsable.apellido} de ${a.nombre} ${a.apellido}?`,
+                        `¿Desvincular a ${responsable.nombre} ${responsable.apellido} de ${alumno.nombre} ${alumno.apellido}?`,
                       )
                     ) {
-                      desvinculacion.mutate(a.dni)
+                      desvinculacion.mutate(alumno.dni)
                     }
                   }}
                 >
@@ -145,7 +148,7 @@ export function ResponsableDetallePage() {
             },
           ]}
           filas={responsable.alumnos}
-          claveFila={(a) => a.dni}
+          claveFila={(alumno) => alumno.dni}
           vacia="El responsable no tiene alumnos asociados."
         />
       </Tarjeta>
