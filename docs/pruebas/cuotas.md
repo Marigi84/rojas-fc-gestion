@@ -4,7 +4,7 @@
 
 Este documento registra las pruebas del Módulo 4: configuración de períodos, generación de cuotas, interés por mora, cuotas de un alumno y alumnos morosos. Cubre los requisitos RF-17 a RF-23 y las reglas RN-14 a RN-24.
 
-Las pruebas automáticas del backend están en `CuotaServiceTest` (10 casos, sin base) y `CuotaIntegracionTest` (11 casos, contra MySQL). Ver `backend/README.md`, sección "Tests".
+Las pruebas automáticas del backend están en `CuotaServiceTest` (10 casos, sin base) y `CuotaIntegracionTest` (13 casos, contra MySQL). Ver `backend/README.md`, sección "Tests".
 
 ### Cómo se prepararon
 
