@@ -2,6 +2,10 @@
 -- Basado en el modelo conceptual (docs/entidades-relaciones-cardinalidad/modelo-conceptual.md).
 -- Los atributos derivados del modelo conceptual no se almacenan: se calculan en las vistas.
 
+-- El archivo esta en UTF-8: se indica al cliente para que las tildes se
+-- guarden bien aunque la consola use otra codificacion (por ejemplo, Windows).
+SET NAMES utf8mb4;
+
 -- =====================================================================
 -- 1. Personas y roles (RN-01, RN-02, RN-04)
 -- =====================================================================

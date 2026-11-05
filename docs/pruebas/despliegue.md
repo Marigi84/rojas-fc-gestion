@@ -23,6 +23,7 @@ Este documento registra las pruebas del despliegue en línea: la base en Aiven, 
 | 3 | Contar objetos | Consultar `information_schema` | 14 tablas, 15 triggers y 5 vistas | OK |
 | 4 | Datos de demo | `source database/datos-demo.sql` | Termina sin errores | OK |
 | 5 | Configuración inicial cerrada | Mirar si existe un administrador | La demo trae la administradora DNI 20111222, así que la pantalla de configuración inicial no queda abierta | OK |
+| 5b | Tildes | Cargar los scripts desde la consola de Windows y mirar "Nicolás Sosa" en el listado | Se ve "Nicolás". La primera carga, sin `SET NAMES utf8mb4`, guardó las tildes mal; se agregó esa línea a los dos scripts y se recargó la base | Corregido |
 
 ## Compilación
 
