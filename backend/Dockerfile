@@ -10,6 +10,9 @@ RUN mvn -q -DskipTests package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=compilacion /app/target/*.jar app.jar
+# El backend corre con un usuario sin privilegios, no como root.
+RUN useradd --system --no-create-home rojasfc
+USER rojasfc
 # Render indica el puerto en la variable PORT; el backend lee SERVER_PORT.
 ENV SERVER_PORT=8080
 EXPOSE 8080
