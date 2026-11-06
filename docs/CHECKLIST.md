@@ -38,7 +38,7 @@ Cada tarea tiene su issue y su responsable en el tablero.
 |---|---|---|
 | Cuotas | #63 | Alex |
 | Pagos y recibos | #64 | Silvia |
-| Recorte del alcance | #65 | Alex |
+| Revisión del alcance | #65 | Alex |
 | Dashboard | #66 | Alex |
 | Portal del Responsable | #67 | Alex |
 | Despliegue | #60 | Marina |

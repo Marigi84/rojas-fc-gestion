@@ -79,6 +79,8 @@ Organiza la navegación entre las distintas pantallas y restringe el acceso a de
 
 ### 4.6. Soporte offline limitado
 
+> Fuera de la entrega final. Ver `docs/alcance/revision-del-alcance.md`, sección 3.
+
 Permite conservar temporalmente la información necesaria para las operaciones habilitadas sin conexión y realizar su posterior sincronización.
 
 El mecanismo concreto de almacenamiento local se definirá en una etapa técnica posterior.
@@ -171,6 +173,8 @@ Esta sección responde a RF-11, RF-15, RF-49 a RF-52, RNF-01 y RNF-02.
 ---
 
 ## 9. Funcionamiento offline limitado
+
+> Esta sección y la 4.6 describen una funcionalidad que quedó fuera de la entrega final. Ver `docs/alcance/revision-del-alcance.md`, sección 3.
 
 El sistema no se plantea como una aplicación completamente offline.
 

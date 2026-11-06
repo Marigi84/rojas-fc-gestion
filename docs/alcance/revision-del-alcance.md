@@ -52,3 +52,40 @@ Simplifica la configuración de las cuotas y el cálculo del interés por mora.
 ### Cómo queda
 
 El Administrador establece una única fecha de vencimiento para las cuotas de cada período (RF-19, RN-18).
+
+---
+
+## 3. Funcionalidades fuera de la entrega final
+
+### Qué preveía la Primera Entrega
+
+La Primera Entrega incluía cobros de eventos e indumentaria, reportes, exportación a Excel, envío de comprobantes por WhatsApp y funcionamiento sin conexión. Figuran en:
+
+- Sección 4, "Alcance del proyecto".
+- Sección 6.4, "Etapa 4 — Gestión económica": cobros de eventos e indumentaria.
+- Sección 6.5, "Etapa 5 — Funcionalidades complementarias e integración": reportes, exportación, opciones para compartir comprobantes y funcionamiento sin conexión.
+
+### Ajuste
+
+Las siguientes funcionalidades se reprograman como evolución posterior del sistema y no forman parte de la entrega final:
+
+| Funcionalidad | Requisitos | Reglas |
+|---|---|---|
+| Eventos e indumentaria, con sus pagos parciales | RF-26, RF-34 a RF-37 | RN-35, RN-38 a RN-43 |
+| Exportación a Excel y reportes | RF-40 a RF-44 | |
+| Compartir recibos por WhatsApp | RF-32 | |
+| Funcionamiento sin conexión y sincronización | RF-53 a RF-57 | RNF-09 y RNF-10 |
+
+Son 16 de los 57 requisitos funcionales. Registrar pagos (RF-24) y consultar su historial (RF-27) se limitan a las cuotas.
+
+### Motivo
+
+Se priorizan las funcionalidades centrales de gestión de alumnos, responsables, cuotas y pagos, tal como prevé la sección 6.7 de la Primera Entrega ante desvíos respecto de los tiempos previstos. Se prefiere entregar un circuito completo, probado y defendible antes que varios módulos incompletos.
+
+### Cómo queda
+
+Forman parte de la entrega final la autenticación, la gestión de alumnos y responsables, la búsqueda y el listado de alumnos, las cuotas, los pagos con sus recibos, el Dashboard (RF-45 a RF-48) y el Portal del Responsable (RF-12 a RF-14).
+
+El esquema de la base de datos no cambia: conserva las tablas `evento`, `participacion` y `encargo`, y el estado de sincronización de los pagos, por lo que estas funcionalidades pueden incorporarse en un incremento posterior sin rediseñar el modelo. Los requisitos y las reglas de negocio tampoco se modifican, porque describen el sistema completo.
+
+Las pantallas de estos módulos se quitan de la navegación, para que el sistema no ofrezca funciones que no están disponibles.

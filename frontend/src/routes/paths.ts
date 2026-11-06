@@ -1,7 +1,8 @@
 import type { Rol } from '../stores/sesion'
 
-// Rutas de la aplicación. Cada ruta corresponde a uno de los 9 módulos
-// definidos en docs/modulos/propuesta-modulos.md.
+// Rutas de la aplicación. Corresponden a los módulos de
+// docs/modulos/propuesta-modulos.md que entran en la entrega final (ver
+// docs/alcance/revision-del-alcance.md, sección 3).
 export const PATHS = {
   login: '/login',
   configuracionInicial: '/configuracion-inicial',
@@ -15,9 +16,6 @@ export const PATHS = {
   portal: '/portal',
   cuotas: '/cuotas',
   pagos: '/pagos',
-  eventos: '/eventos',
-  reportes: '/reportes',
-  sinConexion: '/sin-conexion',
   administradores: '/administradores',
 } as const
 
@@ -57,17 +55,6 @@ export const MODULOS = [
   },
   { ruta: PATHS.cuotas, etiqueta: 'Cuotas', roles: SOLO_ADMINISTRADOR },
   { ruta: PATHS.pagos, etiqueta: 'Pagos y Recibos', roles: SOLO_ADMINISTRADOR },
-  {
-    ruta: PATHS.eventos,
-    etiqueta: 'Eventos e Indumentaria',
-    roles: SOLO_ADMINISTRADOR,
-  },
-  { ruta: PATHS.reportes, etiqueta: 'Reportes', roles: SOLO_ADMINISTRADOR },
-  {
-    ruta: PATHS.sinConexion,
-    etiqueta: 'Sin Conexión',
-    roles: SOLO_ADMINISTRADOR,
-  },
   // Parte del Módulo 1 (RF-51): va al final para no mezclarse con los módulos.
   {
     ruta: PATHS.administradores,
