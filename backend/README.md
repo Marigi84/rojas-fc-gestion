@@ -35,6 +35,7 @@ La conexión a MySQL se toma de variables de entorno, nunca de código:
 | `DB_NAME` | `rojasfc` | Nombre de la base |
 | `DB_USERNAME` | — (obligatoria) | Usuario de MySQL |
 | `DB_PASSWORD` | — (obligatoria) | Contraseña de MySQL |
+| `DB_SSL_MODE` | `DISABLED` | Conexión cifrada a MySQL. En el despliegue (Aiven) va `REQUIRED` |
 | `JWT_SECRET` | — (obligatoria) | Clave para firmar los tokens, de al menos 32 caracteres |
 | `JWT_DURACION_MINUTOS` | `480` | Duración de la sesión |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origen permitido para el frontend |
@@ -253,6 +254,32 @@ Ejemplo de configuración:
 - **Altas durante el mes.** Las cuotas son para los alumnos activos al generarlas (RN-14), así que quien se da de alta después empieza a pagar desde el mes siguiente. Si se genera un mes pasado, no se le cobra a quien se inscribió después de ese mes.
 - **Interés por mora.** No se guarda: lo calcula `vista_cuota` a partir de las condiciones del período. Se aplica una sola vez sobre el importe a las cuotas impagas después del vencimiento (RF-21, RN-19, RN-20).
 - **Fecha del servidor.** `vista_cuota` usa la fecha de MySQL para decidir si una cuota venció. Si el servidor está en otra zona horaria, una cuota puede figurar vencida unas horas antes o después.
+
+## Pagos y recibos
+
+Pagos de cuotas y sus recibos. Todas las rutas son solo para el Administrador.
+
+| Método y ruta | Uso |
+|---|---|
+| `POST /api/pagos` | Registra el pago total de una cuota y emite su recibo (RF-24, RF-25, RF-29). Responde 409 si la cuota ya está pagada y 400 si el medio de pago no es efectivo o transferencia. |
+| `POST /api/pagos/{idPago}/anulacion` | Anula un pago con un motivo obligatorio, sin borrarlo (RF-28, RN-30, RN-31). Responde 409 si ya estaba anulado. |
+| `GET /api/alumnos/{dni}/pagos` | Historial de pagos del alumno, incluidos los anulados, con el número de recibo (RF-27). |
+| `GET /api/recibos/{numeroRecibo}` | Recibo con el alumno, el concepto, el importe, el medio de pago y si está anulado (RF-29, RF-30, RF-33). |
+
+Ejemplo de registro:
+
+```json
+{
+  "dniAlumno": 45111222,
+  "periodo": "2026-11",
+  "medioPago": "efectivo"
+}
+```
+
+- **El importe y la fecha no se envían.** El importe sale de `vista_cuota`, que ya incluye el interés si la cuota está vencida, y la fecha es la del día en que se registra el pago.
+- **Recibo automático.** Cada pago confirmado genera su recibo en la misma operación (RN-33). Al anular el pago, el recibo se conserva identificado como anulado (RF-33).
+- **Un pago vigente por cuota.** Después de anular un pago, la cuota vuelve a quedar impaga y se puede registrar otro.
+- **Descarga.** La pantalla del recibo arma un archivo de texto con los datos, para guardarlo o imprimirlo.
 
 ## Dashboard
 

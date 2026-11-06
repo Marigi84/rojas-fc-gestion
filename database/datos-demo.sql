@@ -13,6 +13,9 @@
 -- Estas contrasenas son publicas: no cargar estos datos en un sistema con
 -- informacion real.
 
+-- El archivo esta en UTF-8 (ver schema.sql).
+SET NAMES utf8mb4;
+
 SET @mes0 = DATE_FORMAT(CURDATE(), '%Y-%m-01');
 SET @mes1 = DATE_SUB(@mes0, INTERVAL 1 MONTH);
 SET @mes2 = DATE_SUB(@mes0, INTERVAL 2 MONTH);
