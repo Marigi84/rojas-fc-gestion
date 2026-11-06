@@ -92,7 +92,7 @@ function nuevaPagina(contexto) {
   const tokenLaura = await sesionDe(30111222)
   const tokenJorge = await sesionDe(30111223)
   const deJorge = await (await fetch(`${API}/portal/alumnos`, { headers: { Authorization: `Bearer ${tokenJorge}` } })).json()
-  const ajeno = deJorge.flatMap((alumno) => alumno.recibos)[0].numeroRecibo
+  const ajeno = Number(deJorge.flatMap((alumno) => alumno.recibos)[0].numeroRecibo)
   const pedido = await fetch(`${API}/portal/recibos/${ajeno}`, { headers: { Authorization: `Bearer ${tokenLaura}` } })
   caso('No puede descargar el recibo de otra familia (RNF-03)', pedido.status === 404, String(pedido.status))
 
