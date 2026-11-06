@@ -297,7 +297,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 |---|---|
 | 1. Autenticación y Autorización | Hecho |
 | 2. Alumnos, Responsables y Categorías | Hecho |
-| 3. Portal del Responsable | Hecho, salvo descargar el recibo (RF-14), pendiente |
+| 3. Portal del Responsable | Hecho |
 | 4. Cuotas | Hecho |
 | 5. Pagos y Recibos | Hecho |
 | 7. Búsqueda y listado de alumnos | Hecho |

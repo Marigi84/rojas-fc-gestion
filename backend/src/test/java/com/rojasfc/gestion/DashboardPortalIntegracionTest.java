@@ -151,10 +151,32 @@ class DashboardPortalIntegracionTest {
   }
 
   @Test
+  void rf14ElResponsableDescargaLosRecibosDeSusAlumnos() throws Exception {
+    mvc.perform(get("/api/portal/recibos/" + reciboDeMateo()).with(sesion(LAURA, Rol.RESPONSABLE)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.dniAlumno").value(MATEO))
+        .andExpect(jsonPath("$.importe").value(1100))
+        .andExpect(jsonPath("$.anulado").value(false));
+  }
+
+  @Test
+  void rnf03UnReciboDeOtraFamiliaRespondeComoInexistente() throws Exception {
+    mvc.perform(get("/api/portal/recibos/" + reciboDeMateo()).with(sesion(JORGE, Rol.RESPONSABLE)))
+        .andExpect(status().isNotFound());
+    mvc.perform(get("/api/portal/recibos/99999").with(sesion(JORGE, Rol.RESPONSABLE)))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
   void rnf03QuienNoTieneAlumnosNoVeNada() throws Exception {
     mvc.perform(get("/api/portal/alumnos").with(sesion(ADMIN, Rol.ADMINISTRADOR)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", empty()));
+  }
+
+  private long reciboDeMateo() {
+    return jdbc.queryForObject("SELECT recibo.numero_recibo FROM recibo "
+        + "JOIN pago ON pago.id_pago = recibo.id_pago WHERE pago.dni_alumno = ?", Long.class, MATEO);
   }
 
   private void responsable(long dni, String nombre) {

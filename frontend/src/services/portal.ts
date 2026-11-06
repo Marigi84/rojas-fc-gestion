@@ -1,5 +1,6 @@
 import { api } from './apiClient'
 import type { Cuota } from './cuotas'
+import type { Recibo } from './pagos'
 
 // Servicio del Módulo 3 (Portal del Responsable). Ver backend/README.md, sección
 // "Portal del Responsable". Los datos son siempre los del usuario de la sesión.
@@ -38,4 +39,6 @@ export const CLAVE_PORTAL = ['portal'] as const
 
 export const portalApi = {
   alumnos: () => api.get<AlumnoPortal[]>('/portal/alumnos'),
+  recibo: (numeroRecibo: number) =>
+    api.get<Recibo>(`/portal/recibos/${numeroRecibo}`),
 }

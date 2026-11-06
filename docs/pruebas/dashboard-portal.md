@@ -4,7 +4,7 @@
 
 Este documento registra las pruebas de la pantalla de inicio del Administrador y del portal de consulta del Responsable. Cubre los requisitos RF-45 a RF-48 y RF-12 a RF-14, y RNF-03.
 
-Las pruebas automáticas del backend están en `DashboardPortalIntegracionTest` (8 casos, contra MySQL). Ver `backend/README.md`, sección "Tests".
+Las pruebas automáticas del backend están en `DashboardPortalIntegracionTest` (10 casos, contra MySQL). Ver `backend/README.md`, sección "Tests".
 
 ### Cómo se prepararon
 
@@ -14,7 +14,7 @@ Las pruebas automáticas del backend están en `DashboardPortalIntegracionTest` 
 
 Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular (390 px). El recorrido se automatizó con Playwright.
 
-**Última ejecución:** 03/11/2026, rama `modulo8-3/dashboard-portal`: 21 de 21 casos correctos.
+**Última ejecución:** 06/11/2026: 23 de 23 casos correctos.
 
 ---
 
@@ -38,14 +38,15 @@ Los casos se recorrieron en Microsoft Edge, en escritorio (1280 px) y en celular
 | 14 | Cuotas (RF-13) | Mirar las cuotas de Mateo | Se ven sus cuotas vencidas y pagadas | OK |
 | 15 | Historial de pagos (RF-13) | Mirar los pagos de Sofía | Figura el pago de $ 27.500,00, con interés | OK |
 | 16 | Recibos (RF-14) | Mirar los recibos de Sofía | Figuran sus 3 recibos | OK |
-| 17 | Pago y recibo anulados (RF-33) | Ingresar como 30111223 y mirar a Lucía | El pago y el recibo figuran como anulados | OK |
-| 18 | Otro responsable | Mirar el portal de 30111223 | No ve a Mateo | OK |
-| 19 | Permisos (RF-52) | Pedir el Dashboard a la API con la sesión de un responsable | Responde 403 | OK |
-| 20 | Celular | Abrir el portal y el Dashboard con 390 px de ancho | No hay desplazamiento horizontal | OK |
-| 21 | Consola del navegador | Revisar la consola durante el recorrido | Sin errores de JavaScript | OK |
+| 17 | Descargar un recibo (RF-14) | Presionar "Descargar" en un recibo de Sofía | Se descarga un archivo con sus datos | OK |
+| 18 | Recibo de otra familia (RNF-03) | Pedir a la API un recibo de un alumno de otro responsable | Responde 404, igual que uno inexistente | OK |
+| 19 | Pago y recibo anulados (RF-33) | Ingresar como 30111223 y mirar a Lucía | El pago y el recibo figuran como anulados | OK |
+| 20 | Otro responsable | Mirar el portal de 30111223 | No ve a Mateo | OK |
+| 21 | Permisos (RF-52) | Pedir el Dashboard a la API con la sesión de un responsable | Responde 403 | OK |
+| 22 | Celular | Abrir el portal y el Dashboard con 390 px de ancho | No hay desplazamiento horizontal | OK |
+| 23 | Consola del navegador | Revisar la consola durante el recorrido | Sin errores de JavaScript | OK |
 
 ## Limitaciones conocidas
 
-- El portal lista los recibos, pero todavía no los descarga (parte de RF-14): se suma cuando esté la descarga de pagos y recibos (#64).
-- Los pagos y recibos de estos casos vienen de los datos de ejemplo, porque la pantalla para registrarlos es la del #64.
+- Los pagos y recibos de estos casos vienen de los datos de ejemplo. El registro desde la pantalla se prueba en `docs/pruebas/pagos.md`.
 - Las cantidades de morosos varían con la fecha: desde el día 14 del mes, las cuotas impagas del mes en curso también cuentan como vencidas.

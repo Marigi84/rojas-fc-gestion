@@ -115,9 +115,9 @@ async function recaudacion(token) {
   const c3 = await (await api(token, 'GET', '/alumnos/45111222/cuotas')).json()
   caso('La cuota vuelve a estar vencida (RN-32)', c3.find((c) => c.periodo === mes).estado === 'vencida')
   caso('La recaudación no cuenta el pago anulado (RN-32)', Number(await recaudacion(token)) === Number(antes))
-  const rec = await (await api(token, 'GET', `/recibos/${pago.numeroRecibo}`)).json()
+  const rec = await (await api(token, 'GET', `/recibos/${Number(pago.numeroRecibo)}`)).json()
   caso('El recibo se conserva como anulado (RF-33)', rec.anulado === true)
-  const dosVeces = await api(token, 'POST', `/pagos/${pago.idPago}/anulacion`, { motivo: 'otra vez' })
+  const dosVeces = await api(token, 'POST', `/pagos/${Number(pago.idPago)}/anulacion`, { motivo: 'otra vez' })
   caso('No se puede anular dos veces (RN-30)', dosVeces.status === 409, String(dosVeces.status))
 
   // --- Nuevo pago despues de anular ---
@@ -130,7 +130,7 @@ async function recaudacion(token) {
   caso('Medio de pago inválido (RN-27)', medio.status === 400, String(medio.status))
   const sinCuota = await api(token, 'POST', '/pagos', { dniAlumno: 45111222, periodo: '2000-01', medioPago: 'efectivo' })
   caso('Período sin cuota', sinCuota.status === 404, String(sinCuota.status))
-  const largo = await api(token, 'POST', `/pagos/${pagoNuevo.idPago}/anulacion`, { motivo: 'x'.repeat(201) })
+  const largo = await api(token, 'POST', `/pagos/${Number(pagoNuevo.idPago)}/anulacion`, { motivo: 'x'.repeat(201) })
   caso('Motivo demasiado largo', largo.status === 400, String(largo.status))
 
   // --- Permisos y portal ---
@@ -142,7 +142,7 @@ async function recaudacion(token) {
   const tokenR = (await responsable.json()).token
   const prohibido = await api(tokenR, 'POST', '/pagos', { dniAlumno: 45111222, periodo: mes, medioPago: 'efectivo' })
   caso('Un responsable no registra pagos (RF-52)', prohibido.status === 403, String(prohibido.status))
-  const reciboAjeno = await api(tokenR, 'GET', `/recibos/${pagoNuevo.numeroRecibo}`)
+  const reciboAjeno = await api(tokenR, 'GET', `/recibos/${Number(pagoNuevo.numeroRecibo)}`)
   caso('Un responsable no consulta recibos por la ruta del administrador', reciboAjeno.status === 403, String(reciboAjeno.status))
 
   const r = await (await navegador.newContext({ viewport: { width: 1280, height: 900 } })).newPage()
