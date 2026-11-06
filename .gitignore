@@ -44,3 +44,9 @@ Thumbs.db
 
 *.log
 logs/
+
+# =========================
+# Pruebas de navegador
+# =========================
+
+pruebas/navegador/capturas/

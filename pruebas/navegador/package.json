@@ -1,0 +1,12 @@
+{
+  "name": "rojas-fc-pruebas-navegador",
+  "private": true,
+  "description": "Recorridos del sistema en el navegador (ver README.md)",
+  "scripts": {
+    "preparar": "node -e \"require('./base').reiniciarBase()\"",
+    "test": "node correr.js"
+  },
+  "dependencies": {
+    "playwright-core": "1.64.1"
+  }
+}
