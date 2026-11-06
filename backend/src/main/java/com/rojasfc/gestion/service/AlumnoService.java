@@ -227,7 +227,9 @@ public class AlumnoService {
     return new AlumnoDetalle(dni, persona.getNombre(), persona.getApellido(),
         alumno.getFechaNacimiento(), alumno.getDireccion(), alumno.getCategoria(),
         activo ? "activo" : "inactivo", moroso != null && moroso == 1L,
-        historial.stream().map(p -> new PermanenciaDetalle(p.getFechaAlta(), p.getFechaBaja()))
+        historial.stream()
+            .map(permanencia -> new PermanenciaDetalle(
+                permanencia.getFechaAlta(), permanencia.getFechaBaja()))
             .toList(),
         aCargo);
   }

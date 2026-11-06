@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { CuotasAlumno } from '../components/cuotas/CuotasAlumno'
 import { RestablecerContrasena } from '../components/responsables/RestablecerContrasena'
 import { Aviso } from '../components/ui/Aviso'
 import { Boton } from '../components/ui/Boton'
@@ -86,7 +87,9 @@ export function AlumnoDetallePage() {
   const activo = alumno.estado === 'activo'
   const nombreCompleto = `${alumno.nombre} ${alumno.apellido}`
   const enCurso = baja.isPending || reactivacion.isPending
-  const aRestablecer = alumno.responsables.find((r) => r.dni === restableciendo)
+  const aRestablecer = alumno.responsables.find(
+    (responsable) => responsable.dni === restableciendo,
+  )
 
   // Confirmación antes de cambiar el estado del alumno (RNF-13).
   function darDeBaja() {
@@ -193,27 +196,37 @@ export function AlumnoDetallePage() {
           columnas={[
             {
               titulo: 'Nombre',
-              valor: (r) => (
+              valor: (responsable) => (
                 <Link
-                  to={rutaResponsable(r.dni)}
+                  to={rutaResponsable(responsable.dni)}
                   className="font-semibold underline"
                 >
-                  {r.apellido}, {r.nombre}
+                  {responsable.apellido}, {responsable.nombre}
                 </Link>
               ),
             },
-            { titulo: 'DNI', valor: (r) => r.dni, numerica: true },
-            { titulo: 'Vínculo', valor: (r) => etiquetaVinculo(r.vinculo) },
-            { titulo: 'Teléfono', valor: (r) => r.telefono },
+            {
+              titulo: 'DNI',
+              valor: (responsable) => responsable.dni,
+              numerica: true,
+            },
+            {
+              titulo: 'Vínculo',
+              valor: (responsable) => etiquetaVinculo(responsable.vinculo),
+            },
+            {
+              titulo: 'Teléfono',
+              valor: (responsable) => responsable.telefono,
+            },
             {
               titulo: 'Acciones',
-              valor: (r) => (
+              valor: (responsable) => (
                 <div className="flex flex-wrap gap-2">
                   <Boton
                     variante="secundario"
                     className="text-sm whitespace-nowrap"
-                    aria-label={`Restablecer contraseña de ${r.nombre} ${r.apellido}`}
-                    onClick={() => setRestableciendo(r.dni)}
+                    aria-label={`Restablecer contraseña de ${responsable.nombre} ${responsable.apellido}`}
+                    onClick={() => setRestableciendo(responsable.dni)}
                   >
                     Restablecer contraseña
                   </Boton>
@@ -222,7 +235,7 @@ export function AlumnoDetallePage() {
                   <Boton
                     variante="peligro"
                     className="text-sm whitespace-nowrap"
-                    aria-label={`Desvincular a ${r.nombre} ${r.apellido} del alumno`}
+                    aria-label={`Desvincular a ${responsable.nombre} ${responsable.apellido} del alumno`}
                     disabled={
                       desvinculacion.isPending ||
                       alumno.responsables.length <= 1
@@ -235,11 +248,11 @@ export function AlumnoDetallePage() {
                     onClick={() => {
                       if (
                         window.confirm(
-                          `¿Desvincular a ${r.nombre} ${r.apellido} del alumno?`,
+                          `¿Desvincular a ${responsable.nombre} ${responsable.apellido} del alumno?`,
                         )
                       ) {
                         desvinculacion.mutate({
-                          dniResponsable: r.dni,
+                          dniResponsable: responsable.dni,
                           dniAlumno: alumno.dni,
                         })
                       }
@@ -252,7 +265,7 @@ export function AlumnoDetallePage() {
             },
           ]}
           filas={alumno.responsables}
-          claveFila={(r) => r.dni}
+          claveFila={(responsable) => responsable.dni}
           vacia="El alumno no tiene responsables asociados."
         />
         {aRestablecer && (
@@ -267,18 +280,25 @@ export function AlumnoDetallePage() {
         )}
       </Tarjeta>
 
+      <CuotasAlumno dni={alumno.dni} />
+
       <Tarjeta titulo="Historial en la escuela">
         <Tabla
           columnas={[
-            { titulo: 'Alta', valor: (p) => formatearFecha(p.fechaAlta) },
+            {
+              titulo: 'Alta',
+              valor: (permanencia) => formatearFecha(permanencia.fechaAlta),
+            },
             {
               titulo: 'Baja',
-              valor: (p) =>
-                p.fechaBaja ? formatearFecha(p.fechaBaja) : 'Vigente',
+              valor: (permanencia) =>
+                permanencia.fechaBaja
+                  ? formatearFecha(permanencia.fechaBaja)
+                  : 'Vigente',
             },
           ]}
           filas={alumno.permanencias}
-          claveFila={(p) => p.fechaAlta}
+          claveFila={(permanencia) => permanencia.fechaAlta}
           vacia="Sin registros de permanencia."
         />
       </Tarjeta>

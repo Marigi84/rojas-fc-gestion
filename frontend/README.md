@@ -79,7 +79,7 @@ frontend/
 │   ├── pages/           → una pantalla por módulo
 │   ├── routes/          → definición de rutas y navegación
 │   ├── services/        → comunicación con la API REST y cliente de TanStack Query
-│   ├── utils/           → funciones auxiliares (fechas, mensajes de error)
+│   ├── utils/           → funciones auxiliares (fechas, importes, mensajes de error)
 │   ├── assets/          → imágenes propias (escudo del club)
 │   ├── App.tsx          → componente raíz (TanStack Query y router)
 │   ├── main.tsx         → punto de entrada de la aplicación
@@ -128,6 +128,12 @@ Dentro del Módulo 2 están además las pantallas de alumnos y responsables:
 | `/responsables/:dni`               | Detalle y alumnos a cargo                                                                        |
 | `/responsables/:dni/editar`        | Modificación de los datos del responsable                                                        |
 | `/responsables/:dni/asociar`       | Asociación con otro alumno                                                                       |
+
+En `/cuotas` (Módulo 4) se configuran los períodos, se generan las cuotas y se ven los alumnos morosos. Las cuotas de cada alumno están en su detalle (`/alumnos/:dni`).
+
+En `/pagos` (Módulo 5) se busca un alumno por DNI, se registra el pago de sus cuotas, se anulan con un motivo y se consulta el historial. Cada pago enlaza a su recibo (`/recibos/:numero`), que se puede descargar como archivo de texto.
+
+El Dashboard (`/`) muestra los indicadores al Administrador y el Portal (`/portal`) es la pantalla de consulta del Responsable.
 
 Las rutas se definen en `src/routes/` (`paths.ts` y `AppRouter.tsx`).
 

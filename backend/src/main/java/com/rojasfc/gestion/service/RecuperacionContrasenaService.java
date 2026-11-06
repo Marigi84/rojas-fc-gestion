@@ -72,7 +72,7 @@ public class RecuperacionContrasenaService {
       throw new IllegalArgumentException(ENLACE_INVALIDO);
     }
     Administrador administrador = administradores.findById(datos.dni())
-        .filter(a -> tokens.coincide(datos, a.getContrasenaHash()))
+        .filter(candidato -> tokens.coincide(datos, candidato.getContrasenaHash()))
         .orElseThrow(() -> new IllegalArgumentException(ENLACE_INVALIDO));
     administrador.cambiarContrasena(passwordEncoder.encode(pedido.nueva()));
   }

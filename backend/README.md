@@ -35,6 +35,7 @@ La conexión a MySQL se toma de variables de entorno, nunca de código:
 | `DB_NAME` | `rojasfc` | Nombre de la base |
 | `DB_USERNAME` | — (obligatoria) | Usuario de MySQL |
 | `DB_PASSWORD` | — (obligatoria) | Contraseña de MySQL |
+| `DB_SSL_MODE` | `DISABLED` | Conexión cifrada a MySQL. En el despliegue (Aiven) va `REQUIRED` |
 | `JWT_SECRET` | — (obligatoria) | Clave para firmar los tokens, de al menos 32 caracteres |
 | `JWT_DURACION_MINUTOS` | `480` | Duración de la sesión |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origen permitido para el frontend |
@@ -187,7 +188,7 @@ mvn test
 
 Corre los tests unitarios, que no necesitan base de datos.
 
-Las reglas que controla la base (triggers de RN-03, que un alta fallida no deje nada a medias) se prueban con tests de integración contra MySQL. Se activan con `TESTS_MYSQL=true` y usan las mismas variables `DB_*`. Crean desde `database/schema.sql` una base aparte, `rojasfc_test`, que se borra y se vuelve a crear en cada corrida, así que no tocan la base de desarrollo:
+Las reglas que controla la base (triggers de RN-03 y RN-22, que un alta fallida no deje nada a medias, el interés de `vista_cuota`) se prueban con tests de integración contra MySQL. Se activan con `TESTS_MYSQL=true` y usan las mismas variables `DB_*`. Crean desde `database/schema.sql` una base aparte, `rojasfc_test`, que se borra y se vuelve a crear en cada corrida, así que no tocan la base de desarrollo:
 
 ```powershell
 $env:TESTS_MYSQL = "true"
@@ -226,6 +227,75 @@ Ejemplo para agregar un responsable a un alumno existente:
 
 - Si la persona ya existe, se reutilizan sus datos (RN-01); si ya es responsable, solo se asocia y no se piden teléfono ni contraseña.
 - Al desvincular al último responsable de un alumno, la base rechaza la operación con 409 (RN-05). Si el responsable se queda sin alumnos, se elimina su rol y, si no tiene otro rol, la persona (RN-02).
+
+## Cuotas
+
+Períodos y cuotas (Módulo 4). Todas las rutas son solo para el Administrador. El período se indica como mes, en formato `AAAA-MM`.
+
+| Método y ruta | Uso |
+|---|---|
+| `GET /api/periodos` | Períodos configurados, del más reciente al más antiguo, con la cantidad de cuotas generadas. |
+| `PUT /api/periodos/{periodo}` | Crea o modifica el importe, el vencimiento y el interés de un período (RF-17, RF-19, RF-20). Responde 409 si ya tiene cuotas (RN-22). |
+| `POST /api/periodos/{periodo}/cuotas` | Genera las cuotas de un período ya configurado para los alumnos activos (RF-18, RN-14). Responde 409 si ya están generadas y 400 si el mes todavía no empezó. |
+| `GET /api/alumnos/{dni}/cuotas` | Cuotas de un alumno con importe, vencimiento, monto a pagar, estado y pago asociado (RF-22). |
+| `GET /api/cuotas/morosos` | Alumnos con deuda vencida, con la cantidad de cuotas y el total adeudado con interés (RF-23, RN-23). |
+
+Ejemplo de configuración:
+
+```json
+{
+  "importe": 1000.00,
+  "fechaVencimiento": "2026-11-13",
+  "porcentajeInteres": 10.00
+}
+```
+
+- **Generación automática (RN-15).** Corre al arrancar el backend y todos los días a la 1 de la mañana, no solo el día 1, porque el servidor puede estar apagado ese día. Si el mes ya tiene cuotas, no hace nada. Si no está configurado, lo crea con el importe y el interés del último período y el mismo día de vencimiento, ajustado si el mes es más corto (RN-17). Para cambiar el valor de un mes, hay que configurarlo antes de que empiece: una vez generadas sus cuotas, sus condiciones quedan fijas (RN-22). Antes del primer período configurado no genera nada. Un período creado así queda a nombre del administrador que configuró el anterior, porque la base exige uno (RNF-11).
+- **Altas durante el mes.** Las cuotas son para los alumnos activos al generarlas (RN-14), así que quien se da de alta después empieza a pagar desde el mes siguiente. Si se genera un mes pasado, no se le cobra a quien se inscribió después de ese mes.
+- **Interés por mora.** No se guarda: lo calcula `vista_cuota` a partir de las condiciones del período. Se aplica una sola vez sobre el importe a las cuotas impagas después del vencimiento (RF-21, RN-19, RN-20).
+- **Fecha del servidor.** `vista_cuota` usa la fecha de MySQL para decidir si una cuota venció. Si el servidor está en otra zona horaria, una cuota puede figurar vencida unas horas antes o después.
+
+## Pagos y recibos
+
+Pagos de cuotas y sus recibos. Todas las rutas son solo para el Administrador.
+
+| Método y ruta | Uso |
+|---|---|
+| `POST /api/pagos` | Registra el pago total de una cuota y emite su recibo (RF-24, RF-25, RF-29). Responde 409 si la cuota ya está pagada y 400 si el medio de pago no es efectivo o transferencia. |
+| `POST /api/pagos/{idPago}/anulacion` | Anula un pago con un motivo obligatorio, sin borrarlo (RF-28, RN-30, RN-31). Responde 409 si ya estaba anulado. |
+| `GET /api/alumnos/{dni}/pagos` | Historial de pagos del alumno, incluidos los anulados, con el número de recibo (RF-27). |
+| `GET /api/recibos/{numeroRecibo}` | Recibo con el alumno, el concepto, el importe, el medio de pago y si está anulado (RF-29, RF-30, RF-33). |
+
+Ejemplo de registro:
+
+```json
+{
+  "dniAlumno": 45111222,
+  "periodo": "2026-11",
+  "medioPago": "efectivo"
+}
+```
+
+- **El importe y la fecha no se envían.** El importe sale de `vista_cuota`, que ya incluye el interés si la cuota está vencida, y la fecha es la del día en que se registra el pago.
+- **Recibo automático.** Cada pago confirmado genera su recibo en la misma operación (RN-33). Al anular el pago, el recibo se conserva identificado como anulado (RF-33).
+- **Un pago vigente por cuota.** Después de anular un pago, la cuota vuelve a quedar impaga y se puede registrar otro.
+- **Descarga.** La pantalla del recibo arma un archivo de texto con los datos, para guardarlo o imprimirlo.
+
+## Dashboard
+
+`GET /api/dashboard`, solo para el Administrador: alumnos activos, alumnos activos por categoría, cantidad de morosos y lo recaudado desde el día 1 del mes hasta hoy, sin contar los pagos anulados (RF-45 a RF-48, RN-32).
+
+## Portal del Responsable
+
+`GET /api/portal/alumnos`, para el usuario de la sesión: sus alumnos a cargo, con las cuotas, el historial de pagos y los recibos de cada uno (RF-12 a RF-14). Es solo de consulta. El DNI sale del token y no se recibe por parámetro, así que nadie puede pedir los datos de un alumno que no tiene asociado (RNF-03).
+
+## Datos de ejemplo
+
+`database/datos-demo.sql` carga alumnos, responsables, cuotas, pagos y recibos para la demo, sobre una base recién creada. Las fechas son relativas al mes en curso. Los usuarios y su contraseña figuran al principio del archivo: son públicos, así que no hay que cargarlos en un sistema con información real.
+
+```bash
+mysql -u root -p rojasfc < database/datos-demo.sql
+```
 
 ## Empaquetar
 

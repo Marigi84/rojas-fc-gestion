@@ -15,6 +15,7 @@ import {
   NuevaContrasenaPage,
   PagosPage,
   PortalResponsablePage,
+  ReciboPage,
   RecuperarContrasenaPage,
   ResponsableAsociarPage,
   ResponsableDetallePage,
@@ -79,6 +80,7 @@ export function AppRouter() {
               />
               <Route path="cuotas" element={<CuotasPage />} />
               <Route path="pagos" element={<PagosPage />} />
+              <Route path="recibos/:numero" element={<ReciboPage />} />
               <Route path="administradores" element={<AdministradoresPage />} />
             </Route>
           </Route>

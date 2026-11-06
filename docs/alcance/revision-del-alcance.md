@@ -74,7 +74,7 @@ Las siguientes funcionalidades se reprograman como evolución posterior del sist
 | Eventos e indumentaria, con sus pagos parciales | RF-26, RF-34 a RF-37 | RN-35, RN-38 a RN-43 |
 | Exportación a Excel y reportes | RF-40 a RF-44 | |
 | Compartir recibos por WhatsApp | RF-32 | |
-| Funcionamiento sin conexión y sincronización | RF-53 a RF-57 | RNF-09 y siguientes de esa sección |
+| Funcionamiento sin conexión y sincronización | RF-53 a RF-57 | RNF-09 y RNF-10 |
 
 Son 16 de los 57 requisitos funcionales. Registrar pagos (RF-24) y consultar su historial (RF-27) se limitan a las cuotas.
 
@@ -84,7 +84,7 @@ Se priorizan las funcionalidades centrales de gestión de alumnos, responsables,
 
 ### Cómo queda
 
-Forman parte de la entrega final la autenticación, la gestión de alumnos y responsables, la búsqueda y el listado de alumnos, las cuotas, y los pagos con sus recibos. El Dashboard (RF-45 a RF-48) y el Portal del Responsable (RF-12 a RF-14) se incorporan si se completan antes de que el grupo deje de agregar funciones; en caso contrario, se agregan a este recorte.
+Forman parte de la entrega final la autenticación, la gestión de alumnos y responsables, la búsqueda y el listado de alumnos, las cuotas, los pagos con sus recibos, el Dashboard (RF-45 a RF-48) y el Portal del Responsable (RF-12 a RF-14).
 
 El esquema de la base de datos no cambia: conserva las tablas `evento`, `participacion` y `encargo`, y el estado de sincronización de los pagos, por lo que estas funcionalidades pueden incorporarse en un incremento posterior sin rediseñar el modelo. Los requisitos y las reglas de negocio tampoco se modifican, porque describen el sistema completo.
 

@@ -42,7 +42,7 @@ public class SecurityConfig {
         .cors(Customizer.withDefaults())
         .httpBasic(AbstractHttpConfigurer::disable)
         .formLogin(AbstractHttpConfigurer::disable)
-        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/error").permitAll()
@@ -54,7 +54,7 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/contrasena").authenticated()
             .requestMatchers("/api/portal/**").hasAnyRole("RESPONSABLE", "ADMINISTRADOR")
             .anyRequest().hasRole("ADMINISTRADOR"))
-        .exceptionHandling(e -> e
+        .exceptionHandling(excepciones -> excepciones
             .authenticationEntryPoint((request, response, ex) -> errorWriter.escribir(
                 request, response, HttpStatus.UNAUTHORIZED,
                 "Hay que iniciar sesión para acceder a este recurso"))
@@ -70,7 +70,8 @@ public class SecurityConfig {
   private static boolean tieneCambioPendiente() {
     Authentication autenticacion = SecurityContextHolder.getContext().getAuthentication();
     return autenticacion != null && autenticacion.getAuthorities().stream()
-        .anyMatch(a -> JwtAuthenticationFilter.CAMBIO_CONTRASENA_PENDIENTE.equals(a.getAuthority()));
+        .anyMatch(autoridad ->
+            JwtAuthenticationFilter.CAMBIO_CONTRASENA_PENDIENTE.equals(autoridad.getAuthority()));
   }
 
   @Bean

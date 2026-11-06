@@ -112,7 +112,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   private String validationMessage(MethodArgumentNotValidException ex) {
     return ex.getBindingResult().getFieldErrors().stream()
         .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-        .reduce((a, b) -> a + "; " + b)
+        .reduce((anteriores, siguiente) -> anteriores + "; " + siguiente)
         .orElse("Datos invalidos");
   }
 
