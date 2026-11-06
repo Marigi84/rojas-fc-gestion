@@ -1,6 +1,6 @@
 # Sistema de Gestión Rojas FC
 
-Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas FC, desarrollada como Trabajo Final Integrador de la Tecnicatura Universitaria en Programación.
+Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas FC, desarrollada como Trabajo Final Integrador de la Tecnicatura Universitaria en Programación a Distancia de la Universidad Tecnológica Nacional (UTN).
 
 **Sistema en línea:** https://rojasfc-gestion.vercel.app
 
@@ -279,7 +279,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
 - [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md) — Ajustes sobre el alcance de la Primera Entrega.
 - [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
-- [`docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md`](docs/2da%20Entrega%20-%20Dise%C3%B1o%20de%20M%C3%B3dulos%20y%20Modelo%20de%20Datos.md) — Módulos, modelo de datos y arquitectura. **En revisión.**
+- [`docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md`](docs/2da%20Entrega%20-%20Dise%C3%B1o%20de%20M%C3%B3dulos%20y%20Modelo%20de%20Datos.md) — Módulos, modelo de datos y arquitectura. **Aprobada por el tutor.**
 - [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
 - [`docs/entidades-relaciones-cardinalidad/`](docs/entidades-relaciones-cardinalidad/) — Modelo conceptual y DER.
 - [`docs/esquema-relacional/claves-restricciones.md`](docs/esquema-relacional/claves-restricciones.md) — Claves y restricciones del esquema relacional.
@@ -287,6 +287,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 - [`docs/esquema-relacional/diagrama-relacional.md`](docs/esquema-relacional/diagrama-relacional.md) — Diagrama del esquema relacional.
 - [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
 - [`docs/pruebas/`](docs/pruebas/) — Casos de prueba de cada módulo y sus resultados.
+- [`docs/validacion.md`](docs/validacion.md) — Validación con el cliente.
 - [`docs/CHECKLIST.md`](docs/CHECKLIST.md) — Checklist de la cátedra con el estado de cada punto.
 
 ## Estado del proyecto
@@ -309,7 +310,6 @@ Eventos e indumentaria, exportación y reportes, compartir recibos por WhatsApp 
 
 ### Limitaciones conocidas
 
-- **Validación con el cliente:** la problemática surge del proceso real del club, documentado en la Primera Entrega, pero el sistema no se validó todavía con el coordinador.
 - **Sesiones abiertas:** al cambiar una contraseña, una sesión ya iniciada sigue valiendo hasta que vence.
 - **Cuotas:** quien se da de alta después de generadas las cuotas del mes empieza a pagar el mes siguiente, y las condiciones de un período quedan fijas una vez generadas sus cuotas.
 - **Fecha de vencimiento:** se toma de la fecha del servidor de MySQL.
