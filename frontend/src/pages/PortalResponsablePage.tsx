@@ -1,12 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { TablaCuotas } from '../components/cuotas/TablaCuotas'
 import { Aviso } from '../components/ui/Aviso'
+import { Boton } from '../components/ui/Boton'
 import { Tabla } from '../components/ui/Tabla'
 import { Tarjeta } from '../components/ui/Tarjeta'
 import { CLAVE_PORTAL, portalApi, type AlumnoPortal } from '../services/portal'
 import { mensajeError } from '../utils/errores'
 import { formatearFecha, formatearPeriodo } from '../utils/fechas'
 import { formatearMonto } from '../utils/moneda'
+import { descargarRecibo } from '../utils/recibos'
 
 function concepto(periodo: string | null): string {
   return periodo ? `Cuota de ${formatearPeriodo(periodo)}` : 'Otro concepto'
@@ -17,6 +19,11 @@ function estadoAnulado(anulado: boolean): string {
 }
 
 function AlumnoACargo({ alumno }: { alumno: AlumnoPortal }) {
+  const descarga = useMutation({
+    mutationFn: portalApi.recibo,
+    onSuccess: descargarRecibo,
+  })
+
   return (
     <Tarjeta titulo={`${alumno.nombre} ${alumno.apellido}`}>
       <div className="mb-4 flex flex-wrap gap-2 text-sm font-semibold">
@@ -76,11 +83,30 @@ function AlumnoACargo({ alumno }: { alumno: AlumnoPortal }) {
             titulo: 'Estado',
             valor: (recibo) => estadoAnulado(recibo.anulado),
           },
+          {
+            titulo: 'Comprobante',
+            valor: (recibo) => (
+              <Boton
+                variante="secundario"
+                className="text-sm whitespace-nowrap"
+                aria-label={`Descargar el recibo ${recibo.numeroRecibo}`}
+                disabled={descarga.isPending}
+                onClick={() => descarga.mutate(recibo.numeroRecibo)}
+              >
+                Descargar
+              </Boton>
+            ),
+          },
         ]}
         filas={alumno.recibos}
         claveFila={(recibo) => recibo.numeroRecibo}
         vacia="Todavía no hay recibos."
       />
+      {descarga.isError && (
+        <div className="mt-3">
+          <Aviso tipo="error">{mensajeError(descarga.error)}</Aviso>
+        </div>
+      )}
     </Tarjeta>
   )
 }

@@ -32,7 +32,7 @@ function nuevaPagina(contexto) {
 
 ;(async () => {
   const navegador = await chromium.launch({ ...OPCIONES_NAVEGADOR, headless: true })
-  const contexto = await navegador.newContext({ viewport: { width: 1280, height: 900 } })
+  const contexto = await navegador.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true })
 
   // --- Dashboard ---
   const p = await nuevaPagina(contexto)
@@ -80,6 +80,21 @@ function nuevaPagina(contexto) {
   caso('Se ve el historial de pagos, con el pago con interés (RF-13)', await sofia.getByRole('cell', { name: '$ 27.500,00' }).first().isVisible())
   caso('Se ven los recibos (RF-14)', (await sofia.locator('h3:has-text("Recibos") + div').getByRole('row').count()) === 4)
   await captura(r, '53-portal-responsable')
+
+  // Descarga del recibo (RF-14) y datos de otra familia (RNF-03).
+  const [descarga] = await Promise.all([
+    r.waitForEvent('download'),
+    sofia.getByRole('button', { name: /Descargar el recibo/ }).first().click(),
+  ])
+  const contenido = require('fs').readFileSync(await descarga.path(), 'utf8')
+  caso('El responsable descarga el recibo de su alumno (RF-14)', /recibo-\d+\.txt/.test(descarga.suggestedFilename()) && contenido.includes('Sofía Gómez'), descarga.suggestedFilename())
+  const sesionDe = async (dni) => (await (await fetch(`${API}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dni, contrasena: CLAVE }) })).json()).token
+  const tokenLaura = await sesionDe(30111222)
+  const tokenJorge = await sesionDe(30111223)
+  const deJorge = await (await fetch(`${API}/portal/alumnos`, { headers: { Authorization: `Bearer ${tokenJorge}` } })).json()
+  const ajeno = deJorge.flatMap((alumno) => alumno.recibos)[0].numeroRecibo
+  const pedido = await fetch(`${API}/portal/recibos/${ajeno}`, { headers: { Authorization: `Bearer ${tokenLaura}` } })
+  caso('No puede descargar el recibo de otra familia (RNF-03)', pedido.status === 404, String(pedido.status))
 
   // Otro responsable: recibo anulado.
   await r.getByRole('button', { name: 'Cerrar sesión' }).click()

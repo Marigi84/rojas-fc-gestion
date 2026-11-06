@@ -1,7 +1,10 @@
 package com.rojasfc.gestion.service;
 
 import com.rojasfc.gestion.dto.PortalAlumno;
+import com.rojasfc.gestion.dto.ReciboDetalle;
+import com.rojasfc.gestion.exception.RecursoNoEncontradoException;
 import com.rojasfc.gestion.repository.PortalRepository;
+import com.rojasfc.gestion.repository.ResponsableAlumnoRepository;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
@@ -18,10 +21,15 @@ public class PortalService {
 
   private final PortalRepository portal;
   private final CuotaService cuotaService;
+  private final PagoService pagoService;
+  private final ResponsableAlumnoRepository vinculos;
 
-  public PortalService(PortalRepository portal, CuotaService cuotaService) {
+  public PortalService(PortalRepository portal, CuotaService cuotaService, PagoService pagoService,
+      ResponsableAlumnoRepository vinculos) {
     this.portal = portal;
     this.cuotaService = cuotaService;
+    this.pagoService = pagoService;
+    this.vinculos = vinculos;
   }
 
   @Transactional(readOnly = true)
@@ -32,6 +40,20 @@ public class PortalService {
             cuotaService.deAlumno(alumno.getDni()), pagos(alumno.getDni()),
             recibos(alumno.getDni())))
         .toList();
+  }
+
+  /**
+   * Recibo de un alumno a cargo, para descargarlo (RF-14). Un recibo de otro
+   * alumno responde igual que uno inexistente, para no revelar que existe (RNF-03).
+   */
+  @Transactional(readOnly = true)
+  public ReciboDetalle recibo(Long dniResponsable, Long numeroRecibo) {
+    ReciboDetalle recibo = pagoService.recibo(numeroRecibo);
+    if (!vinculos.existsByDniResponsableAndDniAlumno(dniResponsable, recibo.dniAlumno())) {
+      throw new RecursoNoEncontradoException(
+          "No hay ningún recibo con el número " + numeroRecibo + ".");
+    }
+    return recibo;
   }
 
   private List<PortalAlumno.Pago> pagos(Long dniAlumno) {
