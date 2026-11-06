@@ -2,7 +2,7 @@
 
 Checklist orientativo de la cátedra, con el estado de cada punto en nuestro proyecto. La página original guarda los checks solo en el navegador de cada uno, así que este archivo es la referencia común del grupo.
 
-**Estado al 03/11/2026, sobre `main` (commit `642ac24`). Fecha de entrega final: [A completar].**
+**Estado al 06/11/2026. Fecha de entrega final estimada: 14/11/2026.**
 
 | Marca | Significa | ¿Se tilda? |
 |---|---|---|
@@ -19,14 +19,14 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | Sección | ✅ | 🟡 | ❌ | 👤 | ⏳ | Total |
 |---|---|---|---|---|---|---|
 | 1. Requisitos generales y cronograma | 8 | 1 | 1 | 3 | 1 | 14 |
-| 2. Repositorio único en GitHub | 12 | 3 | 1 | 0 | 0 | 16 |
-| 3. Sistema final, despliegue y README | 9 | 1 | 9 | 0 | 0 | 19 |
+| 2. Repositorio único en GitHub | 13 | 3 | 0 | 0 | 0 | 16 |
+| 3. Sistema final, despliegue y README | 15 | 2 | 2 | 0 | 0 | 19 |
 | 4. Informe Final en PDF | 0 | 0 | 42 | 0 | 0 | 42 |
 | 5. Video final | 0 | 0 | 31 | 1 | 14 | 46 |
-| 6. Checklist final para finalizar la cursada | 17 | 4 | 23 | 0 | 3 | 47 |
-| 7. Checklist para la presentación / defensa final en mesa | 3 | 1 | 7 | 4 | 33 | 48 |
+| 6. Checklist final para finalizar la cursada | 20 | 5 | 19 | 0 | 3 | 47 |
+| 7. Checklist para la presentación / defensa final en mesa | 5 | 1 | 5 | 4 | 33 | 48 |
 | 8. Criterios finales importantes | 1 | 0 | 0 | 3 | 2 | 6 |
-| **Total** | **50** | **10** | **114** | **11** | **53** | **238** |
+| **Total** | **62** | **12** | **100** | **11** | **53** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
@@ -81,7 +81,7 @@ Fecha de corte, desde la que se deja de agregar funciones: [A completar].
 
 **Entrega final: Informe y Video**
 
-- [ ] 🟡 Repositorio completo con código, bases de datos, despliegue online y documentación escrita. *Falta el despliegue, parte del código y el informe.*
+- [ ] 🟡 Repositorio completo con código, bases de datos, despliegue online y documentación escrita. *Falta terminar el código y el informe.*
 - [ ] ❌ Video explicativo, preferentemente en inglés.
 - [ ] ⏳ Defensa oral: presentación y justificación ante el comité de trabajo final en mesa de examen.
 
@@ -104,8 +104,8 @@ El repositorio incluye:
 - [x] ✅ Variables de entorno documentadas en un .env.example o similar. *`frontend/.env.example` y la tabla de `backend/README.md`.*
 - [x] ✅ Sin credenciales, tokens ni secretos publicados. *Revisado por patrones en el código y el historial. Repetir al entregar.*
 - [x] ✅ Pruebas relevantes incluidas. *50 tests de backend y `docs/pruebas/`.*
-- [ ] 🟡 README actualizado. *Refleja el estado real; faltan los enlaces al sistema, al informe y al video (#71).*
-- [ ] ❌ Enlace al sistema desplegado. *Depende del #60.*
+- [ ] 🟡 README actualizado. *Refleja el estado real; faltan los enlaces al informe y al video (#71).*
+- [x] ✅ Enlace al sistema desplegado. *Al principio del README.*
 - [ ] 🟡 Documentación necesaria para comprender y evaluar el proyecto. *Hay mucha en `docs/`; falta el informe.*
 - [ ] 🟡 Evitar enlaces dispersos: todo debe estar referenciado desde el README principal. *No enlaza `docs/pruebas/` ni la 2da entrega.*
 
@@ -115,16 +115,16 @@ El repositorio incluye:
 
 ### 3.1 Sistema y despliegue
 
-- [ ] ❌ Versión definitiva y funcional del sistema. *Falta pagos y recibos (#64). Ver el README, "Estado del proyecto".*
+- [ ] 🟡 Versión definitiva y funcional del sistema. *Falta descargar el recibo desde el Portal (#67) y la prueba final (#73).*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno. *Probado: base recreada desde `schema.sql` el 03/11.*
 - [x] ✅ Pruebas relevantes ejecutables. *`mvn test`; con `TESTS_MYSQL=true` suma los de integración. 50 de 50 el 03/11.*
-- [ ] ❌ Al menos un componente principal desplegado y funcionando online: *alcanza con uno de estos tres; el #60 propone los tres.*
-  - [ ] ❌ Frontend en Vercel / Netlify / similar, o
-  - [ ] ❌ Backend en Render / Railway / similar, o
-  - [ ] ❌ Base de datos en MongoDB Atlas / Supabase / PlanetScale / Aiven / similar.
-- [ ] ❌ Enlace al sistema desplegado incluido en el README.
+- [x] ✅ Al menos un componente principal desplegado y funcionando online: *están los tres. Ver `docs/pruebas/despliegue.md`.*
+  - [x] ✅ Frontend en Vercel / Netlify / similar, o
+  - [x] ✅ Backend en Render / Railway / similar, o
+  - [x] ✅ Base de datos en MongoDB Atlas / Supabase / PlanetScale / Aiven / similar.
+- [x] ✅ Enlace al sistema desplegado incluido en el README.
 - [x] ✅ Limitaciones, dependencias externas o funcionalidades simuladas documentadas con claridad. *README, "Estado del proyecto". Repasar al entregar.*
 
 ### 3.2 README final
@@ -133,7 +133,7 @@ Debe permitir encontrar fácilmente:
 
 - [x] ✅ Descripción del proyecto.
 - [x] ✅ Instrucciones de ejecución.
-- [ ] ❌ Sistema desplegado, si corresponde.
+- [x] ✅ Sistema desplegado, si corresponde.
 - [ ] ❌ Informe Final en PDF.
 - [ ] ❌ Video de presentación final.
 - [x] ✅ Integrantes del grupo.
@@ -191,17 +191,17 @@ Debe permitir encontrar fácilmente:
 
 - [ ] ❌ Principales módulos desarrollados. *Según lo que quede hecho.*
 - [ ] ❌ Recorridos o casos de uso importantes. *`docs/pruebas/`.*
-- [ ] ❌ Capturas o diagramas cuando faciliten la explicación. *Capturas en `docs/capturas/`.*
+- [ ] ❌ Capturas o diagramas cuando faciliten la explicación. *Se suman al informe, no al repositorio. `pruebas/navegador` las genera en su carpeta `capturas/`.*
 - [ ] ❌ Dificultades técnicas relevantes y forma en que fueron resueltas. *Ejemplos: búsqueda sin tilde (`LOCATE` y `LIKE`, #59), alta en una sola transacción (#51).*
 
 **Pruebas y validación**
 
 - [ ] ❌ Qué aspectos fueron probados. *`docs/pruebas/`.*
 - [ ] ❌ Casos de prueba relevantes. *`docs/pruebas/`, `backend/src/test/` y `pruebas/navegador/`.*
-- [ ] ❌ Evidencia de funcionamiento. *Capturas en `docs/capturas/` y `docs/pruebas/`.*
+- [ ] ❌ Evidencia de funcionamiento. *Capturas en el informe y casos en `docs/pruebas/`.*
 - [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *No se hizo (#70, cerrado: el coordinador no respondió). Se declara como limitación; se puede retomar si responde.*
 - [ ] ❌ Resultados obtenidos.
-- [ ] ❌ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *`AlumnoIntegracionTest` cubre las reglas de alumnos. Pagos todavía no existe.*
+- [ ] ❌ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *`AlumnoIntegracionTest` y `CuotaIntegracionTest` cubren las reglas de la base, y `pruebas/navegador/pagos.js` el circuito de pago.*
 
 **Resultados y conclusiones**
 
@@ -308,20 +308,20 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 6.2 Sistema y despliegue
 
-- [ ] ❌ Versión definitiva y funcional del sistema.
+- [ ] 🟡 Versión definitiva y funcional del sistema. *Ver la sección 3.1.*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno.
 - [x] ✅ Pruebas relevantes ejecutables.
-- [ ] ❌ Al menos un componente principal desplegado y funcionando online.
-- [ ] ❌ Enlace al sistema desplegado incluido en el README.
+- [x] ✅ Al menos un componente principal desplegado y funcionando online.
+- [x] ✅ Enlace al sistema desplegado incluido en el README.
 - [x] ✅ Limitaciones, dependencias externas o funcionalidades simuladas documentadas.
 
 ### 6.3 README
 
 - [x] ✅ Descripción del proyecto.
 - [x] ✅ Instrucciones de ejecución.
-- [ ] ❌ Sistema desplegado, si corresponde.
+- [x] ✅ Sistema desplegado, si corresponde.
 - [ ] ❌ Informe Final en PDF.
 - [ ] ❌ Video de presentación final.
 - [x] ✅ Integrantes del grupo.
@@ -377,7 +377,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 - [ ] ⏳ TFI actualizado: GitHub + Video.
 - [ ] ⏳ Entrega enviada dos semanas antes de la mesa.
 - [x] ✅ Repositorio accesible para el comité. *El repositorio es público.*
-- [ ] ❌ Sistema desplegado online funcionando.
+- [x] ✅ Sistema desplegado online funcionando. *Repasar antes de la mesa.*
 - [ ] ❌ Informe Final en PDF localizable desde el README.
 - [ ] ❌ Video final localizable desde el README y enlazado en el PDF.
 - [x] ✅ Credenciales y secretos fuera del repositorio.
@@ -433,7 +433,7 @@ Además:
 - [ ] ❌ README con descripción, ejecución, despliegue, informe, video e integrantes.
 - [ ] ❌ PDF del Informe Final actualizado.
 - [ ] ❌ Enlace al video final dentro del PDF.
-- [ ] ❌ Enlace al sistema desplegado funcionando.
+- [x] ✅ Enlace al sistema desplegado funcionando. *Repasar antes de la mesa.*
 - [ ] 🟡 Repositorio limpio, ordenado y profesional. *Quedan por borrar las ramas ya mergeadas `gestion-responsables` y `busqueda-listado-alumnos`.*
 - [ ] ⏳ Informe, video y README coherentes con el sistema real.
 

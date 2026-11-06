@@ -8,6 +8,7 @@ const GRUPOS = [
   { recorridos: ['alumnos.js', 'responsables-listado.js'] },
   { recorridos: ['cuotas.js'] },
   { recorridos: ['dashboard-portal.js'], datos: 'database/datos-demo.sql' },
+  { recorridos: ['pagos.js'], datos: 'database/datos-demo.sql' },
 ]
 
 let fallaron = 0

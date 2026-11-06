@@ -73,7 +73,8 @@ async function configurar(p, m, importe, vencimiento, interes) {
   // Vencido: mes pasado.
   const pasado = mes(-1)
   await configurar(p, pasado, '1000', `${pasado}-13`, '10')
-  caso('Configurar un período (RF-17, RF-19, RF-20)', await p.getByRole('cell', { name: texto(pasado), exact: true }).isVisible())
+  await p.getByRole('cell', { name: texto(pasado), exact: true }).waitFor()
+  caso('Configurar un período (RF-17, RF-19, RF-20)', true)
   const filaPasado = tarjeta(p, 'Períodos').getByRole('row', { name: new RegExp(texto(pasado)) })
   caso('Muestra importe, vencimiento e interés', (await filaPasado.textContent()).includes('1.000,00') && (await filaPasado.textContent()).includes(`13/${pasado.slice(5)}/${pasado.slice(0, 4)}`) && (await filaPasado.textContent()).includes('10 %'), await filaPasado.textContent())
 

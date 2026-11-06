@@ -81,5 +81,6 @@ Si el backend quedó apuntando a la base de desarrollo, `alumnos.js` y `cuotas.j
 | `responsables-listado.js` | Los de `alumnos.js` | Responsables y listado de alumnos |
 | `cuotas.js` | Base vacía | Períodos, generación, interés y morosos (`docs/pruebas/cuotas.md`) |
 | `dashboard-portal.js` | `database/datos-demo.sql` | Dashboard y Portal del Responsable (`docs/pruebas/dashboard-portal.md`) |
+| `pagos.js` | `database/datos-demo.sql` | Circuito de pago completo: registro, recibo, anulación y nuevo pago (`docs/pruebas/pagos.md`) |
 
 Las capturas quedan en `capturas/`, que no se sube al repositorio.

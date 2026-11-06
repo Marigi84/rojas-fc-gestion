@@ -291,15 +291,15 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Estado del proyecto
 
-🟡 **En desarrollo. Fecha de entrega final: [A completar].**
+🟡 **En desarrollo. Fecha de entrega final estimada: 14/11/2026.**
 
 | Módulo | Estado |
 |---|---|
 | 1. Autenticación y Autorización | Hecho |
 | 2. Alumnos, Responsables y Categorías | Hecho |
-| 3. Portal del Responsable | Hecho, salvo descargar el recibo, que llega con el módulo 5 |
+| 3. Portal del Responsable | Hecho, salvo descargar el recibo (RF-14), pendiente |
 | 4. Cuotas | Hecho |
-| 5. Pagos y Recibos | En desarrollo |
+| 5. Pagos y Recibos | Hecho |
 | 7. Búsqueda y listado de alumnos | Hecho |
 | 8. Dashboard | Hecho |
 
@@ -313,12 +313,15 @@ Eventos e indumentaria, exportación y reportes, compartir recibos por WhatsApp 
 - **Sesiones abiertas:** al cambiar una contraseña, una sesión ya iniciada sigue valiendo hasta que vence.
 - **Cuotas:** quien se da de alta después de generadas las cuotas del mes empieza a pagar el mes siguiente, y las condiciones de un período quedan fijas una vez generadas sus cuotas.
 - **Fecha de vencimiento:** se toma de la fecha del servidor de MySQL.
+- **Fecha del pago:** es la del día en que se registra. Un pago cargado después del vencimiento lleva interés, aunque se haya hecho antes.
+- **Recuperación de contraseña por correo:** funciona en local, pero no en línea, porque el plan gratuito de Render bloquea el envío de correos.
+- **Sistema en línea:** usa planes gratuitos, así que el primer pedido después de un tiempo sin uso tarda alrededor de un minuto. Los datos son de demostración y su contraseña es pública.
 
 ### Enlaces de la entrega final
 
 Se completan a medida que estén disponibles:
 
-- **Sistema desplegado:** pendiente.
+- **Sistema desplegado:** https://rojasfc-gestion.vercel.app
 - **Informe Final en PDF:** pendiente.
 - **Video de presentación:** pendiente.
 - **Checklist de la entrega:** [`docs/CHECKLIST.md`](docs/CHECKLIST.md).
