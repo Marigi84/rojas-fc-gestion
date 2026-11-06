@@ -16,6 +16,7 @@ import {
   NuevaContrasenaPage,
   PagosPage,
   PortalResponsablePage,
+  ReciboPage,
   RecuperarContrasenaPage,
   ReportesPage,
   ResponsableAsociarPage,
@@ -82,6 +83,7 @@ export function AppRouter() {
               />
               <Route path="cuotas" element={<CuotasPage />} />
               <Route path="pagos" element={<PagosPage />} />
+              <Route path="recibos/:numero" element={<ReciboPage />} />
               <Route path="eventos" element={<EventosPage />} />
               <Route path="reportes" element={<ReportesPage />} />
               <Route path="sin-conexion" element={<SinConexionPage />} />
