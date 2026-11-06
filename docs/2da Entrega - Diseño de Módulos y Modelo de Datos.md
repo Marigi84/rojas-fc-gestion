@@ -9,7 +9,7 @@ Sistema de Gestión Rojas FC
 
 **Tutor:** Sebastián Bruselario
 
-**Estado: entregada para revisión del tutor.**
+**Estado: aprobada por el tutor.**
 
 ---
 

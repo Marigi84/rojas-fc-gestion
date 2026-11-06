@@ -279,7 +279,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 - [`docs/reglas-negocio/reglas-de-negocio.md`](docs/reglas-negocio/reglas-de-negocio.md) — Reglas de negocio consolidadas.
 - [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md) — Ajustes sobre el alcance de la Primera Entrega.
 - [`docs/arquitectura/arquitectura-inicial.md`](docs/arquitectura/arquitectura-inicial.md) — Arquitectura inicial del sistema.
-- [`docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md`](docs/2da%20Entrega%20-%20Dise%C3%B1o%20de%20M%C3%B3dulos%20y%20Modelo%20de%20Datos.md) — Módulos, modelo de datos y arquitectura. **En revisión.**
+- [`docs/2da Entrega - Diseño de Módulos y Modelo de Datos.md`](docs/2da%20Entrega%20-%20Dise%C3%B1o%20de%20M%C3%B3dulos%20y%20Modelo%20de%20Datos.md) — Módulos, modelo de datos y arquitectura. **Aprobada por el tutor.**
 - [`docs/modulos/propuesta-modulos.md`](docs/modulos/propuesta-modulos.md) — Propuesta de módulos del sistema.
 - [`docs/entidades-relaciones-cardinalidad/`](docs/entidades-relaciones-cardinalidad/) — Modelo conceptual y DER.
 - [`docs/esquema-relacional/claves-restricciones.md`](docs/esquema-relacional/claves-restricciones.md) — Claves y restricciones del esquema relacional.
