@@ -35,6 +35,7 @@ La conexión a MySQL se toma de variables de entorno, nunca de código:
 | `DB_NAME` | `rojasfc` | Nombre de la base |
 | `DB_USERNAME` | — (obligatoria) | Usuario de MySQL |
 | `DB_PASSWORD` | — (obligatoria) | Contraseña de MySQL |
+| `DB_SSL_MODE` | `DISABLED` | Conexión cifrada a MySQL. En el despliegue (Aiven) va `REQUIRED` |
 | `JWT_SECRET` | — (obligatoria) | Clave para firmar los tokens, de al menos 32 caracteres |
 | `JWT_DURACION_MINUTOS` | `480` | Duración de la sesión |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origen permitido para el frontend |

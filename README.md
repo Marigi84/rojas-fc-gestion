@@ -2,6 +2,10 @@
 
 Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas FC, desarrollada como Trabajo Final Integrador de la Tecnicatura Universitaria en Programación.
 
+**Sistema en línea:** https://rojasfc-gestion.vercel.app
+
+Usuarios de demostración (contraseña `Demo12345`): administradora DNI `20111222`; responsable DNI `30111222`. Los datos son ficticios (`database/datos-demo.sql`). El backend usa un plan gratuito que se suspende sin uso: el primer ingreso puede tardar alrededor de un minuto.
+
 ## Integrantes
 
 - Marina Giselle Cordero
@@ -113,9 +117,15 @@ Se seleccionó MySQL debido a que el equipo posee experiencia previa con este mo
 
 ### Plataforma de despliegue
 
-Se prevé realizar el despliegue de al menos uno de los componentes principales de la aplicación en un **servicio cloud**, de acuerdo con los requisitos establecidos para el Trabajo Final.
-El servicio específico se definirá durante la etapa de implementación, considerando su compatibilidad con el stack tecnológico seleccionado, facilidad de despliegue, costos y recursos disponibles.
-Se priorizarán alternativas que reduzcan la complejidad asociada a la administración manual de infraestructura y permitan al equipo concentrar sus esfuerzos en el desarrollo, integración y pruebas de la aplicación.
+El sistema está desplegado en servicios cloud con plan gratuito:
+
+| Componente | Servicio | Dirección |
+|---|---|---|
+| Frontend (React) | Vercel | https://rojasfc-gestion.vercel.app |
+| Backend (Spring Boot) | Render, con `backend/Dockerfile` | https://rojasfc-backend.onrender.com |
+| Base de datos (MySQL 8.4) | Aiven | Conexión cifrada, solo accesible desde el backend |
+
+Las variables de entorno se cargan en el panel de cada servicio, nunca en el repositorio (ver `backend/README.md`). Limitaciones del plan gratuito y pruebas realizadas: `docs/pruebas/despliegue.md`.
 
 ## Plan de trabajo
 
