@@ -1,6 +1,6 @@
 # Sistema de Gestión Rojas FC
 
-Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas FC, desarrollada como Trabajo Final Integrador de la Tecnicatura Universitaria en Programación.
+Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas FC, desarrollada como Trabajo Final Integrador de la Tecnicatura Universitaria en Programación a Distancia de la Universidad Tecnológica Nacional (UTN).
 
 **Sistema en línea:** https://rojasfc-gestion.vercel.app
 
@@ -287,6 +287,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 - [`docs/esquema-relacional/diagrama-relacional.md`](docs/esquema-relacional/diagrama-relacional.md) — Diagrama del esquema relacional.
 - [`database/schema.sql`](database/schema.sql) — Esquema relacional (MySQL).
 - [`docs/pruebas/`](docs/pruebas/) — Casos de prueba de cada módulo y sus resultados.
+- [`docs/validacion.md`](docs/validacion.md) — Validación con el cliente.
 - [`docs/CHECKLIST.md`](docs/CHECKLIST.md) — Checklist de la cátedra con el estado de cada punto.
 
 ## Estado del proyecto
@@ -309,7 +310,6 @@ Eventos e indumentaria, exportación y reportes, compartir recibos por WhatsApp 
 
 ### Limitaciones conocidas
 
-- **Validación con el cliente:** la problemática surge del proceso real del club, documentado en la Primera Entrega, pero el sistema no se validó todavía con el coordinador.
 - **Sesiones abiertas:** al cambiar una contraseña, una sesión ya iniciada sigue valiendo hasta que vence.
 - **Cuotas:** quien se da de alta después de generadas las cuotas del mes empieza a pagar el mes siguiente, y las condiciones de un período quedan fijas una vez generadas sus cuotas.
 - **Fecha de vencimiento:** se toma de la fecha del servidor de MySQL.
