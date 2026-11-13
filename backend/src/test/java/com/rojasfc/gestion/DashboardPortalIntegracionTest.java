@@ -161,10 +161,13 @@ class DashboardPortalIntegracionTest {
 
   @Test
   void rnf03UnReciboDeOtraFamiliaRespondeComoInexistente() throws Exception {
-    mvc.perform(get("/api/portal/recibos/" + reciboDeMateo()).with(sesion(JORGE, Rol.RESPONSABLE)))
-        .andExpect(status().isNotFound());
+    long ajeno = reciboDeMateo();
+    mvc.perform(get("/api/portal/recibos/" + ajeno).with(sesion(JORGE, Rol.RESPONSABLE)))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.message").value("No hay ningún recibo con el número " + ajeno + "."));
     mvc.perform(get("/api/portal/recibos/99999").with(sesion(JORGE, Rol.RESPONSABLE)))
-        .andExpect(status().isNotFound());
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.message").value("No hay ningún recibo con el número 99999."));
   }
 
   @Test
@@ -176,7 +179,8 @@ class DashboardPortalIntegracionTest {
 
   private long reciboDeMateo() {
     return jdbc.queryForObject("SELECT recibo.numero_recibo FROM recibo "
-        + "JOIN pago ON pago.id_pago = recibo.id_pago WHERE pago.dni_alumno = ?", Long.class, MATEO);
+        + "JOIN pago ON pago.id_pago = recibo.id_pago WHERE pago.dni_alumno = ? "
+        + "ORDER BY recibo.numero_recibo LIMIT 1", Long.class, MATEO);
   }
 
   private void responsable(long dni, String nombre) {
