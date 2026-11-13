@@ -289,6 +289,8 @@ Ejemplo de registro:
 
 `GET /api/portal/alumnos`, para el usuario de la sesión: sus alumnos a cargo, con las cuotas, el historial de pagos y los recibos de cada uno (RF-12 a RF-14). Es solo de consulta. El DNI sale del token y no se recibe por parámetro, así que nadie puede pedir los datos de un alumno que no tiene asociado (RNF-03).
 
+`GET /api/portal/recibos/{numero}` devuelve un recibo de un alumno a cargo, para descargarlo (RF-14). Un recibo de otro alumno responde 404, igual que uno inexistente.
+
 ## Datos de ejemplo
 
 `database/datos-demo.sql` carga alumnos, responsables, cuotas, pagos y recibos para la demo, sobre una base recién creada. Las fechas son relativas al mes en curso. Los usuarios y su contraseña figuran al principio del archivo: son públicos, así que no hay que cargarlos en un sistema con información real.

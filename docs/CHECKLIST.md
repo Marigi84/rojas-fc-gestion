@@ -115,7 +115,7 @@ El repositorio incluye:
 
 ### 3.1 Sistema y despliegue
 
-- [ ] 🟡 Versión definitiva y funcional del sistema. *Falta descargar el recibo desde el Portal (#67) y la prueba final (#73).*
+- [ ] 🟡 Versión definitiva y funcional del sistema. *Falta la prueba final (#73).*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno. *Probado: base recreada desde `schema.sql` el 03/11.*
