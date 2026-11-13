@@ -18,7 +18,7 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 
 | Sección | ✅ | 🟡 | ❌ | 👤 | ⏳ | Total |
 |---|---|---|---|---|---|---|
-| 1. Requisitos generales y cronograma | 8 | 1 | 1 | 3 | 1 | 14 |
+| 1. Requisitos generales y cronograma | 9 | 1 | 1 | 2 | 1 | 14 |
 | 2. Repositorio único en GitHub | 13 | 3 | 0 | 0 | 0 | 16 |
 | 3. Sistema final, despliegue y README | 15 | 2 | 2 | 0 | 0 | 19 |
 | 4. Informe Final en PDF | 0 | 0 | 42 | 0 | 0 | 42 |
@@ -26,7 +26,7 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | 6. Checklist final para finalizar la cursada | 20 | 5 | 19 | 0 | 3 | 47 |
 | 7. Checklist para la presentación / defensa final en mesa | 5 | 1 | 5 | 4 | 33 | 48 |
 | 8. Criterios finales importantes | 1 | 0 | 0 | 3 | 2 | 6 |
-| **Total** | **62** | **12** | **100** | **11** | **53** | **238** |
+| **Total** | **63** | **12** | **100** | **10** | **53** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
@@ -77,7 +77,7 @@ Fecha de corte, desde la que se deja de agregar funciones: [A completar].
 
 - [x] ✅ Esquema de base de datos relacional o documental. *`database/schema.sql` y `docs/esquema-relacional/`.*
 - [x] ✅ Listado de módulos a desarrollar en el repositorio. *`docs/modulos/propuesta-modulos.md`.*
-- [ ] 👤 Aprobación previa y explícita del tutor y luego del comité. *En el repositorio figura "entregada para revisión del tutor".*
+- [x] ✅ Aprobación previa y explícita del tutor y luego del comité. *Aprobada por el tutor. Confirmado por el grupo.*
 
 **Entrega final: Informe y Video**
 
@@ -151,18 +151,18 @@ Debe permitir encontrar fácilmente:
 
 **Portada**
 
-- [ ] ❌ Universidad y carrera.
-- [ ] ❌ Materia: Proyecto Final.
-- [ ] ❌ Nombre del proyecto.
+- [ ] ❌ Universidad y carrera. *Universidad Tecnológica Nacional (UTN), Tecnicatura Universitaria en Programación a Distancia.*
+- [ ] ❌ Materia: Proyecto Final. *Trabajo Final Integrador de la carrera.*
+- [ ] ❌ Nombre del proyecto. *Sistema de Gestión Rojas FC.*
 - [ ] ❌ Número de grupo. *Somos el grupo 142.*
-- [ ] ❌ Nombre completo de todos los integrantes.
-- [ ] ❌ Año.
+- [ ] ❌ Nombre completo de todos los integrantes. *Marina Giselle Cordero, Silvia Giardini y Alex Pedro Dauria.*
+- [ ] ❌ Año. *2026.*
 
 **Problema y contexto**
 
 - [ ] ❌ Situación que dio origen al proyecto. *1ra entrega, sección 1.*
 - [ ] ❌ Usuarios o actores involucrados. *1ra entrega, sección 3.*
-- [ ] ❌ Evidencia utilizada para validar el problema: entrevistas, encuestas, observaciones, casos reales, documentación, etc. *No hay entrevistas ni encuestas documentadas. Se usa lo relevado en la 1ra entrega, sección 1.*
+- [ ] ❌ Evidencia utilizada para validar el problema: entrevistas, encuestas, observaciones, casos reales, documentación, etc. *Lo relevado en la 1ra entrega, sección 1, y la conformidad del coordinador (`docs/validacion.md`).*
 - [ ] ❌ Necesidad concreta que se buscó resolver. *1ra entrega, secciones 1 y 2.*
 
 **Objetivos y alcance**
@@ -199,7 +199,7 @@ Debe permitir encontrar fácilmente:
 - [ ] ❌ Qué aspectos fueron probados. *`docs/pruebas/`.*
 - [ ] ❌ Casos de prueba relevantes. *`docs/pruebas/`, `backend/src/test/` y `pruebas/navegador/`.*
 - [ ] ❌ Evidencia de funcionamiento. *Capturas en el informe y casos en `docs/pruebas/`.*
-- [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *No se hizo (#70, cerrado: el coordinador no respondió). Se declara como limitación; se puede retomar si responde.*
+- [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *El coordinador dio su conformidad por chat el 04/11/2026 (`docs/validacion.md`).*
 - [ ] ❌ Resultados obtenidos.
 - [ ] ❌ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *`AlumnoIntegracionTest` y `CuotaIntegracionTest` cubren las reglas de la base, y `pruebas/navegador/pagos.js` el circuito de pago.*
 
