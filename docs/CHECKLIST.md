@@ -2,7 +2,7 @@
 
 Checklist orientativo de la cátedra, con el estado de cada punto en nuestro proyecto. La página original guarda los checks solo en el navegador de cada uno, así que este archivo es la referencia común del grupo.
 
-**Estado al 06/11/2026. Fecha de entrega final estimada: 14/11/2026.**
+**Estado al 16/11/2026. Fecha de entrega final: 21/11/2026.**
 
 | Marca | Significa | ¿Se tilda? |
 |---|---|---|
@@ -21,37 +21,27 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | 1. Requisitos generales y cronograma | 9 | 1 | 1 | 2 | 1 | 14 |
 | 2. Repositorio único en GitHub | 13 | 3 | 0 | 0 | 0 | 16 |
 | 3. Sistema final, despliegue y README | 15 | 2 | 2 | 0 | 0 | 19 |
-| 4. Informe Final en PDF | 0 | 0 | 42 | 0 | 0 | 42 |
+| 4. Informe Final en PDF | 40 | 0 | 2 | 0 | 0 | 42 |
 | 5. Video final | 0 | 0 | 31 | 1 | 14 | 46 |
-| 6. Checklist final para finalizar la cursada | 20 | 5 | 19 | 0 | 3 | 47 |
-| 7. Checklist para la presentación / defensa final en mesa | 5 | 1 | 5 | 4 | 33 | 48 |
+| 6. Checklist final para finalizar la cursada | 31 | 4 | 10 | 0 | 2 | 47 |
+| 7. Checklist para la presentación / defensa final en mesa | 6 | 0 | 5 | 4 | 33 | 48 |
 | 8. Criterios finales importantes | 1 | 0 | 0 | 3 | 2 | 6 |
-| **Total** | **63** | **12** | **100** | **10** | **53** | **238** |
+| **Total** | **115** | **10** | **51** | **10** | **52** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
-## Lo más urgente
+## Lo que falta
 
-Cada tarea tiene su issue y su responsable en el tablero.
+El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de desarrollo (#60, #63 a #67, #70, #74 y #75) están terminadas. Quedan estas:
 
-| Tarea | Issue | Responsable |
-|---|---|---|
-| Cuotas | #63 | Alex |
-| Pagos y recibos | #64 | Silvia |
-| Revisión del alcance | #65 | Alex |
-| Dashboard | #66 | Alex |
-| Portal del Responsable | #67 | Alex |
-| Despliegue | #60 | Marina |
-| Informe Final | #68 | Marina arma la estructura; cada uno escribe su parte |
-| README final | #71 | Alex |
-| Datos de ejemplo para la demo | #74 | Alex |
-| Pruebas de navegador en el repositorio | #75 | Alex |
-| Prueba final, pruebas cruzadas y corrección de errores | #73 | Los tres |
-| Video | #69 | Los tres |
-| Entrega en el aula | #76 | Alex |
-| Defensa en mesa, después de la entrega | #77 | Los tres |
-
-Fecha de corte, desde la que se deja de agregar funciones: [A completar].
+| Tarea | Issue | Responsable | Estado |
+|---|---|---|---|
+| Informe Final: exportar a PDF, subirlo y enlazar el video | #68 | Marina | Contenido completo en Google Docs; falta el PDF y el enlace al video |
+| README final: enlaces al informe y al video | #71 | Alex | PR en borrador desde `docs/readme-final` |
+| Prueba final y corrección de errores | #73 | Los tres | Pruebas automáticas pasando el 16/11 (informe, 6.2); falta cerrar el issue |
+| Video | #69 | Los tres | Sin empezar |
+| Entrega en el aula | #76 | Alex | Después del PDF y el video |
+| Defensa en mesa, después de la entrega | #77 | Los tres | Posterior a la entrega |
 
 ---
 
@@ -81,7 +71,7 @@ Fecha de corte, desde la que se deja de agregar funciones: [A completar].
 
 **Entrega final: Informe y Video**
 
-- [ ] 🟡 Repositorio completo con código, bases de datos, despliegue online y documentación escrita. *Falta terminar el código y el informe.*
+- [ ] 🟡 Repositorio completo con código, bases de datos, despliegue online y documentación escrita. *Falta subir el Informe Final en PDF.*
 - [ ] ❌ Video explicativo, preferentemente en inglés.
 - [ ] ⏳ Defensa oral: presentación y justificación ante el comité de trabajo final en mesa de examen.
 
@@ -97,17 +87,17 @@ El repositorio incluye:
 - [x] ✅ README.md principal con documentación, instrucciones de instalación, tecnologías utilizadas e integrantes. *Existe; ver abajo "README actualizado".*
 - [x] ✅ Código fuente estructurado en carpetas claras según la arquitectura: /src, /frontend, /backend, etc.
 - [x] ✅ Base de datos: scripts DDL/DML, esquemas o migraciones, relacionales o documentales. *`database/schema.sql`.*
-- [x] ✅ Código actualizado. *Sin PRs abiertos. Revisar de nuevo al entregar.*
+- [x] ✅ Código actualizado. *Código cerrado en `main` el 13/11; sin PRs de código abiertos.*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución. *README principal, `backend/README.md` y `frontend/README.md`.*
 - [x] ✅ Configuración necesaria. *Tabla de variables en `backend/README.md`.*
 - [x] ✅ Base de datos y migraciones cuando corresponda. *No hay migraciones: `schema.sql` crea todo.*
 - [x] ✅ Variables de entorno documentadas en un .env.example o similar. *`frontend/.env.example` y la tabla de `backend/README.md`.*
 - [x] ✅ Sin credenciales, tokens ni secretos publicados. *Revisado por patrones en el código y el historial. Repetir al entregar.*
-- [x] ✅ Pruebas relevantes incluidas. *50 tests de backend y `docs/pruebas/`.*
+- [x] ✅ Pruebas relevantes incluidas. *92 pruebas del backend, 108 casos en el navegador (`pruebas/navegador/`) y `docs/pruebas/`.*
 - [ ] 🟡 README actualizado. *Refleja el estado real; faltan los enlaces al informe y al video (#71).*
 - [x] ✅ Enlace al sistema desplegado. *Al principio del README.*
-- [ ] 🟡 Documentación necesaria para comprender y evaluar el proyecto. *Hay mucha en `docs/`; falta el informe.*
-- [ ] 🟡 Evitar enlaces dispersos: todo debe estar referenciado desde el README principal. *No enlaza `docs/pruebas/` ni la 2da entrega.*
+- [ ] 🟡 Documentación necesaria para comprender y evaluar el proyecto. *Está en `docs/`; falta el Informe Final en PDF.*
+- [ ] 🟡 Evitar enlaces dispersos: todo debe estar referenciado desde el README principal. *El README ya enlaza `docs/pruebas/` y las entregas; faltan el informe y el video (#71).*
 
 ---
 
@@ -115,17 +105,17 @@ El repositorio incluye:
 
 ### 3.1 Sistema y despliegue
 
-- [ ] 🟡 Versión definitiva y funcional del sistema. *Falta la prueba final (#73).*
+- [ ] 🟡 Versión definitiva y funcional del sistema. *Código cerrado el 13/11 y pruebas pasando el 16/11; falta cerrar la prueba final (#73).*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno. *Probado: base recreada desde `schema.sql` el 03/11.*
-- [x] ✅ Pruebas relevantes ejecutables. *`mvn test`; con `TESTS_MYSQL=true` suma los de integración. 50 de 50 el 03/11.*
+- [x] ✅ Pruebas relevantes ejecutables. *`mvn test`; con `TESTS_MYSQL=true` suma las de integración. 92 de 92 del backend y 108 de 108 en el navegador el 16/11 (Informe Final, 6.2).*
 - [x] ✅ Al menos un componente principal desplegado y funcionando online: *están los tres. Ver `docs/pruebas/despliegue.md`.*
   - [x] ✅ Frontend en Vercel / Netlify / similar, o
   - [x] ✅ Backend en Render / Railway / similar, o
   - [x] ✅ Base de datos en MongoDB Atlas / Supabase / PlanetScale / Aiven / similar.
 - [x] ✅ Enlace al sistema desplegado incluido en el README.
-- [x] ✅ Limitaciones, dependencias externas o funcionalidades simuladas documentadas con claridad. *README, "Estado del proyecto". Repasar al entregar.*
+- [x] ✅ Limitaciones, dependencias externas o funcionalidades simuladas documentadas con claridad. *README, "Limitaciones conocidas", e Informe Final, 7.3.*
 
 ### 3.2 README final
 
@@ -144,73 +134,73 @@ Debe permitir encontrar fácilmente:
 
 ## 4. Informe Final en PDF
 
-*El informe no está empezado. Las notas indican de dónde sacar el material.*
+*El contenido está completo en el borrador del Informe Final (Google Docs, #68), revisado el 16/11. Falta exportarlo a PDF, subirlo al repositorio y agregar el enlace al video. Las notas indican la sección del informe.*
 
 - [ ] ❌ PDF incorporado dentro del repositorio.
-- [ ] ❌ Permite comprender el proyecto sin necesidad de revisar inicialmente todo el código.
+- [x] ✅ Permite comprender el proyecto sin necesidad de revisar inicialmente todo el código.
 
 **Portada**
 
-- [ ] ❌ Universidad y carrera. *Universidad Tecnológica Nacional (UTN), Tecnicatura Universitaria en Programación a Distancia.*
-- [ ] ❌ Materia: Proyecto Final. *Trabajo Final Integrador de la carrera.*
-- [ ] ❌ Nombre del proyecto. *Sistema de Gestión Rojas FC.*
-- [ ] ❌ Número de grupo. *Somos el grupo 142.*
-- [ ] ❌ Nombre completo de todos los integrantes. *Marina Giselle Cordero, Silvia Giardini y Alex Pedro Dauria.*
-- [ ] ❌ Año. *2026.*
+- [x] ✅ Universidad y carrera. *Portada.*
+- [x] ✅ Materia: Proyecto Final. *Portada.*
+- [x] ✅ Nombre del proyecto. *Portada.*
+- [x] ✅ Número de grupo. *Portada: grupo 142.*
+- [x] ✅ Nombre completo de todos los integrantes. *Portada.*
+- [x] ✅ Año. *Portada: fecha de entrega 21/11/2026.*
 
 **Problema y contexto**
 
-- [ ] ❌ Situación que dio origen al proyecto. *1ra entrega, sección 1.*
-- [ ] ❌ Usuarios o actores involucrados. *1ra entrega, sección 3.*
-- [ ] ❌ Evidencia utilizada para validar el problema: entrevistas, encuestas, observaciones, casos reales, documentación, etc. *Lo relevado en la 1ra entrega, sección 1, y la conformidad del coordinador (`docs/validacion.md`).*
-- [ ] ❌ Necesidad concreta que se buscó resolver. *1ra entrega, secciones 1 y 2.*
+- [x] ✅ Situación que dio origen al proyecto. *Sección 1.1.*
+- [x] ✅ Usuarios o actores involucrados. *Sección 1.2.*
+- [x] ✅ Evidencia utilizada para validar el problema: entrevistas, encuestas, observaciones, casos reales, documentación, etc. *Sección 1.3.*
+- [x] ✅ Necesidad concreta que se buscó resolver. *Sección 1.4.*
 
 **Objetivos y alcance**
 
-- [ ] ❌ Objetivo general. *1ra entrega, sección 2.*
-- [ ] ❌ Alcance finalmente implementado. *Se define al cerrar el sistema.*
-- [ ] ❌ Funcionalidades que quedaron fuera y razones del recorte cuando corresponda. *`docs/alcance/revision-del-alcance.md`.*
+- [x] ✅ Objetivo general. *Sección 2.1.*
+- [x] ✅ Alcance finalmente implementado. *Sección 2.2.*
+- [x] ✅ Funcionalidades que quedaron fuera y razones del recorte cuando corresponda. *Sección 2.3.*
 
 **Análisis y modelo**
 
-- [ ] ❌ Principales entidades y relaciones. *`docs/entidades-relaciones-cardinalidad/modelo-conceptual.md`.*
-- [ ] ❌ Reglas de negocio relevantes. *`docs/reglas-negocio/reglas-de-negocio.md`.*
-- [ ] ❌ Decisiones de modelado importantes. *`docs/esquema-relacional/claves-restricciones.md`.*
-- [ ] ❌ Diagramas que ayuden a comprender el dominio. *DER y diagrama relacional en SVG, ya en `docs/`.*
+- [x] ✅ Principales entidades y relaciones. *Sección 3.1.*
+- [x] ✅ Reglas de negocio relevantes. *Sección 3.2.*
+- [x] ✅ Decisiones de modelado importantes. *Sección 3.3.*
+- [x] ✅ Diagramas que ayuden a comprender el dominio. *Figuras 1 a 3.*
 
 **Arquitectura y tecnologías**
 
-- [ ] ❌ Arquitectura final. *`docs/arquitectura/arquitectura-inicial.md`, a actualizar con lo real.*
-- [ ] ❌ Frontend, backend, base de datos y servicios externos utilizados. *Incluye los del despliegue y el correo.*
-- [ ] ❌ Motivo de las principales decisiones tecnológicas. *1ra entrega, sección 5.*
-- [ ] ❌ Integraciones realizadas. *Correo SMTP para recuperar la contraseña (RF-50).*
-- [ ] ❌ Consideraciones de seguridad, autenticación, autorización, concurrencia, sincronización u otras relevantes. *Arquitectura, secciones 5.5 y 8; `backend/README.md`, "Autenticación".*
-- [ ] ❌ Explicar por qué se usó cada tecnología y qué responsabilidad cumple cada componente.
+- [x] ✅ Arquitectura final. *Sección 4.1 y Figura 4.*
+- [x] ✅ Frontend, backend, base de datos y servicios externos utilizados. *Secciones 4.2 y 4.3.*
+- [x] ✅ Motivo de las principales decisiones tecnológicas. *Sección 4.2.*
+- [x] ✅ Integraciones realizadas. *Sección 4.3.*
+- [x] ✅ Consideraciones de seguridad, autenticación, autorización, concurrencia, sincronización u otras relevantes. *Secciones 4.4 y 4.5.*
+- [x] ✅ Explicar por qué se usó cada tecnología y qué responsabilidad cumple cada componente. *Sección 4.2.*
 
 **Implementación**
 
-- [ ] ❌ Principales módulos desarrollados. *Según lo que quede hecho.*
-- [ ] ❌ Recorridos o casos de uso importantes. *`docs/pruebas/`.*
-- [ ] ❌ Capturas o diagramas cuando faciliten la explicación. *Se suman al informe, no al repositorio. `pruebas/navegador` las genera en su carpeta `capturas/`.*
-- [ ] ❌ Dificultades técnicas relevantes y forma en que fueron resueltas. *Ejemplos: búsqueda sin tilde (`LOCATE` y `LIKE`, #59), alta en una sola transacción (#51).*
+- [x] ✅ Principales módulos desarrollados. *Secciones 5.1 a 5.7.*
+- [x] ✅ Recorridos o casos de uso importantes. *Recorridos de la sección 5.*
+- [x] ✅ Capturas o diagramas cuando faciliten la explicación. *Figuras 5 a 12.*
+- [x] ✅ Dificultades técnicas relevantes y forma en que fueron resueltas. *Sección 5.8.*
 
 **Pruebas y validación**
 
-- [ ] ❌ Qué aspectos fueron probados. *`docs/pruebas/`.*
-- [ ] ❌ Casos de prueba relevantes. *`docs/pruebas/`, `backend/src/test/` y `pruebas/navegador/`.*
-- [ ] ❌ Evidencia de funcionamiento. *Capturas en el informe y casos en `docs/pruebas/`.*
-- [ ] ❌ Validación realizada con usuarios o con el caso real cuando corresponda. *El coordinador dio su conformidad por chat el 04/11/2026 (`docs/validacion.md`).*
-- [ ] ❌ Resultados obtenidos.
-- [ ] ❌ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *`AlumnoIntegracionTest` y `CuotaIntegracionTest` cubren las reglas de la base, y `pruebas/navegador/pagos.js` el circuito de pago.*
+- [x] ✅ Qué aspectos fueron probados. *Sección 6.1.*
+- [x] ✅ Casos de prueba relevantes. *Secciones 6.1 y 6.2.*
+- [x] ✅ Evidencia de funcionamiento. *Sección 6.5.*
+- [x] ✅ Validación realizada con usuarios o con el caso real cuando corresponda. *Sección 6.4.*
+- [x] ✅ Resultados obtenidos. *Sección 6.2.*
+- [x] ✅ Demostración de cómo se comprueban reglas críticas: concurrencia, stock, pagos, sincronización, algoritmos, seguridad, estados, integraciones externas, etc. *Sección 6.3.*
 
 **Resultados y conclusiones**
 
-- [ ] ❌ Qué logró resolver efectivamente el proyecto.
-- [ ] ❌ Qué cambió respecto de la situación inicial.
-- [ ] ❌ Limitaciones conocidas.
-- [ ] ❌ Aspectos que quedarían como evolución futura.
-- [ ] ❌ Aprendizajes o decisiones relevantes.
-- [ ] ❌ Diferenciar claramente lo efectivamente implementado y probado de lo proyectado como trabajo futuro.
+- [x] ✅ Qué logró resolver efectivamente el proyecto. *Sección 7.1.*
+- [x] ✅ Qué cambió respecto de la situación inicial. *Sección 7.2.*
+- [x] ✅ Limitaciones conocidas. *Sección 7.3.*
+- [x] ✅ Aspectos que quedarían como evolución futura. *Sección 7.4.*
+- [x] ✅ Aprendizajes o decisiones relevantes. *Sección 7.5.*
+- [x] ✅ Diferenciar claramente lo efectivamente implementado y probado de lo proyectado como trabajo futuro. *Sección 7.6.*
 
 **Enlace**
 
@@ -220,7 +210,7 @@ Debe permitir encontrar fácilmente:
 
 ## 5. Video final
 
-*El video no está empezado. Conviene grabarlo con el sistema ya cerrado.*
+*Pendiente (#69). El sistema ya está cerrado, así que se puede grabar.*
 
 ### 5.1 Propósito y preparación
 
@@ -297,10 +287,10 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 ### 6.1 Repositorio
 
 - [x] ✅ Repositorio único en GitHub declarado formalmente en la primer entrega.
-- [ ] 🟡 README principal actualizado. *Faltan los enlaces (#71).*
+- [ ] 🟡 README principal actualizado. *Faltan los enlaces al informe y al video (#71).*
 - [x] ✅ Código fuente ordenado en carpetas claras.
 - [x] ✅ Base de datos incluida: scripts DDL/DML, esquema o migraciones.
-- [ ] 🟡 Documentación e informes dentro del repositorio. *La documentación está; falta el informe.*
+- [ ] 🟡 Documentación e informes dentro del repositorio. *La documentación está; falta el Informe Final en PDF.*
 - [x] ✅ Variables de entorno documentadas sin secretos.
 - [x] ✅ Sin credenciales, tokens ni secretos publicados.
 - [x] ✅ Pruebas relevantes incluidas.
@@ -331,16 +321,18 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 ### 6.4 Informe Final
 
 - [ ] ❌ PDF dentro del repositorio.
-- [ ] ❌ Portada completa.
-- [ ] ❌ Problema y contexto con evidencia de validación.
-- [ ] ❌ Objetivos y alcance.
-- [ ] ❌ Análisis y modelo.
-- [ ] ❌ Arquitectura y tecnologías con justificación.
-- [ ] ❌ Implementación.
-- [ ] ❌ Pruebas y validación, incluyendo reglas críticas.
-- [ ] ❌ Resultados y conclusiones.
-- [ ] ❌ Diferenciación entre implementado/probado y trabajo futuro.
+- [x] ✅ Portada completa.
+- [x] ✅ Problema y contexto con evidencia de validación.
+- [x] ✅ Objetivos y alcance.
+- [x] ✅ Análisis y modelo.
+- [x] ✅ Arquitectura y tecnologías con justificación.
+- [x] ✅ Implementación.
+- [x] ✅ Pruebas y validación, incluyendo reglas críticas.
+- [x] ✅ Resultados y conclusiones.
+- [x] ✅ Diferenciación entre implementado/probado y trabajo futuro.
 - [ ] ❌ Enlace directo al video final dentro del PDF.
+
+*Contenido completo en el borrador (Google Docs); falta el PDF y el enlace al video.*
 
 ### 6.5 Video
 
@@ -353,10 +345,10 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 6.6 Consistencia final
 
-- [ ] ⏳ El informe describe el sistema que realmente existe.
+- [x] ✅ El informe describe el sistema que realmente existe. *Revisado el 16/11.*
 - [ ] ⏳ El video muestra el sistema que realmente existe.
-- [ ] 🟡 El README coincide con el sistema que realmente existe. *Hoy sí; revisarlo al cerrar el sistema (#73).*
-- [ ] ⏳ No se documentaron funcionalidades no implementadas como si estuvieran terminadas. *Controlarlo al cerrar el informe y el README.*
+- [x] ✅ El README coincide con el sistema que realmente existe. *Revisado el 16/11 (#71).*
+- [ ] ⏳ No se documentaron funcionalidades no implementadas como si estuvieran terminadas. *El informe (2.3, 7.4 y 7.6) y el README las separan; falta controlarlo en el video.*
 - [x] ✅ Las limitaciones están declaradas con claridad.
 
 ---
@@ -434,7 +426,7 @@ Además:
 - [ ] ❌ PDF del Informe Final actualizado.
 - [ ] ❌ Enlace al video final dentro del PDF.
 - [x] ✅ Enlace al sistema desplegado funcionando. *Repasar antes de la mesa.*
-- [ ] 🟡 Repositorio limpio, ordenado y profesional. *Quedan por borrar las ramas ya mergeadas `gestion-responsables` y `busqueda-listado-alumnos`.*
+- [x] ✅ Repositorio limpio, ordenado y profesional. *Ramas ya mergeadas borradas el 16/11.*
 - [ ] ⏳ Informe, video y README coherentes con el sistema real.
 
 ---
