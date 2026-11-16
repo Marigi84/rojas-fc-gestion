@@ -292,7 +292,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Estado del proyecto
 
-✅ **Terminado.** El sistema está completo, probado y en línea.
+✅ **Terminado.** El sistema está completo, probado y en línea. Fecha de entrega final: 21/11/2026.
 
 | Módulo | Estado |
 |---|---|
