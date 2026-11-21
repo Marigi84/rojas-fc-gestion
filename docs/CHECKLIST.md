@@ -18,15 +18,15 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 
 | Sección | ✅ | 🟡 | ❌ | 👤 | ⏳ | Total |
 |---|---|---|---|---|---|---|
-| 1. Requisitos generales y cronograma | 11 | 0 | 0 | 2 | 1 | 14 |
+| 1. Requisitos generales y cronograma | 13 | 0 | 0 | 0 | 1 | 14 |
 | 2. Repositorio único en GitHub | 16 | 0 | 0 | 0 | 0 | 16 |
 | 3. Sistema final, despliegue y README | 19 | 0 | 0 | 0 | 0 | 19 |
 | 4. Informe Final en PDF | 42 | 0 | 0 | 0 | 0 | 42 |
-| 5. Video final | 32 | 0 | 0 | 13 | 1 | 46 |
+| 5. Video final | 44 | 0 | 0 | 1 | 1 | 46 |
 | 6. Checklist final para finalizar la cursada | 47 | 0 | 0 | 0 | 0 | 47 |
-| 7. Checklist para la presentación / defensa final en mesa | 14 | 0 | 0 | 4 | 30 | 48 |
-| 8. Criterios finales importantes | 2 | 0 | 0 | 3 | 1 | 6 |
-| **Total** | **183** | **0** | **0** | **22** | **33** | **238** |
+| 7. Checklist para la presentación / defensa final en mesa | 17 | 0 | 0 | 1 | 30 | 48 |
+| 8. Criterios finales importantes | 5 | 0 | 0 | 0 | 1 | 6 |
+| **Total** | **203** | **0** | **0** | **2** | **33** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
@@ -48,8 +48,8 @@ El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de des
 - [x] ✅ Grupo de 2 o 3 integrantes. *Somos 3.*
 - [x] ✅ Tutor/a elegido/a en la plataforma. *Sebastián Bruselario. Confirmado por el grupo.*
 - [x] ✅ Confirmación de lectura y aceptación de condiciones marcada como finalizada. *Confirmado por el grupo.*
-- [ ] 👤 Para presentar informe final, proyecto y defensa oral: acreditar la totalidad de las asignaturas de la carrera aprobadas, conforme al Plan de Estudios vigente. *Cada integrante.*
-- [ ] 👤 Cursada aprobada y todas las instancias previas del TFI realizadas y aprobadas para acceder a la mesa.
+- [x] ✅ Para presentar informe final, proyecto y defensa oral: acreditar la totalidad de las asignaturas de la carrera aprobadas, conforme al Plan de Estudios vigente. *Confirmado por el grupo.*
+- [x] ✅ Cursada aprobada y todas las instancias previas del TFI realizadas y aprobadas para acceder a la mesa. *Confirmado por el grupo.*
 
 ### 1.2 Entregas del aula
 
@@ -223,23 +223,23 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 5.2 En cámara
 
-- [ ] 👤 Hablar mirando a cámara, sin leer.
-- [ ] 👤 Explicar con frases propias: "El problema que encontramos fue…", "Elegimos esta tecnología porque…", "Acá lo que sucede es…".
-- [ ] 👤 Usar las diapositivas solo como apoyo visual, no como texto para leer.
-- [ ] 👤 Contar por qué se tomó cada decisión, no solo qué se usó.
-- [ ] 👤 Mostrar la demo narrando qué se hace y por qué es importante.
-- [ ] 👤 Decir las limitaciones con naturalidad.
-- [ ] 👤 Cerrar con una conclusión propia, no leída.
+- [x] ✅ Hablar mirando a cámara, sin leer.
+- [x] ✅ Explicar con frases propias: "El problema que encontramos fue…", "Elegimos esta tecnología porque…", "Acá lo que sucede es…".
+- [x] ✅ Usar las diapositivas solo como apoyo visual, no como texto para leer.
+- [x] ✅ Contar por qué se tomó cada decisión, no solo qué se usó.
+- [x] ✅ Mostrar la demo narrando qué se hace y por qué es importante.
+- [x] ✅ Decir las limitaciones con naturalidad.
+- [x] ✅ Cerrar con una conclusión propia, no leída.
 
 ### 5.3 Lo que no conviene hacer
 
-*Se tildan al revisar el video, si no pasó. Los confirma el grupo al ver el video publicado.*
+*Se tildan al revisar el video, si no pasó. Revisado por el grupo con el video publicado.*
 
-- [ ] 👤 Leer el informe, el README o el checklist.
-- [ ] 👤 Leer las diapositivas.
-- [ ] 👤 Memorizar un guion palabra por palabra.
-- [ ] 👤 Dejar que hable una sola persona.
-- [ ] 👤 Mostrar pantallas sin explicar qué se está viendo.
+- [x] ✅ Leer el informe, el README o el checklist.
+- [x] ✅ Leer las diapositivas.
+- [x] ✅ Memorizar un guion palabra por palabra.
+- [x] ✅ Dejar que hable una sola persona.
+- [x] ✅ Mostrar pantallas sin explicar qué se está viendo.
 
 ### 5.4 Contenido mínimo
 
@@ -353,9 +353,9 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 7.1 Requisitos habilitantes
 
-- [ ] 👤 Cursada aprobada.
-- [ ] 👤 Todas las instancias previas del TFI realizadas y aprobadas.
-- [ ] 👤 Totalidad de las asignaturas de la carrera aprobadas, conforme al plan vigente.
+- [x] ✅ Cursada aprobada. *Confirmado por el grupo.*
+- [x] ✅ Todas las instancias previas del TFI realizadas y aprobadas. *Confirmado por el grupo.*
+- [x] ✅ Totalidad de las asignaturas de la carrera aprobadas, conforme al plan vigente. *Confirmado por el grupo.*
 - [ ] 👤 Grupo habilitado para presentarse a la mesa de examen final.
 
 ### 7.2 Entrega previa a la mesa
@@ -427,9 +427,9 @@ Además:
 
 ## 8. Criterios finales importantes
 
-- [ ] 👤 No agregar funcionalidades solo para agrandar el sistema. *A tener en cuenta al decidir el recorte.*
-- [ ] 👤 Priorizar: estabilidad, coherencia, pruebas, documentación y capacidad de explicar las decisiones.
-- [ ] 👤 Una funcionalidad sencilla pero bien implementada, validada y defendible vale más que muchos módulos incompletos.
+- [x] ✅ No agregar funcionalidades solo para agrandar el sistema. *Lo que quedó fuera está justificado en el Informe Final, 2.3.*
+- [x] ✅ Priorizar: estabilidad, coherencia, pruebas, documentación y capacidad de explicar las decisiones.
+- [x] ✅ Una funcionalidad sencilla pero bien implementada, validada y defendible vale más que muchos módulos incompletos.
 - [x] ✅ El informe, el video y el README deben describir el sistema que realmente existe al momento de entregar.
 - [x] ✅ Documentar claramente limitaciones, dependencias externas o funcionalidades simuladas.
 - [ ] ⏳ Preparar la entrega final no solo como documentación, sino como preparación directa para la defensa.
