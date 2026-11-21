@@ -24,19 +24,18 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | 4. Informe Final en PDF | 42 | 0 | 0 | 0 | 0 | 42 |
 | 5. Video final | 46 | 0 | 0 | 0 | 0 | 46 |
 | 6. Checklist final para finalizar la cursada | 47 | 0 | 0 | 0 | 0 | 47 |
-| 7. Checklist para la presentación / defensa final en mesa | 40 | 0 | 0 | 1 | 7 | 48 |
+| 7. Checklist para la presentación / defensa final en mesa | 41 | 0 | 0 | 1 | 6 | 48 |
 | 8. Criterios finales importantes | 6 | 0 | 0 | 0 | 0 | 6 |
-| **Total** | **229** | **0** | **0** | **1** | **8** | **238** |
+| **Total** | **230** | **0** | **0** | **1** | **7** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
 ## Lo que falta
 
-El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de desarrollo (#60, #63 a #67, #70, #74 y #75), el Informe Final (#68), el README (#71), la prueba final (#73) y el video (#69) están terminados. El informe está en `docs/Informe Final - Rojas FC.pdf` y el video en https://youtu.be/J6NpF7j8gn8. Quedan estas:
+El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de desarrollo (#60, #63 a #67, #70, #74 y #75), el Informe Final (#68), el README (#71), la prueba final (#73), el video (#69) y la entrega en el aula (#76) están terminados. El informe está en `docs/Informe Final - Rojas FC.pdf` y el video en https://youtu.be/J6NpF7j8gn8. Quedan estas:
 
 | Tarea | Issue | Responsable | Estado |
 |---|---|---|---|
-| Entrega en el aula | #76 | Alex | Informe, video y README listos el 20/11 |
 | Defensa en mesa, después de la entrega | #77 | Los tres | Posterior a la entrega |
 
 ---
@@ -361,7 +360,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 ### 7.2 Entrega previa a la mesa
 
 - [x] ✅ TFI actualizado: GitHub + Video.
-- [ ] ⏳ Entrega enviada dos semanas antes de la mesa.
+- [x] ✅ Entrega enviada dos semanas antes de la mesa. *Enviada en el aula el 20/11/2026, con la entrega final.*
 - [x] ✅ Repositorio accesible para el comité. *El repositorio es público.*
 - [x] ✅ Sistema desplegado online funcionando. *Repasar antes de la mesa.*
 - [x] ✅ Informe Final en PDF localizable desde el README.
