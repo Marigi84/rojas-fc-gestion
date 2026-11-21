@@ -4,6 +4,10 @@ Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas F
 
 **Sistema en línea:** https://rojasfc-gestion.vercel.app
 
+**Informe Final:** [`docs/Informe Final - Rojas FC.pdf`](docs/Informe%20Final%20-%20Rojas%20FC.pdf)
+
+**Video de presentación:** https://youtu.be/J6NpF7j8gn8
+
 Usuarios de demostración (contraseña `Demo12345`): administradora DNI `20111222`; responsable DNI `30111222`. Los datos son ficticios (`database/datos-demo.sql`). El backend usa un plan gratuito que se suspende sin uso: el primer ingreso puede tardar alrededor de un minuto.
 
 ## Integrantes
@@ -273,6 +277,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Documentación de las entregas
 
+- [`docs/Informe Final - Rojas FC.pdf`](docs/Informe%20Final%20-%20Rojas%20FC.pdf) — Informe Final del Trabajo Final Integrador.
 - [`docs/1ra Entrega - Propuesta de Proyecto.md`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.md) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
 - [`docs/requisitos/requisitos-funcionales.md`](docs/requisitos/requisitos-funcionales.md) — Requisitos funcionales consolidados.
 - [`docs/requisitos/requisitos-no-funcionales.md`](docs/requisitos/requisitos-no-funcionales.md) — Requisitos no funcionales consolidados.
@@ -292,7 +297,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Estado del proyecto
 
-✅ **Terminado.** El sistema está completo, probado y en línea. Fecha de entrega final: 21/11/2026.
+✅ **Terminado.** El sistema está completo, probado y en línea. Fecha de entrega final: 20/11/2026.
 
 | Módulo | Estado |
 |---|---|
@@ -319,9 +324,7 @@ Eventos e indumentaria, exportación y reportes, compartir recibos por WhatsApp 
 
 ### Enlaces de la entrega final
 
-Se completan a medida que estén disponibles:
-
 - **Sistema desplegado:** https://rojasfc-gestion.vercel.app
-- **Informe Final en PDF:** pendiente.
-- **Video de presentación:** pendiente.
+- **Informe Final en PDF:** [`docs/Informe Final - Rojas FC.pdf`](docs/Informe%20Final%20-%20Rojas%20FC.pdf)
+- **Video de presentación:** https://youtu.be/J6NpF7j8gn8
 - **Checklist de la entrega:** [`docs/CHECKLIST.md`](docs/CHECKLIST.md).
