@@ -2,7 +2,7 @@
 
 Checklist orientativo de la cátedra, con el estado de cada punto en nuestro proyecto. La página original guarda los checks solo en el navegador de cada uno, así que este archivo es la referencia común del grupo.
 
-**Estado al 16/11/2026. Fecha de entrega final: 21/11/2026.**
+**Estado al 20/11/2026. Fecha de entrega final: 20/11/2026.**
 
 | Marca | Significa | ¿Se tilda? |
 |---|---|---|
@@ -18,29 +18,25 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 
 | Sección | ✅ | 🟡 | ❌ | 👤 | ⏳ | Total |
 |---|---|---|---|---|---|---|
-| 1. Requisitos generales y cronograma | 9 | 1 | 1 | 2 | 1 | 14 |
-| 2. Repositorio único en GitHub | 13 | 3 | 0 | 0 | 0 | 16 |
-| 3. Sistema final, despliegue y README | 15 | 2 | 2 | 0 | 0 | 19 |
-| 4. Informe Final en PDF | 40 | 0 | 2 | 0 | 0 | 42 |
-| 5. Video final | 0 | 0 | 31 | 1 | 14 | 46 |
-| 6. Checklist final para finalizar la cursada | 31 | 4 | 10 | 0 | 2 | 47 |
-| 7. Checklist para la presentación / defensa final en mesa | 6 | 0 | 5 | 4 | 33 | 48 |
-| 8. Criterios finales importantes | 1 | 0 | 0 | 3 | 2 | 6 |
-| **Total** | **115** | **10** | **51** | **10** | **52** | **238** |
+| 1. Requisitos generales y cronograma | 11 | 0 | 0 | 2 | 1 | 14 |
+| 2. Repositorio único en GitHub | 16 | 0 | 0 | 0 | 0 | 16 |
+| 3. Sistema final, despliegue y README | 19 | 0 | 0 | 0 | 0 | 19 |
+| 4. Informe Final en PDF | 42 | 0 | 0 | 0 | 0 | 42 |
+| 5. Video final | 32 | 0 | 0 | 13 | 1 | 46 |
+| 6. Checklist final para finalizar la cursada | 47 | 0 | 0 | 0 | 0 | 47 |
+| 7. Checklist para la presentación / defensa final en mesa | 14 | 0 | 0 | 4 | 30 | 48 |
+| 8. Criterios finales importantes | 2 | 0 | 0 | 3 | 1 | 6 |
+| **Total** | **183** | **0** | **0** | **22** | **33** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
 ## Lo que falta
 
-El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de desarrollo (#60, #63 a #67, #70, #74 y #75) están terminadas. Quedan estas:
+El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de desarrollo (#60, #63 a #67, #70, #74 y #75), el Informe Final (#68), el README (#71), la prueba final (#73) y el video (#69) están terminados. El informe está en `docs/Informe Final - Rojas FC.pdf` y el video en https://youtu.be/J6NpF7j8gn8. Quedan estas:
 
 | Tarea | Issue | Responsable | Estado |
 |---|---|---|---|
-| Informe Final: exportar a PDF, subirlo y enlazar el video | #68 | Marina | Contenido completo en Google Docs; falta el PDF y el enlace al video |
-| README final: enlaces al informe y al video | #71 | Alex | PR en borrador desde `docs/readme-final` |
-| Prueba final y corrección de errores | #73 | Los tres | Pruebas automáticas pasando el 16/11 (informe, 6.2); falta cerrar el issue |
-| Video | #69 | Los tres | Sin empezar |
-| Entrega en el aula | #76 | Alex | Después del PDF y el video |
+| Entrega en el aula | #76 | Alex | Informe, video y README listos el 20/11 |
 | Defensa en mesa, después de la entrega | #77 | Los tres | Posterior a la entrega |
 
 ---
@@ -71,8 +67,8 @@ El código quedó cerrado en `main` el 13/11/2026 (#83 y #84). Las tareas de des
 
 **Entrega final: Informe y Video**
 
-- [ ] 🟡 Repositorio completo con código, bases de datos, despliegue online y documentación escrita. *Falta subir el Informe Final en PDF.*
-- [ ] ❌ Video explicativo, preferentemente en inglés.
+- [x] ✅ Repositorio completo con código, bases de datos, despliegue online y documentación escrita. *Informe Final en `docs/Informe Final - Rojas FC.pdf`.*
+- [x] ✅ Video explicativo, preferentemente en inglés. *https://youtu.be/J6NpF7j8gn8*
 - [ ] ⏳ Defensa oral: presentación y justificación ante el comité de trabajo final en mesa de examen.
 
 ---
@@ -94,10 +90,10 @@ El repositorio incluye:
 - [x] ✅ Variables de entorno documentadas en un .env.example o similar. *`frontend/.env.example` y la tabla de `backend/README.md`.*
 - [x] ✅ Sin credenciales, tokens ni secretos publicados. *Revisado por patrones en el código y el historial. Repetir al entregar.*
 - [x] ✅ Pruebas relevantes incluidas. *92 pruebas del backend, 108 casos en el navegador (`pruebas/navegador/`) y `docs/pruebas/`.*
-- [ ] 🟡 README actualizado. *Refleja el estado real; faltan los enlaces al informe y al video (#71).*
+- [x] ✅ README actualizado. *Refleja el estado real y enlaza el informe y el video (#71).*
 - [x] ✅ Enlace al sistema desplegado. *Al principio del README.*
-- [ ] 🟡 Documentación necesaria para comprender y evaluar el proyecto. *Está en `docs/`; falta el Informe Final en PDF.*
-- [ ] 🟡 Evitar enlaces dispersos: todo debe estar referenciado desde el README principal. *El README ya enlaza `docs/pruebas/` y las entregas; faltan el informe y el video (#71).*
+- [x] ✅ Documentación necesaria para comprender y evaluar el proyecto. *Está en `docs/`, junto con el Informe Final en PDF.*
+- [x] ✅ Evitar enlaces dispersos: todo debe estar referenciado desde el README principal. *El README enlaza el sistema, el informe, el video, `docs/pruebas/` y las entregas.*
 
 ---
 
@@ -105,11 +101,11 @@ El repositorio incluye:
 
 ### 3.1 Sistema y despliegue
 
-- [ ] 🟡 Versión definitiva y funcional del sistema. *Código cerrado el 13/11 y pruebas pasando el 16/11; falta cerrar la prueba final (#73).*
+- [x] ✅ Versión definitiva y funcional del sistema. *Código cerrado el 13/11, pruebas pasando el 16/11 y prueba final cerrada (#73).*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno. *Probado: base recreada desde `schema.sql` el 03/11.*
-- [x] ✅ Pruebas relevantes ejecutables. *`mvn test`; con `TESTS_MYSQL=true` suma las de integración. 92 de 92 del backend y 108 de 108 en el navegador el 16/11 (Informe Final, 6.2).*
+- [x] ✅ Pruebas relevantes ejecutables. *`mvn test` corre 60 unitarias; con `TESTS_MYSQL=true` suma 32 de integración con MySQL. 92 de 92 del backend y 108 de 108 en el navegador el 16/11 (Informe Final, 6.2).*
 - [x] ✅ Al menos un componente principal desplegado y funcionando online: *están los tres. Ver `docs/pruebas/despliegue.md`.*
   - [x] ✅ Frontend en Vercel / Netlify / similar, o
   - [x] ✅ Backend en Render / Railway / similar, o
@@ -124,19 +120,19 @@ Debe permitir encontrar fácilmente:
 - [x] ✅ Descripción del proyecto.
 - [x] ✅ Instrucciones de ejecución.
 - [x] ✅ Sistema desplegado, si corresponde.
-- [ ] ❌ Informe Final en PDF.
-- [ ] ❌ Video de presentación final.
+- [x] ✅ Informe Final en PDF.
+- [x] ✅ Video de presentación final.
 - [x] ✅ Integrantes del grupo.
 - [x] ✅ Tecnologías utilizadas.
-- [ ] 🟡 Todo referenciado desde el README, sin enlaces dispersos.
+- [x] ✅ Todo referenciado desde el README, sin enlaces dispersos.
 
 ---
 
 ## 4. Informe Final en PDF
 
-*El contenido está completo en el borrador del Informe Final (Google Docs, #68), revisado el 16/11. Falta exportarlo a PDF, subirlo al repositorio y agregar el enlace al video. Las notas indican la sección del informe.*
+*El Informe Final está en `docs/Informe Final - Rojas FC.pdf` (#68). Las notas indican la sección del informe.*
 
-- [ ] ❌ PDF incorporado dentro del repositorio.
+- [x] ✅ PDF incorporado dentro del repositorio. *`docs/Informe Final - Rojas FC.pdf`.*
 - [x] ✅ Permite comprender el proyecto sin necesidad de revisar inicialmente todo el código.
 
 **Portada**
@@ -146,7 +142,7 @@ Debe permitir encontrar fácilmente:
 - [x] ✅ Nombre del proyecto. *Portada.*
 - [x] ✅ Número de grupo. *Portada: grupo 142.*
 - [x] ✅ Nombre completo de todos los integrantes. *Portada.*
-- [x] ✅ Año. *Portada: fecha de entrega 21/11/2026.*
+- [x] ✅ Año. *Portada: fecha de entrega 20/11/2026.*
 
 **Problema y contexto**
 
@@ -204,81 +200,81 @@ Debe permitir encontrar fácilmente:
 
 **Enlace**
 
-- [ ] ❌ Enlace directo al video final incluido en el PDF.
+- [x] ✅ Enlace directo al video final incluido en el PDF. *En la portada y en "Enlace al video", al final.*
 
 ---
 
 ## 5. Video final
 
-*Pendiente (#69). El sistema ya está cerrado, así que se puede grabar.*
+*Publicado el 20/11/2026: https://youtu.be/J6NpF7j8gn8 (#69). Lo grabamos los tres sobre el sistema en línea.*
 
 ### 5.1 Propósito y preparación
 
 El video no es para leer el informe, el README ni el checklist. Es una explicación hablada y natural del proyecto.
 
-- [ ] ❌ Preparar con bullets cortos e ideas fuerza; grabar explicando con palabras propias.
-- [ ] ❌ Elegir 3 a 5 ideas fuerza por bloque, no un texto palabra por palabra.
-- [ ] ❌ Escribir bullets cortos, no párrafos para leer.
-- [ ] ❌ Ensayar en voz alta y con cronómetro, varias veces.
-- [ ] ❌ Asignar a cada integrante partes que pueda explicar con sus propias palabras.
-- [ ] ❌ Preparar ejemplos concretos del problema, de las decisiones y de las pruebas.
-- [ ] ❌ Ensayar transiciones entre integrantes: "Ahora X les va a mostrar…", "Les cuento por qué elegimos…".
-- [ ] ❌ Probar la demo y narrarla mientras se usa, no mostrar pantallas en silencio.
+- [x] ✅ Preparar con bullets cortos e ideas fuerza; grabar explicando con palabras propias.
+- [x] ✅ Elegir 3 a 5 ideas fuerza por bloque, no un texto palabra por palabra.
+- [x] ✅ Escribir bullets cortos, no párrafos para leer.
+- [x] ✅ Ensayar en voz alta y con cronómetro, varias veces.
+- [x] ✅ Asignar a cada integrante partes que pueda explicar con sus propias palabras.
+- [x] ✅ Preparar ejemplos concretos del problema, de las decisiones y de las pruebas.
+- [x] ✅ Ensayar transiciones entre integrantes: "Ahora X les va a mostrar…", "Les cuento por qué elegimos…".
+- [x] ✅ Probar la demo y narrarla mientras se usa, no mostrar pantallas en silencio.
 
 ### 5.2 En cámara
 
-- [ ] ⏳ Hablar mirando a cámara, sin leer.
-- [ ] ⏳ Explicar con frases propias: "El problema que encontramos fue…", "Elegimos esta tecnología porque…", "Acá lo que sucede es…".
-- [ ] ⏳ Usar las diapositivas solo como apoyo visual, no como texto para leer.
-- [ ] ⏳ Contar por qué se tomó cada decisión, no solo qué se usó.
-- [ ] ⏳ Mostrar la demo narrando qué se hace y por qué es importante.
-- [ ] ⏳ Decir las limitaciones con naturalidad.
-- [ ] ⏳ Cerrar con una conclusión propia, no leída.
+- [ ] 👤 Hablar mirando a cámara, sin leer.
+- [ ] 👤 Explicar con frases propias: "El problema que encontramos fue…", "Elegimos esta tecnología porque…", "Acá lo que sucede es…".
+- [ ] 👤 Usar las diapositivas solo como apoyo visual, no como texto para leer.
+- [ ] 👤 Contar por qué se tomó cada decisión, no solo qué se usó.
+- [ ] 👤 Mostrar la demo narrando qué se hace y por qué es importante.
+- [ ] 👤 Decir las limitaciones con naturalidad.
+- [ ] 👤 Cerrar con una conclusión propia, no leída.
 
 ### 5.3 Lo que no conviene hacer
 
-*Se tildan al revisar el video, si no pasó.*
+*Se tildan al revisar el video, si no pasó. Los confirma el grupo al ver el video publicado.*
 
-- [ ] ⏳ Leer el informe, el README o el checklist.
-- [ ] ⏳ Leer las diapositivas.
-- [ ] ⏳ Memorizar un guion palabra por palabra.
-- [ ] ⏳ Dejar que hable una sola persona.
-- [ ] ⏳ Mostrar pantallas sin explicar qué se está viendo.
+- [ ] 👤 Leer el informe, el README o el checklist.
+- [ ] 👤 Leer las diapositivas.
+- [ ] 👤 Memorizar un guion palabra por palabra.
+- [ ] 👤 Dejar que hable una sola persona.
+- [ ] 👤 Mostrar pantallas sin explicar qué se está viendo.
 
 ### 5.4 Contenido mínimo
 
-- [ ] ❌ Presentación del equipo y del proyecto.
-- [ ] ❌ Problema que motivó el desarrollo.
-- [ ] ❌ Usuarios o contexto real.
-- [ ] ❌ Objetivo y alcance.
-- [ ] ❌ Principales reglas del dominio.
-- [ ] ❌ Arquitectura y tecnologías utilizadas.
-- [ ] ❌ Decisiones técnicas relevantes.
-- [ ] ❌ Demostración del sistema funcionando.
-- [ ] ❌ Recorrido por uno o más casos de uso significativos.
-- [ ] ❌ Pruebas o situaciones especiales importantes.
-- [ ] ❌ Dificultades encontradas y cómo fueron resueltas.
-- [ ] ❌ Resultados.
-- [ ] ❌ Limitaciones actuales.
-- [ ] ❌ Posibles evoluciones.
-- [ ] ❌ Conclusión final.
+- [x] ✅ Presentación del equipo y del proyecto.
+- [x] ✅ Problema que motivó el desarrollo.
+- [x] ✅ Usuarios o contexto real.
+- [x] ✅ Objetivo y alcance.
+- [x] ✅ Principales reglas del dominio.
+- [x] ✅ Arquitectura y tecnologías utilizadas.
+- [x] ✅ Decisiones técnicas relevantes.
+- [x] ✅ Demostración del sistema funcionando.
+- [x] ✅ Recorrido por uno o más casos de uso significativos.
+- [x] ✅ Pruebas o situaciones especiales importantes.
+- [x] ✅ Dificultades encontradas y cómo fueron resueltas.
+- [x] ✅ Resultados.
+- [x] ✅ Limitaciones actuales.
+- [x] ✅ Posibles evoluciones.
+- [x] ✅ Conclusión final.
 
 ### 5.5 Preguntas que el video debería responder
 
-- [ ] ❌ ¿Qué problema resolvieron?
-- [ ] ❌ ¿Por qué tomaron esas decisiones?
-- [ ] ❌ ¿Cómo sabemos que la solución funciona?
-- [ ] ❌ ¿Qué parte del proyecto representa el mayor desafío técnico o de dominio?
-- [ ] ❌ ¿Qué harían diferente o qué continuarían desarrollando?
+- [x] ✅ ¿Qué problema resolvieron?
+- [x] ✅ ¿Por qué tomaron esas decisiones?
+- [x] ✅ ¿Cómo sabemos que la solución funciona?
+- [x] ✅ ¿Qué parte del proyecto representa el mayor desafío técnico o de dominio?
+- [x] ✅ ¿Qué harían diferente o qué continuarían desarrollando?
 
 ### 5.6 Participación e idioma
 
-- [ ] ❌ Todos los integrantes participan y explican alguna parte sustancial con naturalidad.
+- [x] ✅ Todos los integrantes participan y explican alguna parte sustancial con naturalidad.
 - [ ] 👤 Cualquiera del grupo debería poder responder preguntas sobre el proyecto completo.
-- [ ] ❌ El video preferentemente en inglés.
+- [x] ✅ El video preferentemente en inglés. *Partes en inglés y en español, con subtítulos.*
 - [ ] ⏳ Importa comunicar y defender técnicamente con claridad, no la pronunciación perfecta.
-- [ ] ⏳ Pueden usar subtítulos cuando ayuden.
-- [ ] ❌ Enlace al video incluido en el PDF y en el README.
+- [x] ✅ Pueden usar subtítulos cuando ayuden.
+- [x] ✅ Enlace al video incluido en el PDF y en el README.
 
 ---
 
@@ -287,10 +283,10 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 ### 6.1 Repositorio
 
 - [x] ✅ Repositorio único en GitHub declarado formalmente en la primer entrega.
-- [ ] 🟡 README principal actualizado. *Faltan los enlaces al informe y al video (#71).*
+- [x] ✅ README principal actualizado. *Con los enlaces al informe y al video (#71).*
 - [x] ✅ Código fuente ordenado en carpetas claras.
 - [x] ✅ Base de datos incluida: scripts DDL/DML, esquema o migraciones.
-- [ ] 🟡 Documentación e informes dentro del repositorio. *La documentación está; falta el Informe Final en PDF.*
+- [x] ✅ Documentación e informes dentro del repositorio. *Informe Final en `docs/Informe Final - Rojas FC.pdf`.*
 - [x] ✅ Variables de entorno documentadas sin secretos.
 - [x] ✅ Sin credenciales, tokens ni secretos publicados.
 - [x] ✅ Pruebas relevantes incluidas.
@@ -298,7 +294,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 6.2 Sistema y despliegue
 
-- [ ] 🟡 Versión definitiva y funcional del sistema. *Ver la sección 3.1.*
+- [x] ✅ Versión definitiva y funcional del sistema. *Ver la sección 3.1.*
 - [x] ✅ Instrucciones claras de instalación y/o ejecución.
 - [x] ✅ Configuración necesaria documentada.
 - [x] ✅ Base de datos y migraciones listas para reconstruir el entorno.
@@ -312,15 +308,15 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 - [x] ✅ Descripción del proyecto.
 - [x] ✅ Instrucciones de ejecución.
 - [x] ✅ Sistema desplegado, si corresponde.
-- [ ] ❌ Informe Final en PDF.
-- [ ] ❌ Video de presentación final.
+- [x] ✅ Informe Final en PDF.
+- [x] ✅ Video de presentación final.
 - [x] ✅ Integrantes del grupo.
 - [x] ✅ Tecnologías utilizadas.
-- [ ] 🟡 Todo referenciado desde el README, sin enlaces dispersos.
+- [x] ✅ Todo referenciado desde el README, sin enlaces dispersos.
 
 ### 6.4 Informe Final
 
-- [ ] ❌ PDF dentro del repositorio.
+- [x] ✅ PDF dentro del repositorio.
 - [x] ✅ Portada completa.
 - [x] ✅ Problema y contexto con evidencia de validación.
 - [x] ✅ Objetivos y alcance.
@@ -330,25 +326,23 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 - [x] ✅ Pruebas y validación, incluyendo reglas críticas.
 - [x] ✅ Resultados y conclusiones.
 - [x] ✅ Diferenciación entre implementado/probado y trabajo futuro.
-- [ ] ❌ Enlace directo al video final dentro del PDF.
-
-*Contenido completo en el borrador (Google Docs); falta el PDF y el enlace al video.*
+- [x] ✅ Enlace directo al video final dentro del PDF.
 
 ### 6.5 Video
 
-- [ ] ❌ Video explicativo y demostrativo, hablado con naturalidad, no leído.
-- [ ] ❌ Todos los integrantes participan y explican.
-- [ ] ❌ Cubre problema, usuarios, objetivo, alcance, reglas, arquitectura, decisiones, demo, casos de uso, pruebas, dificultades, resultados, limitaciones, evolución y conclusión.
-- [ ] ❌ Responde las preguntas clave.
-- [ ] ❌ Enlace al video en el PDF y en el README.
-- [ ] ❌ Preferentemente en inglés, o en español, o con subtítulos.
+- [x] ✅ Video explicativo y demostrativo, hablado con naturalidad, no leído.
+- [x] ✅ Todos los integrantes participan y explican.
+- [x] ✅ Cubre problema, usuarios, objetivo, alcance, reglas, arquitectura, decisiones, demo, casos de uso, pruebas, dificultades, resultados, limitaciones, evolución y conclusión.
+- [x] ✅ Responde las preguntas clave.
+- [x] ✅ Enlace al video en el PDF y en el README.
+- [x] ✅ Preferentemente en inglés, o en español, o con subtítulos.
 
 ### 6.6 Consistencia final
 
 - [x] ✅ El informe describe el sistema que realmente existe. *Revisado el 16/11.*
-- [ ] ⏳ El video muestra el sistema que realmente existe.
+- [x] ✅ El video muestra el sistema que realmente existe. *La demo se hizo sobre el sistema en línea.*
 - [x] ✅ El README coincide con el sistema que realmente existe. *Revisado el 16/11 (#71).*
-- [ ] ⏳ No se documentaron funcionalidades no implementadas como si estuvieran terminadas. *El informe (2.3, 7.4 y 7.6) y el README las separan; falta controlarlo en el video.*
+- [x] ✅ No se documentaron funcionalidades no implementadas como si estuvieran terminadas. *El informe (2.3, 7.4 y 7.6) y el README las separan; el video muestra solo lo implementado.*
 - [x] ✅ Las limitaciones están declaradas con claridad.
 
 ---
@@ -370,8 +364,8 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 - [ ] ⏳ Entrega enviada dos semanas antes de la mesa.
 - [x] ✅ Repositorio accesible para el comité. *El repositorio es público.*
 - [x] ✅ Sistema desplegado online funcionando. *Repasar antes de la mesa.*
-- [ ] ❌ Informe Final en PDF localizable desde el README.
-- [ ] ❌ Video final localizable desde el README y enlazado en el PDF.
+- [x] ✅ Informe Final en PDF localizable desde el README.
+- [x] ✅ Video final localizable desde el README y enlazado en el PDF.
 - [x] ✅ Credenciales y secretos fuera del repositorio.
 - [x] ✅ Variables de entorno documentadas sin exponer datos sensibles.
 
@@ -411,8 +405,8 @@ Preparar respuestas a:
 
 Plan B:
 
-- [ ] ⏳ Video grabado.
-- [ ] ⏳ Capturas.
+- [x] ✅ Video grabado.
+- [x] ✅ Capturas. *Figuras 5 a 12 del Informe Final.*
 - [ ] ⏳ Entorno local de respaldo. *Ya funciona en local; falta dejarlo preparado para la mesa.*
 
 Además:
@@ -422,12 +416,12 @@ Además:
 
 ### 7.5 Documentación y enlaces listos para la mesa
 
-- [ ] ❌ README con descripción, ejecución, despliegue, informe, video e integrantes.
-- [ ] ❌ PDF del Informe Final actualizado.
-- [ ] ❌ Enlace al video final dentro del PDF.
+- [x] ✅ README con descripción, ejecución, despliegue, informe, video e integrantes.
+- [x] ✅ PDF del Informe Final actualizado.
+- [x] ✅ Enlace al video final dentro del PDF.
 - [x] ✅ Enlace al sistema desplegado funcionando. *Repasar antes de la mesa.*
 - [x] ✅ Repositorio limpio, ordenado y profesional. *Ramas ya mergeadas borradas el 16/11.*
-- [ ] ⏳ Informe, video y README coherentes con el sistema real.
+- [x] ✅ Informe, video y README coherentes con el sistema real.
 
 ---
 
@@ -436,6 +430,6 @@ Además:
 - [ ] 👤 No agregar funcionalidades solo para agrandar el sistema. *A tener en cuenta al decidir el recorte.*
 - [ ] 👤 Priorizar: estabilidad, coherencia, pruebas, documentación y capacidad de explicar las decisiones.
 - [ ] 👤 Una funcionalidad sencilla pero bien implementada, validada y defendible vale más que muchos módulos incompletos.
-- [ ] ⏳ El informe, el video y el README deben describir el sistema que realmente existe al momento de entregar.
+- [x] ✅ El informe, el video y el README deben describir el sistema que realmente existe al momento de entregar.
 - [x] ✅ Documentar claramente limitaciones, dependencias externas o funcionalidades simuladas.
 - [ ] ⏳ Preparar la entrega final no solo como documentación, sino como preparación directa para la defensa.
