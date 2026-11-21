@@ -4,6 +4,10 @@ Aplicación web para la gestión administrativa de la Escuela de Fútbol Rojas F
 
 **Sistema en línea:** https://rojasfc-gestion.vercel.app
 
+**Informe Final:** [`docs/Informe Final - Rojas FC.pdf`](docs/Informe%20Final%20-%20Rojas%20FC.pdf)
+
+**Video de presentación:** https://youtu.be/J6NpF7j8gn8
+
 Usuarios de demostración (contraseña `Demo12345`): administradora DNI `20111222`; responsable DNI `30111222`. Los datos son ficticios (`database/datos-demo.sql`). El backend usa un plan gratuito que se suspende sin uso: el primer ingreso puede tardar alrededor de un minuto.
 
 ## Integrantes
@@ -129,7 +133,7 @@ Las variables de entorno se cargan en el panel de cada servicio, nunca en el rep
 
 ## Plan de trabajo
 
-El proyecto se desarrollará de manera incremental, tomando como referencia las fechas de entrega establecidas para el Trabajo Final.
+El proyecto se desarrolló de manera incremental, tomando como referencia las fechas de entrega establecidas para el Trabajo Final. Las etapas siguientes son el plan original de la Primera Entrega. Lo que quedó fuera de la entrega final se detalla en [`docs/alcance/revision-del-alcance.md`](docs/alcance/revision-del-alcance.md).
 
 ### Etapa 1 — Propuesta y preparación del proyecto
 **10/08 al 30/08**
@@ -214,15 +218,15 @@ El proyecto se desarrollará de manera incremental, tomando como referencia las 
 
 ## Organización del trabajo
 
-El proyecto se desarrollará de manera colaborativa utilizando **Git y GitHub**.
+El proyecto se desarrolló de manera colaborativa utilizando **Git y GitHub**.
 
-Este repositorio será la fuente central del proyecto y contendrá el código fuente, los elementos relacionados con la base de datos y la documentación generada durante las distintas etapas.
+Este repositorio es la fuente central del proyecto y contiene el código fuente, los elementos relacionados con la base de datos y la documentación generada durante las distintas etapas.
 
-Las tareas se distribuirán entre los integrantes según las necesidades de cada etapa, procurando realizar revisiones cruzadas y mantener conocimiento compartido de las diferentes partes del sistema.
+Las tareas se distribuyeron entre los integrantes según las necesidades de cada etapa. Cada cambio entró a `main` mediante un Pull Request revisado por otro integrante, para mantener un conocimiento compartido de las diferentes partes del sistema.
 
-Para el seguimiento de las actividades se prevé utilizar **GitHub Projects** mediante un tablero de tareas pendientes, en desarrollo y finalizadas.
+Para el seguimiento de las actividades se utilizó **GitHub Projects**, con un tablero de tareas pendientes, en desarrollo, en revisión y finalizadas.
 
-La planificación será revisada durante el avance del proyecto. Ante posibles desvíos de tiempo o dificultades técnicas se priorizarán las funcionalidades centrales de gestión de alumnos, responsables, cuotas y pagos, procurando mantener la estabilidad y calidad de la versión final.
+La planificación se revisó durante el avance del proyecto. Ante los desvíos de tiempo se priorizaron las funcionalidades centrales de gestión de alumnos, responsables, cuotas y pagos, para mantener la estabilidad y calidad de la versión final.
 
 ## Estructura del repositorio
 
@@ -273,6 +277,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Documentación de las entregas
 
+- [`docs/Informe Final - Rojas FC.pdf`](docs/Informe%20Final%20-%20Rojas%20FC.pdf) — Informe Final del Trabajo Final Integrador.
 - [`docs/1ra Entrega - Propuesta de Proyecto.md`](docs/1ra%20Entrega%20-%20Propuesta%20de%20Proyecto.md) — Propuesta, alcance y stack tecnológico. **Aprobada por el tutor.**
 - [`docs/requisitos/requisitos-funcionales.md`](docs/requisitos/requisitos-funcionales.md) — Requisitos funcionales consolidados.
 - [`docs/requisitos/requisitos-no-funcionales.md`](docs/requisitos/requisitos-no-funcionales.md) — Requisitos no funcionales consolidados.
@@ -292,7 +297,7 @@ Para ver el sistema con datos, se puede cargar [`database/datos-demo.sql`](datab
 
 ## Estado del proyecto
 
-🟡 **En desarrollo. Fecha de entrega final estimada: 14/11/2026.**
+✅ **Terminado.** El sistema está completo, probado y en línea. Fecha de entrega final: 20/11/2026.
 
 | Módulo | Estado |
 |---|---|
@@ -319,9 +324,7 @@ Eventos e indumentaria, exportación y reportes, compartir recibos por WhatsApp 
 
 ### Enlaces de la entrega final
 
-Se completan a medida que estén disponibles:
-
 - **Sistema desplegado:** https://rojasfc-gestion.vercel.app
-- **Informe Final en PDF:** pendiente.
-- **Video de presentación:** pendiente.
+- **Informe Final en PDF:** [`docs/Informe Final - Rojas FC.pdf`](docs/Informe%20Final%20-%20Rojas%20FC.pdf)
+- **Video de presentación:** https://youtu.be/J6NpF7j8gn8
 - **Checklist de la entrega:** [`docs/CHECKLIST.md`](docs/CHECKLIST.md).
