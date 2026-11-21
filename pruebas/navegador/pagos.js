@@ -13,6 +13,9 @@ function caso(nombre, ok, detalle = '') {
   console.log(`${ok ? 'OK   ' : 'FALLA'} ${nombre}${detalle ? `  -> ${textoSeguro(detalle)}` : ''}`)
 }
 const captura = (p, n) => p.screenshot({ path: path.join(CAPTURAS, `${n}.png`), fullPage: true })
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+// Mismo texto que muestra la pantalla para un período AAAA-MM, por ejemplo "octubre de 2026".
+const etiqueta = (periodo) => `${MESES[Number(periodo.slice(5, 7)) - 1]} de ${periodo.slice(0, 4)}`
 const tarjeta = (p, t) => p.locator(`section:has(> h2:text-is("${t}"))`)
 
 async function entrar(p, dni) {
@@ -55,6 +58,10 @@ async function recaudacion(token) {
   const vencida = cuotas.find((c) => c.estado === 'vencida')
   const mes = vencida.periodo
   const conInteres = vencida.montoAPagar
+  // Cuotas vencidas de Mateo: desde el dia 14 tambien cuenta la del mes, asi que pueden ser mas de una.
+  const vencidasDeMateo = async () =>
+    (await (await api(token, 'GET', '/cuotas/morosos')).json()).find((m) => m.dni === 45111222)?.cuotasVencidas ?? 0
+  const vencidasAntes = await vencidasDeMateo()
 
   const navegador = await chromium.launch({ ...OPCIONES_NAVEGADOR, headless: true })
   const contexto = await navegador.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true })
@@ -67,7 +74,8 @@ async function recaudacion(token) {
   await verPagos(p, '45111222')
   await captura(p, '60-pagos')
   caso('Muestra las cuotas y el historial del alumno (RF-22, RF-27)', await tarjeta(p, 'Cuotas del alumno').isVisible())
-  await tarjeta(p, 'Cuotas del alumno').getByRole('button', { name: /Registrar el pago de/ }).last().click()
+  // Desde el dia 14 tambien vence la cuota del mes, asi que se elige el boton del periodo exacto.
+  await tarjeta(p, 'Cuotas del alumno').getByRole('button', { name: `Registrar el pago de ${etiqueta(mes)}` }).click()
   const registrar = tarjeta(p, 'Registrar pago')
   const texto = await registrar.textContent()
   caso('El importe a pagar incluye el interés (RF-21, RF-25)', /27\.500,00/.test(texto), texto.slice(0, 90))
@@ -82,8 +90,8 @@ async function recaudacion(token) {
   caso('La cuota queda pagada, con su pago asociado (RF-22)', pagada.estado === 'pagada' && pagada.idPago != null, JSON.stringify(pagada))
   const despues = await recaudacion(token)
   caso('La recaudación del mes suma el pago (RF-48)', Number(despues) === Number(antes) + Number(conInteres), `${antes} -> ${despues}`)
-  const morosos = await (await api(token, 'GET', '/cuotas/morosos')).json()
-  caso('Mateo deja de figurar entre los morosos (RN-23)', !morosos.some((m) => m.dni === 45111222), JSON.stringify(morosos.map((m) => m.dni)))
+  const vencidasDespues = await vencidasDeMateo()
+  caso('La cuota pagada deja de contar como deuda de Mateo (RN-23)', vencidasDespues === vencidasAntes - 1, `${vencidasAntes} -> ${vencidasDespues}`)
 
   // --- Recibo ---
   await tarjeta(p, 'Historial de pagos').getByRole('link', { name: /N° / }).first().click()
@@ -102,7 +110,8 @@ async function recaudacion(token) {
   await verPagos(p, '45111222')
   const historial = await (await api(token, 'GET', '/alumnos/45111222/pagos')).json()
   const pago = historial.find((h) => h.periodo === mes)
-  await tarjeta(p, 'Historial de pagos').getByRole('row', { name: /27\.500,00/ }).getByRole('button', { name: /Anular el pago/ }).click()
+  await tarjeta(p, 'Historial de pagos').getByRole('row').filter({ hasText: etiqueta(mes) }).filter({ hasText: 'Vigente' })
+    .getByRole('button', { name: /Anular el pago/ }).click()
   const anular = tarjeta(p, 'Anular pago')
   await anular.getByRole('button', { name: 'Anular pago' }).click()
   caso('El motivo es obligatorio (RN-31)', await anular.getByLabel('Motivo de la anulación').evaluate((e) => e.validity.valueMissing))
