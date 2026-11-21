@@ -22,11 +22,11 @@ Las notas en cursiva son nuestras; el resto es el texto de la cátedra. Si cambi
 | 2. Repositorio único en GitHub | 16 | 0 | 0 | 0 | 0 | 16 |
 | 3. Sistema final, despliegue y README | 19 | 0 | 0 | 0 | 0 | 19 |
 | 4. Informe Final en PDF | 42 | 0 | 0 | 0 | 0 | 42 |
-| 5. Video final | 44 | 0 | 0 | 1 | 1 | 46 |
+| 5. Video final | 46 | 0 | 0 | 0 | 0 | 46 |
 | 6. Checklist final para finalizar la cursada | 47 | 0 | 0 | 0 | 0 | 47 |
-| 7. Checklist para la presentación / defensa final en mesa | 17 | 0 | 0 | 1 | 30 | 48 |
-| 8. Criterios finales importantes | 5 | 0 | 0 | 0 | 1 | 6 |
-| **Total** | **203** | **0** | **0** | **2** | **33** | **238** |
+| 7. Checklist para la presentación / defensa final en mesa | 40 | 0 | 0 | 1 | 7 | 48 |
+| 8. Criterios finales importantes | 6 | 0 | 0 | 0 | 0 | 6 |
+| **Total** | **229** | **0** | **0** | **1** | **8** | **238** |
 
 La página de la cátedra indica 236 puntos; acá hay 238 porque algunas frases pueden no ser casilleros en el original. Se transcribieron todas para no perder ninguna.
 
@@ -270,9 +270,9 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 ### 5.6 Participación e idioma
 
 - [x] ✅ Todos los integrantes participan y explican alguna parte sustancial con naturalidad.
-- [ ] 👤 Cualquiera del grupo debería poder responder preguntas sobre el proyecto completo.
+- [x] ✅ Cualquiera del grupo debería poder responder preguntas sobre el proyecto completo.
 - [x] ✅ El video preferentemente en inglés. *Partes en inglés y en español, con subtítulos.*
-- [ ] ⏳ Importa comunicar y defender técnicamente con claridad, no la pronunciación perfecta.
+- [x] ✅ Importa comunicar y defender técnicamente con claridad, no la pronunciación perfecta.
 - [x] ✅ Pueden usar subtítulos cuando ayuden.
 - [x] ✅ Enlace al video incluido en el PDF y en el README.
 
@@ -360,7 +360,7 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 7.2 Entrega previa a la mesa
 
-- [ ] ⏳ TFI actualizado: GitHub + Video.
+- [x] ✅ TFI actualizado: GitHub + Video.
 - [ ] ⏳ Entrega enviada dos semanas antes de la mesa.
 - [x] ✅ Repositorio accesible para el comité. *El repositorio es público.*
 - [x] ✅ Sistema desplegado online funcionando. *Repasar antes de la mesa.*
@@ -371,37 +371,37 @@ El video no es para leer el informe, el README ni el checklist. Es una explicaci
 
 ### 7.3 Preparación del coloquio individual
 
-- [ ] ⏳ Repasar problema, contexto y evidencia de validación.
-- [ ] ⏳ Repasar objetivos y alcance real.
-- [ ] ⏳ Repasar modelo de datos, entidades, relaciones y reglas de negocio.
-- [ ] ⏳ Repasar arquitectura y justificación de tecnologías.
-- [ ] ⏳ Repasar módulos implementados y casos de uso principales.
-- [ ] ⏳ Repasar pruebas realizadas y evidencia de reglas críticas.
-- [ ] ⏳ Repasar dificultades técnicas y soluciones aplicadas.
-- [ ] ⏳ Repasar resultados, limitaciones y trabajo futuro.
-- [ ] ⏳ Poder explicar decisiones técnicas sin depender de leer el código.
-- [ ] ⏳ Todos los integrantes pueden explicar el proyecto completo.
-- [ ] ⏳ Cada integrante preparó una parte sustancial para exponer.
-- [ ] ⏳ Cada integrante puede responder preguntas sobre cualquier módulo, no solo el propio.
+- [x] ✅ Repasar problema, contexto y evidencia de validación.
+- [x] ✅ Repasar objetivos y alcance real.
+- [x] ✅ Repasar modelo de datos, entidades, relaciones y reglas de negocio.
+- [x] ✅ Repasar arquitectura y justificación de tecnologías.
+- [x] ✅ Repasar módulos implementados y casos de uso principales.
+- [x] ✅ Repasar pruebas realizadas y evidencia de reglas críticas.
+- [x] ✅ Repasar dificultades técnicas y soluciones aplicadas.
+- [x] ✅ Repasar resultados, limitaciones y trabajo futuro.
+- [x] ✅ Poder explicar decisiones técnicas sin depender de leer el código.
+- [x] ✅ Todos los integrantes pueden explicar el proyecto completo.
+- [x] ✅ Cada integrante preparó una parte sustancial para exponer.
+- [x] ✅ Cada integrante puede responder preguntas sobre cualquier módulo, no solo el propio.
 - [ ] ⏳ Ensayo grupal realizado.
 - [ ] ⏳ Ensayo individual tipo coloquio realizado.
 - [ ] ⏳ Preparar una explicación breve de algún fragmento significativo: código, consulta, algoritmo, prueba o diseño.
 
 Preparar respuestas a:
 
-- [ ] ⏳ ¿Qué problema resolvieron?
-- [ ] ⏳ ¿Por qué tomaron esas decisiones?
-- [ ] ⏳ ¿Cómo sabemos que la solución funciona?
-- [ ] ⏳ ¿Qué parte fue el mayor desafío técnico o de dominio?
-- [ ] ⏳ ¿Qué harían diferente o qué continuarían desarrollando?
-- [ ] ⏳ ¿Qué limitaciones tiene el sistema?
-- [ ] ⏳ ¿Qué quedó como trabajo futuro?
+- [x] ✅ ¿Qué problema resolvieron?
+- [x] ✅ ¿Por qué tomaron esas decisiones?
+- [x] ✅ ¿Cómo sabemos que la solución funciona?
+- [x] ✅ ¿Qué parte fue el mayor desafío técnico o de dominio?
+- [x] ✅ ¿Qué harían diferente o qué continuarían desarrollando?
+- [x] ✅ ¿Qué limitaciones tiene el sistema?
+- [x] ✅ ¿Qué quedó como trabajo futuro?
 
 ### 7.4 Preparación de la demostración
 
-- [ ] ⏳ Demo del sistema funcionando preparada.
-- [ ] ⏳ Recorrido por uno o más casos de uso significativos.
-- [ ] ⏳ Casos especiales o pruebas importantes listos para mostrar.
+- [x] ✅ Demo del sistema funcionando preparada.
+- [x] ✅ Recorrido por uno o más casos de uso significativos.
+- [x] ✅ Casos especiales o pruebas importantes listos para mostrar.
 
 Plan B:
 
@@ -432,4 +432,4 @@ Además:
 - [x] ✅ Una funcionalidad sencilla pero bien implementada, validada y defendible vale más que muchos módulos incompletos.
 - [x] ✅ El informe, el video y el README deben describir el sistema que realmente existe al momento de entregar.
 - [x] ✅ Documentar claramente limitaciones, dependencias externas o funcionalidades simuladas.
-- [ ] ⏳ Preparar la entrega final no solo como documentación, sino como preparación directa para la defensa.
+- [x] ✅ Preparar la entrega final no solo como documentación, sino como preparación directa para la defensa.
